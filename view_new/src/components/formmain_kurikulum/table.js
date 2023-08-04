@@ -612,11 +612,12 @@ const TableMain = (props) => {
                                         {
                                             dataJenis.map((items,index) => 
                                                 //mencari id yang sama
-                                                items.kurikulum_sp_id === item.kurikulum_sp_id &&
+                                                items.kurikulum_sp_id === item.kurikulum_sp_id && 
                                                 jenisKurikulum.map((data,index) => 
                                                     data.kurikulum_kode === items.kurikulum_kode && 
                                                     data.deskripsi
                                                 )
+                                               
                                             )
                                         }
                                     </td>
@@ -664,7 +665,7 @@ const TableMain = (props) => {
                        {
                             props.page === "rombel" &&
                             dataRombel.map((item,index) => 
-                                <tr key={index}>
+                                <tr key={index} style={{verticalAlign:"middle"}}>
                                     <td>
                                         {
                                             dataSemester.map((items,index) => 
@@ -688,7 +689,7 @@ const TableMain = (props) => {
 
                                     <td>
                                         {
-                                            item.nama
+                                             item.nama
                                         }
                                     </td>
 

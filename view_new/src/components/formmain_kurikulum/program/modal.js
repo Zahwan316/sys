@@ -96,11 +96,13 @@ const ModalProgramPage = (props) => {
                                         </option>
                                     ) */
                                     props.kurikulumspdata.map((item,index) => 
-                                            item.kurikulum_sp_id == props.kurikulum_sp_id_code &&
+                                            item.kurikulum_sp_id == props.kurikulum_sp_id_code && item.keaktifan === 1 ?
                                             props.kurikulum.map((data,index) => 
                                                 data.kurikulum_kode == item.kurikulum_kode &&
                                                 <option value={item.kurikulum_sp_id}>{data.deskripsi}</option>
                                             )
+                                            :
+                                            ""
                                     )
                                 }
                                 
@@ -196,8 +198,10 @@ const ModalProgramPage = (props) => {
                                 {
                                     props.dataProgram.map((item,index) => 
                                         props.dataJurusan.map((items,index) => 
-                                            items.jurusan_id === item.jurusan_id &&
+                                            items.jurusan_id === item.jurusan_id && item.keaktifan > 0 ?
                                             <option value={item.kurikulum_program_id}>{items.nama_jurusan}</option>
+                                            :
+                                            ""
                                         )
                                     )
                                 }

@@ -17,7 +17,9 @@ import {
   cilMemory,
   cilUser,
   cilListNumbered,
-  cilClock
+  cilClock,
+  cilTransfer,
+  cilPeople
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -99,12 +101,12 @@ const _nav = [
       {
         component:CNavGroup,
         name:"Mutasi",
-        icon:<CIcon icon={cilClock} customClassName="nav-icon" />,
+        icon:<CIcon icon={cilTransfer} customClassName="nav-icon" />,
         items:[
           {
             component:CNavItem,
             name:"Semester",
-            icon:<CIcon icon={cilClock} customClassName="nav-icon" />,
+            icon:<CIcon icon={cilDescription} customClassName="nav-icon" />,
             to:"/mutasisemester"
           },
           {
@@ -116,7 +118,7 @@ const _nav = [
           {
             component:CNavItem,
             name:"Siswa",
-            icon:<CIcon icon={cilClock} customClassName="nav-icon" />,
+            icon:<CIcon icon={cilPeople} customClassName="nav-icon" />,
             to:"/mutasisiswa"
           }
         ]

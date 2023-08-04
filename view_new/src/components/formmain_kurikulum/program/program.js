@@ -42,8 +42,8 @@ const ProgramForm = () => {
     const[typeform,settypeform] = useState()
     //data
     const[dataRefKurikulum,setdatarefkurikulum] = useState()
-    const[dataKurikulumSp,setdatakurikulumsp] = useState()
-    const[dataJurusan,setdatajurusan] = useState()
+    const[dataKurikulumSp,setdatakurikulumsp] = useState([])
+    const[dataJurusan,setdatajurusan] = useState([])
     const[checkbox,setcheckbox] = useState(false)
     //logic
     const[inputcheckbox,setinputcheckbox] = useState()
@@ -153,7 +153,7 @@ const ProgramForm = () => {
 
     useEffect(() => {
        console.log(forminput)
-       console.log(id)
+      // console.log(id)
     })
 
     useEffect(() => {
@@ -163,9 +163,16 @@ const ProgramForm = () => {
                 let response_kurikulum = await axios.get(process.env.REACT_APP_LINK + "ref_kurikulum")
                 let response_kurikulum_sp = await axios.get(process.env.REACT_APP_LINK + "kurikulum_sp")
 
-                setdatajurusan(response_jurusan.data.data)
+                //setdatajurusan(response_jurusan.data.data)
                 setdatarefkurikulum(response_kurikulum.data.data)
                 setdatakurikulumsp(response_kurikulum_sp.data.data)
+
+                let kurikulum_item_sp = response_kurikulum_sp.data.data
+                let kode_main_raw = kurikulum_item_sp.map(item => item.kurikulum_sp_id == forminput.kurikulum_sp && item)
+                let kode_main = kode_main_raw[0].kurikulum_kode
+                let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan/${kode_main}`)
+               
+                setdatajurusan(response.data.data)
             }
             catch(e){
                 console.log(e)
@@ -175,19 +182,18 @@ const ProgramForm = () => {
     },[])
 
     useEffect(() => {
-        const getData = async() => {
+        const getDataProgram = async() => {
             try{
-                let kode_main_raw = dataKurikulumSp.map(item => item.kurikulum_sp_id == forminput.kurikulum_sp && item)
+               /*  let kode_main_raw = dataKurikulumSp.map(item => item.kurikulum_sp_id == forminput.kurikulum_sp && item)
                 let kode_main = kode_main_raw[0].kurikulum_kode
                 let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan/${kode_main}`)
-                setdatajurusan(response.data.data)
-                //console.log(response.data.data)
+                setdatajurusan(response.data.data) */
             }
             catch(e){
                 console.log(e)
             }
         }
-        getData()
+        getDataProgram()
     },[forminput.kurikulum_sp])
 
     useEffect(() => {
