@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "darthside",
+    "database": "sekolah",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "darthside",
+    "database": "sekolah",
+    "host": "localhost",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "darthside",
+    "database": "sekolah",
+    "host": "localhost",
+    "dialect": "postgres"
+  }
+}
