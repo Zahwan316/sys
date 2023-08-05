@@ -41,6 +41,11 @@ const Jadwal_kbm_route = require("./route/jadwal_kbm")
 const Waktu_kbm_route = require("./route/waktu_kbm")
 const Hari_route = require("./route/hari")
 
+//mutasi page
+const Peserta_didik_route = require("./route/peserta_didik")
+const Kurikulum_anggota_rombel_route = require("./route/kurikulum_anggota_rombel")
+const Jenis_pendaftaran_route = require("./route/jenis_pendaftaran")
+
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended:true}))
@@ -84,6 +89,11 @@ app.use(Kbm_mapel_sp)
 app.use(Jadwal_kbm_route)
 app.use(Waktu_kbm_route)
 app.use(Hari_route)
+
+//mutasi page
+app.use(Peserta_didik_route)
+app.use(Kurikulum_anggota_rombel_route)
+app.use(Jenis_pendaftaran_route)
 
 //end route
 
