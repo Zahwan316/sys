@@ -24,15 +24,12 @@ import {
     CModalFooter
     
   } from '@coreui/react'
+import Select from "react-select"
 
 const ModalProgramPage = (props) => {
-
-
     return(
         <CModal visible={true} size='lg' onClose={props.handleModal}>
             <form onSubmit={props.handlesubmit}>
-
-            
             <CModalHeader>
                 <CModalTitle>{props.title}</CModalTitle>
             </CModalHeader>
@@ -426,6 +423,56 @@ const ModalProgramPage = (props) => {
                                     )
                                 } */}
                            
+                    </div>
+                }
+
+                {
+                    props.page === "mapel" && 
+                    <div>
+                        <div className='mb-3'>
+                            <CFormLabel>Mata Pelajaran</CFormLabel>
+                            <Select 
+                                onChange={props.handleselectoption}
+                                name="nama"
+                                 options={
+                                    props.refmapel.map((item,index) => 
+                                        {
+                                            let data = {
+                                                value:item.mapel_kode,
+                                                label:item.nama
+                                            }
+                                            return data
+                                        }
+                                    )
+                                } 
+                                components={{DropdownIndicator: props => <div {...props} name="nama" />}}
+                            />
+                            {/* <CFormSelect >
+                                <option>Pilih Mapel</option>
+                                {
+                                    props.refmapel.map((item,index) => 
+                                        <option>{item.nama}</option>
+                                    )
+                                }
+                            </CFormSelect> */}
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Urutan</CFormLabel>
+                            <CFormInput 
+                                onChange={props.handleforminput}
+                                name="urutan"
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Kelompok</CFormLabel>
+                            <CFormInput
+                                name="kelompok"
+                                onChange={props.handleforminput}
+                                value={props.forminput.kelompok}
+                            />
+                        
+                           
+                        </div>
                     </div>
                 }
 

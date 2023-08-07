@@ -1,12 +1,13 @@
 import React from 'react'
-import ProgramPage from './page/programpage'
+import ProgramPage from './page/kurikulum/programpage'
 import RombelPage from './components/formmain_kurikulum/program/rombel'
-import TugasMain from './page/tugas'
-import RombelMain from './page/rombelpage'
-import JadwalMain from './page/jadwalpage'
-import MutasiSemesterMain from './page/mustasisemester'
-import MutasiRombelMain from './page/mutasirombel'
-import MutasiSiswaMain from './page/mutasisiswa'
+import TugasMain from './page/kurikulum/tugas'
+import RombelMain from './page/kurikulum/rombelpage'
+import JadwalMain from './page/kurikulum/jadwalpage'
+import MutasiSemesterMain from './page/mutasi/mustasisemester'
+import MutasiRombelMain from './page/mutasi/mutasirombel'
+import MutasiSiswaMain from './page/mutasi/mutasisiswa'
+import MapelPage from './page/kurikulum/mapel'
 
 
 const Dashboard = React.lazy(() => import('./views/dashboard/Dashboard'))
@@ -61,7 +62,9 @@ const Widgets = React.lazy(() => import('./views/widgets/Widgets'))
 
 //form
 const FormSekolahPage = React.lazy(() => import('./page/formSekolah'))
-const KurikulumPage = React.lazy(() => import("./page/kurikulum"))
+const KurikulumPage = React.lazy(() => import("./page/kurikulum/kurikulum"))
+const PosPembayaran = React.lazy(() => import("./page/pembayaran/pospembayaran"))
+const SkPenetapan = React.lazy(() => import("./page/pembayaran/skpenetapan"))
 
 const routes = [
   { path: '/', exact: true, name: 'Home' },
@@ -111,17 +114,26 @@ const routes = [
 
   //forms sekolah
   { path: '/tambahsekolah', name: 'Pengelolaan / Kelembagaan', element: FormSekolahPage },
+
+  //kurikulum
   { path: '/kurikulum', name: 'Pengelolaan / Kurikulum', element: KurikulumPage },
   { path: '/program', name: 'Pengelolaan / Kurikulum / Program', element: ProgramPage },
   { path: '/rombel', name: 'Pengelolaan / Kurikulum / Rombel', element: RombelMain, },
   { path: '/tugasmengajar', name: 'Pengelolaan / Kurikulum / Tugas Mengajar', element: TugasMain },
   { path: '/jadwal', name: 'Pengelolaan / Kurikulum / Jadwal', element: JadwalMain },
   { path: '/jadwal/:id', name: 'Pengelolaan / Kurikulum / Jadwal', element: JadwalMain },
+  { path: '/mapel', name: 'Pengelolaan / Kurikulum / Mata Pelajaran', element: MapelPage },
+  
   
   //mutasi
   { path: '/mutasisemester', name: 'Pengelolaan / Mutasi / Semester', element: MutasiSemesterMain },
   { path: '/mutasirombel', name: 'Pengelolaan / Mutasi / Rombel', element: MutasiRombelMain },
   { path: '/mutasisiswa', name: 'Pengelolaan / Mutasi / Siswa', element: MutasiSiswaMain    },
+  
+  //keuangan
+  { path: '/pospembayaran', name: 'Pengelolaan / Pembayaran / Pos Pembayaran', element: PosPembayaran    },
+  { path: '/skpenetapan', name: 'Pengelolaan / Pembayaran / Sk Penetapan', element: SkPenetapan    },
+  
   
 ]
 

@@ -37,7 +37,6 @@ const TableMain = (props) => {
     //main state
     const[itemid,setitemid] = useState()
 
-
     //jenis page
     const[dataJenis,setdatajenis] = useState([])
     const[jenisKurikulum,setjeniskurikulum] = useState()
@@ -62,6 +61,11 @@ const TableMain = (props) => {
     const[dataJadwal,setdatajadwal] = useState([])
     const[waktukbm,setwaktukbm] = useState([])
     const[hari,sethari] = useState([])
+
+    //mapel page
+    const[refmapel,setrefmapel] = useState([])
+
+    
 
     //loading
     const[loading,setloading] = useState(true)
@@ -147,6 +151,13 @@ const TableMain = (props) => {
                     if(id){
                         getDataJadwal()
                     }
+                }
+                else if(props.page === "mapel"){
+                    let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                   
+                    setrefmapel(responserefmapel.data.data)
+                    setdatamapel(responsemapel.data.data)
                 }
 
             }
@@ -891,9 +902,36 @@ const TableMain = (props) => {
                                 <p className='mb-0'>Mengolah Data Jadwal</p>
                             </div>)
                             :
-                            ""
-                            
-                           
+                            ""                                  
+                       }
+
+                       {
+                            props.page === "mapel" &&
+                            dataMapel.map((item,index) => 
+                                <tr key={index} style={{verticalAlign:"middle"}}>
+                                    <td>
+                                        {item.kelompok}
+                                    </td>
+                                    <td>
+                                        {item.mapel_rank}
+                                    </td>
+                                    <td>
+                                        {item.nama}
+                                    </td>
+                                    <td>
+                                            <CButton color="link" typebtn="detail" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>
+                                            <CButton color="link" typebtn="edit" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>
+                                            <CButton color="link" typebtn="delete" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>                                                     
+                                    </td>
+                                </tr>
+                            )
+                        
                        }
 
                     </CTableBody>

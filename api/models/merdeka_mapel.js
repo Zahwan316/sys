@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('merdeka_mapel', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Merdeka_mapel = Sequelize.define('merdeka_mapel', {
     mapel_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -47,9 +47,10 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'merdeka_mapel',
     schema: 'ref',
     timestamps: false
   });
-};
+
+module.exports = Merdeka_mapel

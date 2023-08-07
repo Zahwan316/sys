@@ -40,6 +40,7 @@ const Kbm_mapel_sp = require(("./route/kbm_mapel_sp"))
 const Jadwal_kbm_route = require("./route/jadwal_kbm")
 const Waktu_kbm_route = require("./route/waktu_kbm")
 const Hari_route = require("./route/hari")
+const Merdeka_mapel_route = require("./route/merdeka_mapel")
 
 //mutasi page
 const Peserta_didik_route = require("./route/peserta_didik")
@@ -89,6 +90,7 @@ app.use(Kbm_mapel_sp)
 app.use(Jadwal_kbm_route)
 app.use(Waktu_kbm_route)
 app.use(Hari_route)
+app.use(Merdeka_mapel_route)
 
 //mutasi page
 app.use(Peserta_didik_route)

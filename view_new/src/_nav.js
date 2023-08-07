@@ -19,7 +19,9 @@ import {
   cilListNumbered,
   cilClock,
   cilTransfer,
-  cilPeople
+  cilPeople,
+  cilMoney,
+  cilBook
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -79,6 +81,12 @@ const _nav = [
             },
             {
               component:CNavItem,
+                name:"Mata Pelajaran",
+                to:"/mapel",
+                icon:<CIcon icon={cilBook} customClassName="nav-icon" />,
+            },
+            {
+              component:CNavItem,
                 name:"Rombel",
                 icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
                 to:"/rombel"
@@ -123,7 +131,25 @@ const _nav = [
           }
         ]
       },
-
+      {
+        component:CNavGroup,
+        name:"Pembayaran",
+        icon:<CIcon icon={cilMoney} customClassName="nav-icon" />,
+        items:[
+          {
+            component: CNavItem,
+             name: 'Pos Pembayaran',
+             to: '/pospembayaran',
+             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />
+          },
+          {
+            component: CNavItem,
+             name: 'SK Penetapan',
+             to: '/skpenetapan',
+             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />
+          },
+        ]
+      },
     ]
     
   },

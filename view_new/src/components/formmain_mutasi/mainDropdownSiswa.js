@@ -224,20 +224,29 @@ const MainDropdownSiswa = () => {
                     if(result.isConfirmed){
                         let editdata = async() => {
                             try{
-                                let response = await axios.put(`${process.env.REACT_APP_LINK}kurikulum_anggota_rombel`,forminput)
-                                console.log(response.data)
-                                setupdater(uuidv4())
-                                let responselog = await axios.get(`${process.env.REACT_APP_LINK}datarekap`)
-                                setdatarekap(responselog.data.data)
-                                setforminput({
-                                    rombellama:"",
-                                    rombelbaru:"",
-                                    idsiswa:[]
-                                })
+                                if(forminput.rombellama !== "" && forminput.rombelbaru !== "" && forminput.idsiswa !== ""){
 
+                                    let response = await axios.put(`${process.env.REACT_APP_LINK}kurikulum_anggota_rombel`,forminput)
+                                    console.log(response.data)
+                                    setupdater(uuidv4())
+                                    let responselog = await axios.get(`${process.env.REACT_APP_LINK}datarekap`)
+                                    setdatarekap(responselog.data.data)
+                                    setforminput({
+                                        rombellama:"",
+                                        rombelbaru:"",
+                                        idsiswa:[]
+                                })
+                                
                                 Swal.fire(
                                     "Data berhasil dimutasi"
-                                )
+                                    )
+                                }
+                                else{
+                                    Swal.fire(
+                                        "Cari dulu rombelnya"
+                                        )
+                                }
+
                             }
                             catch(e){
                                 console.log(e)
@@ -368,6 +377,7 @@ const MainDropdownSiswa = () => {
                 <CTable>
                         <CTableHead className='table-dark'>
                             <tr>
+                                <th>No</th>
                                 <th>Nama</th>
                             </tr>
                         </CTableHead>
@@ -375,6 +385,9 @@ const MainDropdownSiswa = () => {
                             {
                                 dataAnggotaRombelNew.map((item,index) => 
                                 <tr>
+                                    <td>
+                                        {index + 1}
+                                    </td>
                                     <td>
                                         {
                                             dataSiswa.map((items,index) => 
@@ -397,6 +410,7 @@ const MainDropdownSiswa = () => {
                 <CTable>
                     <CTableHead className='table-dark'>
                         <tr>
+                            <th>No</th>
                             <th>Rombel</th>
                             <th>L</th>
                             <th>P</th>
@@ -407,6 +421,9 @@ const MainDropdownSiswa = () => {
                        {
                             datarekap.map((item,index) => 
                                 <tr key={index}>
+                                    <td>
+                                        {index + 1}.
+                                    </td>
                                     <td>
                                         {
                                             item.namakelas
