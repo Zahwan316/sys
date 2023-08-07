@@ -6,6 +6,7 @@ import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 
 const MainDropdownSiswa = () => {
+    //data from api
     const[dataRombel,setdatarombel] = useState([])
     const[dataSiswa,setdatasiswa] = useState([])
     const[dataAnggotaRombel,setdataanggotarombel] = useState([])
@@ -13,6 +14,7 @@ const MainDropdownSiswa = () => {
     const[dataSemester,setdatasemester] = useState([])
     const[dataRombelNew,setdatarombelnew] = useState([])
 
+    //set id
     const[idrombel,setidrombel] = useState()
     const[idsemesterold,setidsemesterold] = useState()
     const[idsemester,setidsemester] = useState()
@@ -20,6 +22,10 @@ const MainDropdownSiswa = () => {
 
     const[siswaterpilih,setsiswaterpilih] = useState([])
     const[updater,setupdater] = useState()
+    const[selectAll,setselectall] = useState(false)
+
+    const[datarekap,setdatarekap] = useState([])
+
 
     const[forminput,setforminput] = useState({
         rombellama:"",
@@ -148,11 +154,12 @@ const MainDropdownSiswa = () => {
     },[updater])
 
     useEffect(() => {
-        console.log(idrombel)
-        console.log(idsemester)
+        /* console.log(idrombel)
+        console.log(idsemester) 
         console.log(siswaterpilih)
         console.log(idrombelnew)
         console.log(forminput)
+        console.log(selectAll) */
     })
 
     const handleOptionRombelLama = (e) => {
@@ -173,15 +180,30 @@ const MainDropdownSiswa = () => {
         setidsemesterold(e.target.value)
     }
 
-    const handleChecked = (e) => {
-        if(e.target.name === "allchecked"){
+    const handleSelectAll = (e) => {
+        setselectall(e.target.checked)
 
-        }
         if(e.target.checked){
-            //setforminput(pre => ({...pre,idsiswa:[e.target.value]}))
+            const allstudentid = dataAnggotaRombel.map((siswa) => siswa.peserta_didik_id)
+            setsiswaterpilih(allstudentid)
+        }
+        else{
+            setsiswaterpilih([])
+        }
+    }
+
+    const handleChecked = (e) => {
+        if(e.target.checked){
             setsiswaterpilih(pre => [...pre,e.target.value])
         }
+        else{
+            setsiswaterpilih(pre => pre.filter(id => id !== e.target.value))
+        }
       // setsiswaterpilih({...siswaterpilih,[e.target.id]:e.target.checked})
+    }
+
+    const handleDataRekap = (e) => {
+
     }
 
 
@@ -205,11 +227,15 @@ const MainDropdownSiswa = () => {
                                 let response = await axios.put(`${process.env.REACT_APP_LINK}kurikulum_anggota_rombel`,forminput)
                                 console.log(response.data)
                                 setupdater(uuidv4())
+                                let responselog = await axios.get(`${process.env.REACT_APP_LINK}datarekap`)
+                                setdatarekap(responselog.data.data)
+
                                 Swal.fire(
                                     "Data berhasil dimutasi"
                                 )
                             }
                             catch(e){
+                                console.log(e)
                                 Swal.fire(
                                     "Data gagal dimutasi",
                                     e.message
@@ -230,10 +256,11 @@ const MainDropdownSiswa = () => {
     return(
         <>
         <form onSubmit={handleForm}>
-            <div className='d-flex flex-wrap' style={{gap:"6em"}}>
+            <div className='d-flex flex-wrap' style={{gap:"4em"}}>
 
-        {/* Kelas Lama */}
-            <div className='' style={{width:"20vw"}}>
+             {/* Kelas Lama */}
+            <div className='' style={{width:"16vw"}}>
+                {/* option semester */}
                 <CFormLabel>Semester</CFormLabel>
                 <CFormSelect
                     className='mb-3'
@@ -247,6 +274,7 @@ const MainDropdownSiswa = () => {
                     }
                 </CFormSelect>
 
+                {/* option rombel */}
                 <CFormLabel>Rombel Lama</CFormLabel>
                 <CFormSelect
                     className='mb-5'
@@ -267,7 +295,8 @@ const MainDropdownSiswa = () => {
                                 <th>
                                     <input
                                         type='checkbox'
-                                        onChange={handleChecked}
+                                        onChange={handleSelectAll}
+                                        checked={selectAll}
                                         name='allchecked'
                                     />
                                 </th>
@@ -277,7 +306,7 @@ const MainDropdownSiswa = () => {
                         <CTableBody>
                             {
                                 dataAnggotaRombel.map((item,index) => 
-                                <tr>
+                                <tr key={index}>
                                     <td>
                                         <input
                                             type="checkbox"
@@ -305,7 +334,7 @@ const MainDropdownSiswa = () => {
             </div>
             
             {/* Kelas Baru */}
-            <div className='' style={{width:"20vw"}}>
+            <div className='' style={{width:"16vw"}}>
                 <CFormLabel>Semester</CFormLabel>
                 <CFormSelect
                     onChange={handleOptionSemesterId}
@@ -358,7 +387,7 @@ const MainDropdownSiswa = () => {
             </div>
 
             {/* Data Rekap */}
-            <div style={{width:"20vw"}}>
+            <div style={{width:"15vw"}}>
                 <CFormLabel>Data Rekap</CFormLabel>
                 <CTable>
                     <CTableHead className='table-dark'>
@@ -370,15 +399,38 @@ const MainDropdownSiswa = () => {
                         </tr>
                     </CTableHead>
                     <CTableBody>
-                        <tr>
-
-                        </tr>
+                       {
+                            datarekap.map((item,index) => 
+                                <tr key={index}>
+                                    <td>
+                                        {
+                                            item.namakelas
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.l
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.p
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.l + item.p
+                                        }
+                                    </td>
+                                </tr>
+                            )
+                       }
                     </CTableBody>
                 </CTable>
             </div>
 
-            <CButton type="submit">Mutasi</CButton>
             </div>
+            <CButton type="submit">Mutasi</CButton>
         </form>
         </>
     )
