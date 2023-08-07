@@ -229,6 +229,11 @@ const MainDropdownSiswa = () => {
                                 setupdater(uuidv4())
                                 let responselog = await axios.get(`${process.env.REACT_APP_LINK}datarekap`)
                                 setdatarekap(responselog.data.data)
+                                setforminput({
+                                    rombellama:"",
+                                    rombelbaru:"",
+                                    idsiswa:[]
+                                })
 
                                 Swal.fire(
                                     "Data berhasil dimutasi"

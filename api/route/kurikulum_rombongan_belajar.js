@@ -201,5 +201,34 @@ router.route("/kurikulum_rombongan_belajar/mutasi/:semesterid")
         }
 
     })
+    .post(async(req,res) => {
+        try{
+            
+            const dataprev = await Kurikulum_rombongan_belajar.findAll()
+            const datainsert = dataprev.map((item) => ({
+                rombongan_belajar_id:uuidv4(),
+                kurikulum_program_id:item.kurikulum_program_id,
+                tingkat_pendidikan_id:item.tingkat_pendidikan_id,
+                nama:item.nama,
+                jenis_rombel:item.jenis_rombel,
+                semester_id:req.params.semesterid
+            }))
+            const adData = await Kurikulum_rombongan_belajar.bulkCreate(datainsert)
+            res.status(200).json({
+                message:"Data berhasil ditambahkan",
+                data:adData,
+                method:req.method
+            })
+        }
+        catch(e){
+            res.status(200).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+
+router.route("/kurikulum_rombongan_belajar/mutasi")
+    
 
 module.exports = router
