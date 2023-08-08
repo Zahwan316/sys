@@ -427,7 +427,7 @@ const ModalProgramPage = (props) => {
                 }
 
                 {
-                    props.page === "mapel" && 
+                    props.page === "mapelnasional" && 
                     <div>
                         <div className='mb-3'>
                             <CFormLabel>Mata Pelajaran</CFormLabel>
@@ -474,6 +474,38 @@ const ModalProgramPage = (props) => {
                             />
                         
                            
+                        </div>
+                    </div>
+                }
+
+                {
+                    props.page === "mapelindustri" &&
+                    <div>
+                        <div className='mb-3'>
+                            <CFormLabel>Mata Pelajaran</CFormLabel>
+                            <CFormInput
+                                name="nama"
+                                onChange={props.handleforminput}
+                                value={props.forminput.nama}
+                                onBlur={props.handlemapelkode}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Urutan</CFormLabel>
+                            <CFormInput
+                                name="urutan"
+                                onChange={props.handleforminput}
+                                value={props.forminput.urutan}
+                            />
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Kelompok</CFormLabel>
+                            <CFormInput
+                                name="kelompok"
+                                onChange={props.handleforminput}
+                                value="B"
+                                readOnly
+                            />
                         </div>
                     </div>
                 }

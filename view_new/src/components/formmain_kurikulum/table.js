@@ -63,9 +63,13 @@ const TableMain = (props) => {
     const[hari,sethari] = useState([])
 
     //mapel page
+    //|
+    //---mapel nasional
     const[refmapel,setrefmapel] = useState([])
+    //|
+    //---mapel industri
+    const[datamapelindustri,setdatamapelindustri] = useState([])
 
-    
 
     //loading
     const[loading,setloading] = useState(true)
@@ -152,7 +156,7 @@ const TableMain = (props) => {
                         getDataJadwal()
                     }
                 }
-                else if(props.page === "mapel"){
+                else if(props.page === "mapelnasional"){
                     let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
                    
@@ -175,8 +179,10 @@ const TableMain = (props) => {
     useEffect(() => {
         const getData = async() => {
             try{
-                let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar/${props.selectmapelid}`)
-                setdatatugasmengajar(responsetugasmengajar.data.data)
+                if(props.page === "tugas"){
+                    let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar/${props.selectmapelid}`)
+                    setdatatugasmengajar(responsetugasmengajar.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -263,12 +269,21 @@ const TableMain = (props) => {
                         getDataJadwal()
                     }
                 }
-                else if(props.page === "mapel"){
+                else if(props.page === "mapelnasional"){
                     let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
                    
                     setrefmapel(responserefmapel.data.data)
                     setdatamapel(responsemapel.data.data)
+                }
+                else if(props.page === "mapelindustri"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                    let data = response.data.data
+                    let jurusanid = props.jurusanid
+                    let mapelIndustriRaw = data.filter(item => item.mapel_kode)
+                    let mapelIndustri = mapelIndustriRaw.filter(item => item.mapel_kode.toString().slice(0,8) === jurusanid)
+                    setdatamapelindustri(mapelIndustri)
+                    props.handleDataMapel(mapelIndustri)
                 }
 
             }
@@ -358,12 +373,21 @@ const TableMain = (props) => {
                         getDataJadwal()
                     }
                 }
-                else if(props.page === "mapel"){
+                else if(props.page === "mapelnasional"){
                     let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
                    
                     setrefmapel(responserefmapel.data.data)
                     setdatamapel(responsemapel.data.data)
+                }
+                else if(props.page === "mapelindustri"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                    let data = response.data.data
+                    let jurusanid = props.jurusanid
+                    let mapelIndustriRaw = data.filter(item => item.mapel_kode)
+                    let mapelIndustri = mapelIndustriRaw.filter(item => item.mapel_kode.toString().slice(0,8) === jurusanid)
+                    setdatamapelindustri(mapelIndustri)
+                    props.handleDataMapel(mapelIndustri)
                 }
 
             }
@@ -373,6 +397,31 @@ const TableMain = (props) => {
         }
         getAlldata()
     },[updaterdelete])
+    
+    useEffect(() => {
+           
+    })
+
+    //jika jurusan id ditemukan di page mapel industri
+    useEffect(() => {
+        const getData = async() => {
+            try{
+                if(props.page === "mapelindustri"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                    let data = response.data.data
+                    let jurusanid = props.jurusanid
+                    let mapelIndustriRaw = data.filter(item => item.mapel_kode)
+                    let mapelIndustri = mapelIndustriRaw.filter(item => item.mapel_kode.toString().slice(0,8) === jurusanid)
+                    setdatamapelindustri(mapelIndustri)
+                    props.handleDataMapel(mapelIndustri)
+                }
+            }
+            catch(e){
+
+            }
+        }
+        getData()
+    },[props.jurusanid])
 
     //jika tombol view guru ditekan
     const getDataJadwal = async() => {
@@ -385,17 +434,10 @@ const TableMain = (props) => {
         }
     }
 
-    //untuk pencarian jadwal
-    
-
     //method untuk update delete
     const handleUpdateDelete = () => {
         setupdaterdelete(uuidv4())
     }
-
-    useEffect(() => {
-       
-    })
 
     const handleClickBtn = (e) => {
         let typebtn = e.target.getAttribute("typebtn")
@@ -534,7 +576,7 @@ const TableMain = (props) => {
             }
 
             //jika page mael
-            else if(props.page === "mapel"){
+            else if(props.page === "mapelnasional" || props.page === "mapelindustri"){
                 Swal.fire({
                     title:"Apakah Anda Yakin ?",
                     text:"Item yang sudah terhapus tidak dapat dikembalikan",
@@ -944,8 +986,9 @@ const TableMain = (props) => {
                        }
 
                        {
-                            props.page === "mapel" &&
+                            props.page === "mapelnasional" &&
                             dataMapel.map((item,index) => 
+                                item.is_industri == 0 &&
                                 <tr key={index} style={{verticalAlign:"middle"}}>
                                     <td>
                                         {item.kelompok}
@@ -968,8 +1011,38 @@ const TableMain = (props) => {
                                             </CButton>                                                     
                                     </td>
                                 </tr>
+                            
+                            
                             )
-                        
+                       }
+
+                       {
+                            props.page === "mapelindustri" &&
+                            datamapelindustri.map((item,index) => 
+                                <tr key={index} style={{verticalAlign:"middle"}}>
+                                    <td>
+                                        {item.kelompok}
+                                    </td>
+                                    <td>
+                                        {item.mapel_rank}
+                                    </td>
+                                    <td>
+                                        {item.nama}
+                                    </td>
+                                    <td>
+                                            <CButton color="link" typebtn="detail" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>
+                                            <CButton color="link" typebtn="edit" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>
+                                            <CButton color="link" typebtn="delete" id={item.mapel_sp_id} onClick={handleClickBtn} >
+                                                <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickBtn} id={item.mapel_sp_id} ></img>
+                                            </CButton>                                                     
+                                    </td>
+                                </tr>
+                            
+                            )
                        }
 
                     </CTableBody>

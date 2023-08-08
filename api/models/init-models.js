@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _ref_kurikulum = require("./ref_kurikulum");
+var _mapel_sp = require("./mapel_sp");
 
 function initModels(sequelize) {
-  var ref_kurikulum = _ref_kurikulum(sequelize, DataTypes);
+  var mapel_sp = _mapel_sp(sequelize, DataTypes);
 
 
   return {
-    ref_kurikulum,
+    mapel_sp,
   };
 }
 module.exports = initModels;

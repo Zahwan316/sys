@@ -14,7 +14,7 @@ const MapelForm = () => {
         kelompok:"",
         mapel_kode:"",
         nama:"",
-        kurikulum_id:"",
+        kurikulum_id:2,
         urutan:""
     })
     const[refmapel,setrefmapel] = useState([])
@@ -31,7 +31,9 @@ const MapelForm = () => {
         let getdata = async() => {
             try{
                 let response_refmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                
                 setrefmapel(response_refmapel.data.data)
+
             }
             catch(e){
                 console.log(e)
@@ -153,7 +155,7 @@ const MapelForm = () => {
     return(
         <>
             <TableMain 
-                page="mapel"
+                page="mapelnasional"
                 tablehead={tablehead}
                 handleModal={handlemodal}
                 getTypeBtn={getTypeBtn}
@@ -162,7 +164,7 @@ const MapelForm = () => {
             {
                 modal &&
                 <ModalProgramPage 
-                    page="mapel"
+                    page="mapelnasional"
                     handlesubmit={handlesubmit}
                     handleModal={handlemodal}
                     forminput={forminput}

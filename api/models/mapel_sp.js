@@ -1,8 +1,6 @@
 const Sequelize = require('../config');
 const {DataTypes} = require("sequelize");
-
-
-const Mapel_sp = Sequelize.define('mapel_sp', {
+const Kbm_mapel_sp =  Sequelize.define('mapel_sp', {
     mapel_sp_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -67,6 +65,11 @@ const Mapel_sp = Sequelize.define('mapel_sp', {
     akronim: {
       type: DataTypes.STRING(12),
       allowNull: true
+    },
+    is_industri: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     }
   }, {
     Sequelize,
@@ -84,5 +87,4 @@ const Mapel_sp = Sequelize.define('mapel_sp', {
     ]
   });
 
-module.exports = Mapel_sp
-
+module.exports = Kbm_mapel_sp
