@@ -9,6 +9,7 @@ import {v4 as uuidv4} from "uuid"
 
 const MapelIndustri = () => {
     const[dataJurusan,setdatajurusan] = useState([])
+    const[dataJurusanRef,setdatajurusanref] = useState([])
     const[jurusanid,setjurusanid] = useState()
     const[modal,setmodal] = useState(false)
     const[typeform,settypeform] = useState()
@@ -24,7 +25,7 @@ const MapelIndustri = () => {
     const[selectedDataMapel,setselecteddatamapel] = useState([])
     const[updater,setupdater] = useState()
     const[dataUpdated,setdataupdated] = useState()
-
+    const[loading,setloading] = useState(true)
 
     const tablehead = [
         "Kelompok",
@@ -36,9 +37,30 @@ const MapelIndustri = () => {
         const getData = async() => {
             try{
                 let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
                 let data = response.data.data
-                let dataJurusanRaw = data.filter(item => item.kurikulum_id === 2 && item)
-                setdatajurusan(dataJurusanRaw)
+                let data_program = response_program.data.data
+
+                let dataJurusanRaw = data.filter(item => item.kurikulum_id === 2)
+                let datajurusanid = data_program.map(item => item.jurusan_id)
+
+                let namaJurusanRaw = dataJurusanRaw.filter(item => {
+                    //let findjurusan = datajurusanid.find(items => items.jurusan_id === item.jurusan_id)
+                    
+                    return datajurusanid.includes(item.jurusan_id )
+                   /*  console.log(findjurusan)
+                    if(findjurusan && findjurusan.keaktifan === 1){
+                        return true
+                    }
+                    return false */
+                }
+                    
+                 )
+
+                console.log(namaJurusanRaw)
+
+                setdatajurusan(namaJurusanRaw)
+                
 
                 let response_kurikulum = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
                 let data_kurikulum = response_kurikulum.data.data
@@ -49,14 +71,17 @@ const MapelIndustri = () => {
             catch(e){
                 console.log(e)
             }
+            finally{
+                setloading(false)
+            }
         }
         getData()
     },[])
 
     useEffect(() => {
-        console.log(editedid)
-        console.log(forminput)
-        console.log(selectedDataMapel)
+    /*     console.log(editedid) */
+       // console.log(forminput)
+       /*  console.log(selectedDataMapel)  */
     })
 
     useEffect(() => {
@@ -76,12 +101,17 @@ const MapelIndustri = () => {
                     })
                 }
                 else{
+                    let response_kurikulum = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
+                    let data_kurikulum = response_kurikulum.data.data
+                    let kurikulum_id_raw = data_kurikulum.filter(item => item.keaktifan == 1)
+                    let kurikulum_code = kurikulum_id_raw[0].kurikulum_kode
+                setforminput({...forminput,kurikulum_id:kurikulum_code})
                     setforminput({
                         sekolah_id:localStorage.getItem("sekolah_id"),
                         kelompok:"B",
                         mapel_kode:"",
                         nama:"",
-                        kurikulum_id:"",
+                        kurikulum_id:kurikulum_code,
                         urutan:""
                     })
                 }
@@ -164,7 +194,8 @@ const MapelIndustri = () => {
             }
             else{
                 let create_kodemapel = jurusanid
-                let kodemapelnew = create_kodemapel + "0"
+                let digit = "01"
+                let kodemapelnew = create_kodemapel + digit
                 setforminput({...forminput,mapel_kode:kodemapelnew})
             }
         }
@@ -172,14 +203,19 @@ const MapelIndustri = () => {
 
     return(
         <>
+    
+
             <Select 
-                options={dataJurusan.map(item => {            
-                         let data = {
-                             value:item.jurusan_id,
-                             label:item.nama_jurusan
-                            }
-                            return data
-                })}
+                options={dataJurusan.map(item =>{
+                        let data =
+                        {
+                            value:item.jurusan_id,
+                            label:item.nama_jurusan
+                        }
+                        return data
+                    
+                }        
+                    )}
                 onChange={handleJurusanId}
                 
             />
