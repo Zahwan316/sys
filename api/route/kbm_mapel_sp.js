@@ -8,7 +8,7 @@ router.route("/kbm_mapel_sp")
     .get(async(req,res) => {
         try{
             const getData = await Kbm_mapel_sp.findAll({
-                order:[["nama","ASC"]]
+                order:[["mapel_rank","ASC"]]
             })
             res.status(200).json(
                 {
@@ -41,6 +41,84 @@ router.route("/kbm_mapel_sp")
                 method:req.method,
                 data:createData
             })
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+
+router.route("/kbm_mapel_sp/:id")
+    .put(async(req,res) => {
+        try{
+            let id = req.params.id
+            const findItem = await Kbm_mapel_sp.findByPk(id)
+            if(findItem){
+                findItem.update({
+                    sekolah_id:req.body.sekolah_id,
+                    kurikulum_id:req.body.kurikulum_id,
+                    kelompok:req.body.kelompok,
+                    mapel_kode:req.body.mapel_kode,
+                    mapel_rank:req.body.urutan,
+                    nama:req.body.nama
+                })
+                res.status(200).json({
+                    message:"Data berhasil ditambahkan",
+                    method:req.method
+                })
+            }
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+    .delete(async(req,res) => {
+        try{
+            let id = req.params.id
+            const findItem = await Kbm_mapel_sp.findByPk(id)
+            if(findItem){
+                findItem.destroy()
+                res.status(200).json({
+                    message:"Data berhasil dihapus",
+                    method:req.method
+                })
+            }
+            else{
+                res.status(404).json({
+                    message:"Data tidak ditemukan",
+                    method:req.method
+                })
+            }
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+    .get(async(req,res) => {
+        try{
+            let id = req.params.id
+            const findItem = await Kbm_mapel_sp.findByPk(id)
+            if(findItem){
+                res.status(200).json({
+                    message:"Data berhasil diambil",
+                    data:findItem,
+                    method:req.method
+                })
+            }
+            else{
+                res.status(404).json({
+                    message:"Data tidak ditemukan",
+                    method:req.method
+                })
+            }
         }
         catch(e){
             res.status(400).json({

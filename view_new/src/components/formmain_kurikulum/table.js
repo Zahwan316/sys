@@ -263,6 +263,13 @@ const TableMain = (props) => {
                         getDataJadwal()
                     }
                 }
+                else if(props.page === "mapel"){
+                    let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                   
+                    setrefmapel(responserefmapel.data.data)
+                    setdatamapel(responsemapel.data.data)
+                }
 
             }
             catch(e){
@@ -350,6 +357,13 @@ const TableMain = (props) => {
                     if(id){
                         getDataJadwal()
                     }
+                }
+                else if(props.page === "mapel"){
+                    let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                   
+                    setrefmapel(responserefmapel.data.data)
+                    setdatamapel(responsemapel.data.data)
                 }
 
             }
@@ -508,6 +522,30 @@ const TableMain = (props) => {
                 .then((result) => {
                     if(result.isConfirmed){
                         axios.delete(`${process.env.REACT_APP_LINK}jadwal_kbm/${id}`)
+                            .then(res => {
+                                Swal.fire(
+                                    "Data Berhasil Dihapus"
+                                )
+                                setupdaterdelete(uuidv4())
+                            })
+                            .catch(e => console.log(e))
+                    }
+                })
+            }
+
+            //jika page mael
+            else if(props.page === "mapel"){
+                Swal.fire({
+                    title:"Apakah Anda Yakin ?",
+                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
+                    icon:"warning",
+                    showCancelButton:true,
+                    confirmButtonText:"Ya,Hapus",
+                    cancelButtonText:"Batal"
+                })
+                .then((result) => {
+                    if(result.isConfirmed){
+                        axios.delete(`${process.env.REACT_APP_LINK}kbm_mapel_sp/${id}`)
                             .then(res => {
                                 Swal.fire(
                                     "Data Berhasil Dihapus"

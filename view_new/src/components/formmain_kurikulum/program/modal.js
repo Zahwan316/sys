@@ -434,7 +434,8 @@ const ModalProgramPage = (props) => {
                             <Select 
                                 onChange={props.handleselectoption}
                                 name="nama"
-                                 options={
+                                value={props.forminput.value}
+                                options={
                                     props.refmapel.map((item,index) => 
                                         {
                                             let data = {
@@ -461,6 +462,7 @@ const ModalProgramPage = (props) => {
                             <CFormInput 
                                 onChange={props.handleforminput}
                                 name="urutan"
+                                value={props.forminput.urutan}
                             />
                         </div>
                         <div className='mb-3'>

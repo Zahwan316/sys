@@ -3,10 +3,10 @@ import TableMain from '../table';
 import ModalProgramPage from './modal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import {v4 as uuidv4} from "uuid"
 
 const MapelForm = () => {
     const[modal,setmodal] = useState(false)
-    const[sekolahid,setsekolahid] = useState(localStorage.getItem("sekolah_id"))
     const[typeform,settypeform] = useState()
     const[editedid,seteditedid] = useState()
     const[forminput,setforminput] = useState({
@@ -18,6 +18,7 @@ const MapelForm = () => {
         urutan:""
     })
     const[refmapel,setrefmapel] = useState([])
+    const[updater,setupdater] = useState()
 
 
     const tablehead = [
@@ -61,6 +62,38 @@ const MapelForm = () => {
         handlekelompok()
     },[forminput.mapel_kode])
 
+    useEffect(() => {
+        let getdata = async() => {
+            try{
+                if(typeform != "tambah"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp/${editedid}`)
+                    let data = response.data.data
+                    setforminput({
+                        kelompok:data.kelompok,
+                        mapel_kode:data.mapel_kode,
+                        nama:data.nama,
+                        kurikulum_id:data.kurikulum_id,
+                        urutan:data.mapel_rank
+                    })
+                }
+                else{
+                    setforminput({
+                        sekolah_id:localStorage.getItem("sekolah_id"),
+                        kelompok:"",
+                        mapel_kode:"",
+                        nama:"",
+                        kurikulum_id:"",
+                        urutan:""
+                    })
+                }
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
+        getdata()
+    },[editedid])
+
     
 
     const handlemodal = () => {
@@ -92,6 +125,16 @@ const MapelForm = () => {
                         confirmButtonText:"Ok",
                     })
                 }
+                else if(typeform === "edit"){
+                    let response = await axios.put(`${process.env.REACT_APP_LINK}kbm_mapel_sp/${editedid}`,forminput)
+                    Swal.fire({
+                        title:"Data Teredit",
+                        text:"Terima kasih sudah mengisi data",
+                        icon:"success",
+                        confirmButtonText:"Ok",
+                    })
+                }
+                setupdater(uuidv4())
             }
             catch(e){
                 console.log(e)
@@ -114,6 +157,7 @@ const MapelForm = () => {
                 tablehead={tablehead}
                 handleModal={handlemodal}
                 getTypeBtn={getTypeBtn}
+                updater={updater}
             />
             {
                 modal &&
