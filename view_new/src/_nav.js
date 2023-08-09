@@ -131,25 +131,7 @@ const _nav = [
           }
         ]
       },
-      {
-        component:CNavGroup,
-        name:"Pembayaran",
-        icon:<CIcon icon={cilMoney} customClassName="nav-icon" />,
-        items:[
-          {
-            component: CNavItem,
-             name: 'Pos Pembayaran',
-             to: '/pospembayaran',
-             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />
-          },
-          {
-            component: CNavItem,
-             name: 'SK Penetapan',
-             to: '/skpenetapan',
-             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />
-          },
-        ]
-      },
+     
     ]
     
   },

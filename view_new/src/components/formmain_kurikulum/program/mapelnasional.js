@@ -15,7 +15,8 @@ const MapelForm = () => {
         mapel_kode:"",
         nama:"",
         kurikulum_id:2,
-        urutan:""
+        urutan:"",
+        is_industri:0
     })
     const[refmapel,setrefmapel] = useState([])
     const[updater,setupdater] = useState()
@@ -75,7 +76,8 @@ const MapelForm = () => {
                         mapel_kode:data.mapel_kode,
                         nama:data.nama,
                         kurikulum_id:data.kurikulum_id,
-                        urutan:data.mapel_rank
+                        urutan:data.mapel_rank,
+                        is_industri:0
                     })
                 }
                 else{
@@ -85,7 +87,8 @@ const MapelForm = () => {
                         mapel_kode:"",
                         nama:"",
                         kurikulum_id:"",
-                        urutan:""
+                        urutan:"",
+                        is_industri:0
                     })
                 }
             }

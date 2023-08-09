@@ -34,7 +34,8 @@ router.route("/kbm_mapel_sp")
                 kelompok:req.body.kelompok,
                 mapel_kode:req.body.mapel_kode,
                 mapel_rank:req.body.urutan,
-                nama:req.body.nama
+                nama:req.body.nama,
+                is_industri:req.body.is_industri
             })
             res.status(200).json({
                 message:"data berhasil dikirim",

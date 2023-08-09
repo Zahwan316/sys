@@ -512,7 +512,7 @@ const DataForm = (props) => {
                                     </td>
                                     <td>{
                                         dataKbm.map((items,index) => 
-                                        items.waktu_penyelenggaraan_id === item.waktu_pbm_id &&
+                                        items.waktu_penyelenggaraan_id == item.waktu_pbm_id &&
                                         items.nama
                                         )
                                     }

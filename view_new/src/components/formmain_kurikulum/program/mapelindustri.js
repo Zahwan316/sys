@@ -20,7 +20,8 @@ const MapelIndustri = () => {
         mapel_kode:"",
         nama:"",
         kurikulum_id:"",
-        urutan:""
+        urutan:"",
+        is_industri:1
     })
     const[selectedDataMapel,setselecteddatamapel] = useState([])
     const[updater,setupdater] = useState()
@@ -97,7 +98,8 @@ const MapelIndustri = () => {
                         mapel_kode:data.mapel_kode,
                         nama:data.nama,
                         kurikulum_id:data.kurikulum_id,
-                        urutan:data.mapel_rank
+                        urutan:data.mapel_rank,
+                        is_industri:1
                     })
                 }
                 else{
@@ -112,7 +114,8 @@ const MapelIndustri = () => {
                         mapel_kode:"",
                         nama:"",
                         kurikulum_id:kurikulum_code,
-                        urutan:""
+                        urutan:"",
+                        is_industri:1
                     })
                 }
             }
