@@ -58,7 +58,7 @@ const MutasiSemesterForm = () => {
                         tahun_ajaran_id:data.tahun_ajaran_id,
                         nama:data.nama,
                         semester:data.semester,
-                        periode_aktif:0,
+                        periode_aktif:data.periode_aktif,
                         tanggal_mulai:data.tanggal_mulai,
                         tanggal_selesai:data.tanggal_selesai,
                     })

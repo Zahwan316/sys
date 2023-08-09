@@ -32,7 +32,7 @@ const ProgramForm = () => {
             jurusan_id:"",
             no_sk_izin:"",
             tanggal_sk_izin:"",
-            keaktifan:""
+            keaktifan:0
 
         }
     )
@@ -80,6 +80,13 @@ const ProgramForm = () => {
                         icon:"success",
                         confirmButtonText:"Ok",
                     })
+                     setforminput({
+                        kurikulum_sp:kurikulum_sp_id_code,
+                        jurusan_id:"",
+                        no_sk_izin:"",
+                        tanggal_sk_izin:"",
+                        keaktifan:0
+                    }) 
                     
 
                 }
@@ -96,6 +103,13 @@ const ProgramForm = () => {
                             
                         }
                     })
+                    setforminput({
+                        kurikulum_sp:kurikulum_sp_id_code,
+                        jurusan_id:"",
+                        no_sk_izin:"",
+                        tanggal_sk_izin:"",
+                        keaktifan:0
+                    }) 
                 }
                 setupdater(uuidv4())
             }
@@ -125,11 +139,6 @@ const ProgramForm = () => {
 
     const handleModal = () => {
         setmodalstate(!modalstate)
-    }
-
-    const getAddBtn = (e) => {
-        let typebtn = e.target.getAttribute("typebtn")
-        settypeform(typebtn)
     }
 
     const handleBidangJurusan = (e) => {
@@ -211,7 +220,7 @@ const ProgramForm = () => {
                         jurusan_id:"",
                         no_sk_izin:"",
                         tanggal_sk_izin:"",
-                        keaktifan:""    
+                        keaktifan:0    
                     })
                 }
             }

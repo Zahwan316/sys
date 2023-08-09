@@ -157,7 +157,8 @@ const ModalProgramPage = (props) => {
                             <input
                                 type="checkbox"
                                 onClick={props.handlecheck}
-                                value={props.forminput.kurikulum_id}
+                                value={props.forminput.keaktifan}
+                                checked={props.forminput.keaktifan === 1}
                                 />
                             <CFormLabel className='mx-2'>Masih Aktif ?</CFormLabel>
                         </div>

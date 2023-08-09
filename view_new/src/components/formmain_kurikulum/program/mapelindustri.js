@@ -44,22 +44,22 @@ const MapelIndustri = () => {
                 let dataJurusanRaw = data.filter(item => item.kurikulum_id === 2)
                 let datajurusanid = data_program.map(item => item.jurusan_id)
 
-                let namaJurusanRaw = dataJurusanRaw.filter(item => {
-                    //let findjurusan = datajurusanid.find(items => items.jurusan_id === item.jurusan_id)
-                    
+                /* let namaJurusanRaw = dataJurusanRaw.filter(item => {                 
                     return datajurusanid.includes(item.jurusan_id )
-                   /*  console.log(findjurusan)
-                    if(findjurusan && findjurusan.keaktifan === 1){
-                        return true
-                    }
-                    return false */
-                }
-                    
-                 )
+                }) */
 
-                console.log(namaJurusanRaw)
+                let filtered_data_jurusan = []
+                dataJurusanRaw.map(item => 
+                        data_program.map(items => 
+                                items.keaktifan === 1 &&
+                                items.jurusan_id === item.jurusan_id &&
+                                filtered_data_jurusan.push(item)
+                            )
+                    )
 
-                setdatajurusan(namaJurusanRaw)
+                //console.log(jurusan_test)
+
+                setdatajurusan(filtered_data_jurusan)
                 
 
                 let response_kurikulum = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)

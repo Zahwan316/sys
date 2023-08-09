@@ -75,7 +75,7 @@ const ModalMutasi = (props) => {
                                 <input type="checkbox"
                                     name="periode_aktif"
                                     onClick={props.handlecheckbox}
-                                    checked={props.forminput.periode_aktif}
+                                    checked={props.forminput.periode_aktif == 1}
                                 />
                                 Masih Aktif?
                             </div>
