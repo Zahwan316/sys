@@ -136,7 +136,7 @@ const TableMain = (props) => {
         
                     setdatatugasmengajar(responsetugasmengajar.data.data)
                     setdatamapel(responsemapel.data.data)
-                    //setdatajadwal(response.data.data)
+                    setdatajadwal(response.data.data)
                     setgurumapel(responseguru.data.data)
                     setdatarombel(response_rombel.data.data)
                     setwaktukbm(responsewaktukbm.data.data)
@@ -735,6 +735,7 @@ const TableMain = (props) => {
                                             size="lg"
                                             checked={item.keaktifan === 1}
                                             readOnly
+                                            disabled
                                         />                                   
                                     </td>
                                     <td>
@@ -864,7 +865,7 @@ const TableMain = (props) => {
                        {
                             props.page === "jadwal" ?
                             (!loading ?                      
-                                dataJadwal.map((item,index) => 
+                                props.datajadwal.map((item,index) => 
                                     dataTugasMengajar.map((items,index1) =>
                                         item.ptk_penugasan_id === items.ptk_penugasan_id &&
                                         <>             

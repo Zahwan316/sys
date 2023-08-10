@@ -7,7 +7,7 @@ import Swal from 'sweetalert2';
 import { CFormLabel, CFormSelect } from '@coreui/react';
 
 const JadwalPage = () => {
-    const[dataJadwal,setdatajadwal] = useState()
+    const[dataJadwal,setdatajadwal] = useState([])
     const[dataJadwalRaw,setdatajadwalraw] = useState([])
     const[dataMapel,setdatamapel] = useState()
     const[dataRombel,setdatarombel] = useState()
@@ -47,6 +47,7 @@ const JadwalPage = () => {
         //console.log(selectedTugasMengajar)
         console.log(selectmapelid)
         console.log(dataJadwalRaw)
+        console.log(forminput)
     })
 
     useEffect(() => {
@@ -117,7 +118,15 @@ const JadwalPage = () => {
                 let datamain = response.data.data
                 let datatugas = response_tugas.data.data
                 let dataraw = datatugas.filter(item => datamain.filter(items => items.ptk_penugasan_id == item.ptk_penugasan_id && items))
-                setdatajadwalraw(dataraw)
+                let emptydata = []
+                datatugas.map((item) => 
+                    datamain.map(items => 
+                            items.ptk_penugasan_id == item.ptk_penugasan_id && 
+                            emptydata.push(items)
+                        )
+                )
+                console.log(emptydata)
+                setdatajadwalraw(emptydata)
 
 
             }

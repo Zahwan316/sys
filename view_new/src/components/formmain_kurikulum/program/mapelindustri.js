@@ -25,7 +25,6 @@ const MapelIndustri = () => {
     })
     const[selectedDataMapel,setselecteddatamapel] = useState([])
     const[updater,setupdater] = useState()
-    const[dataUpdated,setdataupdated] = useState()
     const[loading,setloading] = useState(true)
 
     const tablehead = [
