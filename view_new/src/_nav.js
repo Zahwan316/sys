@@ -21,7 +21,8 @@ import {
   cilTransfer,
   cilPeople,
   cilMoney,
-  cilBook
+  cilBook,
+  cilCloudUpload
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -131,6 +132,19 @@ const _nav = [
           }
         ]
       },
+      {
+        component:CNavGroup,
+        name:"Peserta Didik",
+        icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
+        items:[
+          {
+            component:CNavItem,
+            name:"Upload",
+            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            to:"/pesertadidik"
+          }
+        ]
+      }
      
     ]
     

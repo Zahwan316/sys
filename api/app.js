@@ -45,11 +45,14 @@ const Merdeka_mapel_route = require("./route/merdeka_mapel")
 //mutasi page
 const Peserta_didik_route = require("./route/peserta_didik")
 const Kurikulum_anggota_rombel_route = require("./route/kurikulum_anggota_rombel")
-const Jenis_pendaftaran_route = require("./route/jenis_pendaftaran")
+const Jenis_pendaftaran_route = require("./route/jenis_pendaftaran");
+const multer = require("multer")
 
+//app.use("/uploads",express.static('uploads'))
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended:true}))
+//app.use(multer().single('file'))
 
 
 app.route("/",(req,res) => {
@@ -102,3 +105,5 @@ app.use(Jenis_pendaftaran_route)
 app.listen(port,() => {
     console.log(`Start at localhost:${port}`)
 })
+
+module.exports = app

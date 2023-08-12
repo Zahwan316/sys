@@ -1,6 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('peserta_didik_kesehatan', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+
+const Peserta_didik_kesehatan = Sequelize.define('peserta_didik_kesehatan', {
     peserta_didik_kesehatan_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -76,7 +77,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'peserta_didik_kesehatan',
     schema: 'public',
     timestamps: false,
@@ -90,4 +91,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+
+module.exports = Peserta_didik_kesehatan

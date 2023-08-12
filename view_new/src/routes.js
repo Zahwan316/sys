@@ -66,6 +66,9 @@ const KurikulumPage = React.lazy(() => import("./page/kurikulum/kurikulum"))
 const PosPembayaran = React.lazy(() => import("./page/pembayaran/pospembayaran"))
 const SkPenetapan = React.lazy(() => import("./page/pembayaran/skpenetapan"))
 
+//peserta didik
+const PesertaDidikPage = React.lazy(() =>  import("./page/peserta_didik/peserda_didik_page"))
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -133,6 +136,9 @@ const routes = [
   //keuangan
   { path: '/pospembayaran', name: 'Pengelolaan / Pembayaran / Pos Pembayaran', element: PosPembayaran    },
   { path: '/skpenetapan', name: 'Pengelolaan / Pembayaran / Sk Penetapan', element: SkPenetapan    },
+  
+  //Peserta Didik
+  { path: '/pesertadidik', name: 'Pengelolaan / Peserta Didik / Upload Peserta', element: PesertaDidikPage    },
   
   
 ]
