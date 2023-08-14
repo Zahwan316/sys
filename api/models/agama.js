@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('agama', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Agama = Sequelize.define('agama', {
     agama_id: {
       type: DataTypes.SMALLINT,
       allowNull: false,
@@ -27,7 +27,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'agama',
     schema: 'ref',
     timestamps: false,
@@ -41,4 +41,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+
+module.exports = Agama

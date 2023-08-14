@@ -46,6 +46,12 @@ const Merdeka_mapel_route = require("./route/merdeka_mapel")
 const Peserta_didik_route = require("./route/peserta_didik")
 const Kurikulum_anggota_rombel_route = require("./route/kurikulum_anggota_rombel")
 const Jenis_pendaftaran_route = require("./route/jenis_pendaftaran");
+
+//peserta didik  route
+const Ref_pekerjaan = require("./route/pekerjaan")
+
+
+//library
 const multer = require("multer")
 
 //app.use("/uploads",express.static('uploads'))
@@ -99,6 +105,10 @@ app.use(Merdeka_mapel_route)
 app.use(Peserta_didik_route)
 app.use(Kurikulum_anggota_rombel_route)
 app.use(Jenis_pendaftaran_route)
+
+//peserta didik
+app.use(Ref_pekerjaan)
+
 
 //end route
 

@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('alasan_layak_pip', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Alasan_layak_pip = Sequelize.define('alasan_layak_pip', {
     id_layak_pip: {
       type: DataTypes.DECIMAL,
       allowNull: false
@@ -26,9 +26,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'alasan_layak_pip',
     schema: 'ref',
     timestamps: false
   });
-};
+
+  module.exports = Alasan_layak_pip

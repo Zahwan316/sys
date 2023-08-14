@@ -2,6 +2,7 @@ import { CButton, CFormLabel,CCol,CRow, CFormInput, CFormSelect } from '@coreui/
 import React, { useState, useEffect } from 'react';
 import Select from "react-select"
 import axios from 'axios';
+import Swal from "sweetalert2"
 
 const UploadPesertaDidik = () => {
     const[datasemester,setdatasemester] = useState([])
@@ -42,6 +43,7 @@ const UploadPesertaDidik = () => {
         const formdata = new FormData()
         formdata.append('file',forminput.file)
         formdata.append('semester_id',forminput.semester_id)
+        formdata.append("sekolah_id",forminput.sekolah_id)
 
         const sendData = async() => {
             try{
@@ -51,10 +53,22 @@ const UploadPesertaDidik = () => {
 
                     }
                 })
+                Swal.fire({
+                    title:"Data Terupload",
+                    text:"Terima kasih sudah mengupload data",
+                    icon:"success",
+                    confirmButtonText:"Ok",
+                })
                 console.log(response.data)
             }
             catch(e){
                 console.log(e)
+                Swal.fire({
+                    title:"Error",
+                    text:e.message,
+                    icon:"error",
+                    confirmButtonText:"Ok",
+                })
             }
         }
         sendData()
