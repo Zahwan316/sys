@@ -8,6 +8,9 @@ const Alasan_layak_pip = require("../models/alasan_layak_pip")
 const Alat_transportasi = require("../models/alat_transportasi")
 const Jenjang_pendidikan = require("../models/jenjang_pendidikan")
 const Agama = require("../models/agama")
+const Peserta_didik_alamat = require("../models/peserta_didik_alamat")
+const Jenis_tinggal = require("../models/jenis_tinggal")
+const wilayah_kemendagri = require("../models/wilayah_kemendagri_2022")
 
 const multer = require("multer");
 
@@ -55,7 +58,7 @@ router.route("/peserta_didik/upload")
             const sheet = workbook.Sheets[sheetname]
             const data = xlsx.utils.sheet_to_json(sheet)
 
-            const dataenum = [{}]
+            const dataenum = []
 
             //model relationn
             const ref_alasan_layak_pip = await Alasan_layak_pip.findAll({
@@ -79,6 +82,16 @@ router.route("/peserta_didik/upload")
                 }
             })
             const ref_agama = await Agama.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+            const ref_jenis_tinggal = await Jenis_tinggal.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+            const ref_wilayah_kemendagri = await wilayah_kemendagri.findAll({
                 attributes:{
                     exclude:"id"
                 }
@@ -134,9 +147,21 @@ router.route("/peserta_didik/upload")
                     null
                 const resultagama = getagamaid || [0]
 
+                //get id jenis tinggal
+                const jenistinggal = ref_jenis_tinggal.filter(items => items.nama === row.__EMPTY_15)
+                const getjenistinggalid = jenistinggal.length > 0 ?
+                    jenistinggal.map(items => items.jenis_tinggal_id)
+                    :
+                    null
+                const resultJenisTinggal = getjenistinggalid || [0]
 
+                //mendapatakan kode wilayah
+                let getKecamatan = row.__EMPTY_13
+                getKecamatan.map(item => item.replace("Kec. ",""))
+                
 
                 let data_peserta_didik = {
+                    peserta_didik_id:uuidv4(),
                     nama:row.__EMPTY || null,
                     nipd:row.__EMPTY_1 || null,
                     jk:row.__EMPTY_2 || null,
@@ -150,9 +175,9 @@ router.route("/peserta_didik/upload")
                     rw:row.__EMPTY_10 || null,
                     dusun:row.__EMPTY_11 || null,
                     kelurahan:row.__EMPTY_12 || null,
-                    kecamatan:row.__EMPTY_13 || null,
-                    kode_pos:row.__EMPTY_14 || null,
-                    jenis_tinggal:row.__EMPTY_15 || null,
+                    kecamatan:getKecamatan,
+                    kode_pos:row.__EMPTY_14 || 0,
+                    jenis_tinggal:resultJenisTinggal,
                     alat_transportasi:resultTransporasi,
                     telepon:row.__EMPTY_17 || null,
                     hp:row.__EMPTY_18 || null,
@@ -183,7 +208,7 @@ router.route("/peserta_didik/upload")
                     no_seri_ijazah:row.__EMPTY_43|| null,
                     penerima_kip:row.__EMPTY_44 === "Tidak" ? 0 : 1,
                     nomor_kip:row.__EMPTY_45|| null,
-                    nama_kip:row.__EMPTY_46|| null,
+                    nama_kip:row.__EMPTY_46|| 0,
                     no_kks:row.__EMPTY_47 || null,
                     no_akta_lahir:row.__EMPTY_48 || null,
                     bank:row.__EMPTY_49 || null,
@@ -197,17 +222,22 @@ router.route("/peserta_didik/upload")
                     lintang:row.__EMPTY_57 || null,
                     bujur:row.__EMPTY_58 || null,
                     no_kk:row.__EMPTY_59 || null,
-                    berat_badan:row.__EMPTY_60 || null,
-                    tinggi_badan:row.__EMPTY_61 || null,
-                    lingkar_kepala:row.__EMPTY_62 || null,
-                    jumlah_saudara_kandung:row.__EMPTY_63 || null,
-                    jarak_rumah_ke_sekolah:row.__EMPTY_64 || null
+                    berat_badan:row.__EMPTY_60 || 0,
+                    tinggi_badan:row.__EMPTY_61 || 0,
+                    lingkar_kepala:row.__EMPTY_62 || 0,
+                    jumlah_saudara_kandung:row.__EMPTY_63 || 0,
+                    jarak_rumah_ke_sekolah:row.__EMPTY_64 || 0
                 }
                  
                 for(const key in data_peserta_didik){
-                    if(data_peserta_didik[key] === ''){
+                    if(data_peserta_didik[key] === '   '){
                         data_peserta_didik[key] = null
-                    }
+                    }                  
+                }
+                
+                if(data_peserta_didik.kode_pos === "     "){
+                    data_peserta_didik.kode_pos = null
+
                 }
 
                 if(index >= 5){
@@ -237,9 +267,9 @@ router.route("/peserta_didik/upload")
                 return uuidv4()
             }
 
-                /*  let sendata = await */   Peserta_didik.bulkCreate(
+                /*  let sendata = await */Peserta_didik.bulkCreate(
                 dataenum.map(item => ({
-                    peserta_didik_id:generateuuid(),
+                    peserta_didik_id:item.peserta_didik_id,
                     nama:item.nama,
                     agama_id:item.agama,
                     jenis_kelamin:item.jk,
@@ -279,12 +309,30 @@ router.route("/peserta_didik/upload")
                     penerima_kip:item.penerima_kip,
                     layak_pip:item.layak_pip,
                     no_kip:item.nomor_kip,
-                    nama_kip:item.nama_kip,
+                    nama_di_kip:item.nama_kip,
                     alasan_layak_pip:item.alasan_layak_pip,
 
                     sekolah_id:req.body.sekolah_id
                 }))
             ) 
+
+            Peserta_didik_alamat.bulkCreate(
+                dataenum.map(item => ({
+                    peserta_didik_alamat_id:uuidv4(),
+                    peserta_didik_id:item.peserta_didik_id,
+                    alamat_jalan:item.alamat,
+                    rt:item.rt,
+                    rw:item.rw,
+                    nama_dusun:item.dusun,
+                    kode_wilayah:item.kode_wilayah,
+                    kode_pos:item.kode_pos,
+                    lintang:item.lintang,
+                    bujur:item.bujur,
+                    jenis_tinggal_id:item.jenis_tinggal,
+                    jarak_ke_sekolah:item.jarak_rumah_ke_sekolah
+
+                }))
+            )
 
            /*  console.log(sendata) */
            
@@ -293,7 +341,6 @@ router.route("/peserta_didik/upload")
             res.status(200).json({
                 message:"Data berhasil ditambahkan",
                 data:dataenum,
-                uuid:generateuuid(),
                 /* sendata, */
                 method:req.method
             })
