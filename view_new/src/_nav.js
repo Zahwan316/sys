@@ -142,7 +142,13 @@ const _nav = [
             name:"Upload",
             icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
             to:"/pesertadidik"
-          }
+          },
+          {
+            component:CNavItem,
+            name:"Data",
+            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            to:"/datapesertadidik"
+          },
         ]
       }
      

@@ -11,6 +11,10 @@ const Agama = require("../models/agama")
 const Peserta_didik_alamat = require("../models/peserta_didik_alamat")
 const Jenis_tinggal = require("../models/jenis_tinggal")
 const wilayah_kemendagri = require("../models/wilayah_kemendagri_2022")
+const Peserta_didik_kesehatan = require("../models/peserta_didik_kesehatan")
+const Peserta_didik_rekening = require("../models/peserta_didik_rekening")
+const Peserta_didik_kontak = require("../models/peserta_didik_kontak")
+const Bank = require("../models/bank.js")
 
 const multer = require("multer");
 
@@ -29,10 +33,30 @@ const upload = multer({storage:storage,limits:{
     fileSize:10 * 1024 * 1024
 }})
 
+Peserta_didik.hasOne(Peserta_didik_alamat,{foreignKey:"peserta_didik_id"})
+Peserta_didik_alamat.belongsTo(Peserta_didik,{foreignKey:"peserta_didik_id"})
+
+Agama.hasOne(Peserta_didik,{foreignKey:"agama_id"})
+Peserta_didik.belongsTo(Agama,{foreignKey:"agama_id"})
+
+Alat_transportasi.hasOne(Peserta_didik,{foreignKey:"alat_transportasi_id"})
+Peserta_didik.belongsTo(Alat_transportasi,{foreignKey:"alat_transportasi_id",sourceKey:"alat_transportasi_id"})
+
+ref_pekerjaan.hasOne(Peserta_didik,{foreignKey:"pekerjaan_ayah_id"})
+Peserta_didik.belongsTo(ref_pekerjaan,{foreignKey:"pekerjaan_ayah_id"})
+
+Jenjang_pendidikan.hasOne(Peserta_didik,{foreignKey:'pendidikan_ayah_id'})
+Peserta_didik.belongsTo(Jenjang_pendidikan,{foreignKey:'pendidikan_ayah_id'})
+
+
 router.route("/peserta_didik")
     .get(async(req,res) => {
         try{
-            const allData = await Peserta_didik.findAll()
+            const allData = await Peserta_didik.findAll({
+                order:[["nama","ASC"]],
+                include:[Peserta_didik_alamat,Agama,Alat_transportasi]
+
+            })
             res.status(200).json({
                 message:"Data berhasil diambil",
                 data:allData,
@@ -96,6 +120,11 @@ router.route("/peserta_didik/upload")
                     exclude:"id"
                 }
             })
+            const ref_bank = await Bank.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
 
 
 
@@ -155,9 +184,25 @@ router.route("/peserta_didik/upload")
                     null
                 const resultJenisTinggal = getjenistinggalid || [0]
 
+                //get id bank
+                const bank = ref_bank.filter(items => items.nm_bank === row.__EMPTY_49)
+                const getbankid = bank.length > 0 ? 
+                    bank.map(items => items.id_bank)
+                    :
+                    null
+                const resultBank = getbankid || [0]
+
+
                 //mendapatakan kode wilayah
-                let getKecamatan = row.__EMPTY_13
-                getKecamatan.map(item => item.replace("Kec. ",""))
+               if(row.__EMPTY_13 && row.__EMPTY_13.startsWith("Kec. ")){
+                    row.__EMPTY_13 = row.__EMPTY_13.substring(5)
+               }
+
+               let kodewilayah;
+
+
+
+                //dataalamat.kecamatan.replace()
                 
 
                 let data_peserta_didik = {
@@ -175,7 +220,7 @@ router.route("/peserta_didik/upload")
                     rw:row.__EMPTY_10 || null,
                     dusun:row.__EMPTY_11 || null,
                     kelurahan:row.__EMPTY_12 || null,
-                    kecamatan:getKecamatan,
+                    kecamatan:row.__EMPTY_13,
                     kode_pos:row.__EMPTY_14 || 0,
                     jenis_tinggal:resultJenisTinggal,
                     alat_transportasi:resultTransporasi,
@@ -211,7 +256,7 @@ router.route("/peserta_didik/upload")
                     nama_kip:row.__EMPTY_46|| 0,
                     no_kks:row.__EMPTY_47 || null,
                     no_akta_lahir:row.__EMPTY_48 || null,
-                    bank:row.__EMPTY_49 || null,
+                    bank:resultBank,
                     no_rekening:row.__EMPTY_50 || null,
                     rekening_atas_nama:row.__EMPTY_51 || null,
                     layak_pip:row.__EMPTY_52 === "Tidak" ? 0 : 1,
@@ -228,6 +273,8 @@ router.route("/peserta_didik/upload")
                     jumlah_saudara_kandung:row.__EMPTY_63 || 0,
                     jarak_rumah_ke_sekolah:row.__EMPTY_64 || 0
                 }
+
+            
                  
                 for(const key in data_peserta_didik){
                     if(data_peserta_didik[key] === '   '){
@@ -267,7 +314,7 @@ router.route("/peserta_didik/upload")
                 return uuidv4()
             }
 
-                /*  let sendata = await */Peserta_didik.bulkCreate(
+              /*  Peserta_didik.bulkCreate(
                 dataenum.map(item => ({
                     peserta_didik_id:item.peserta_didik_id,
                     nama:item.nama,
@@ -334,6 +381,48 @@ router.route("/peserta_didik/upload")
                 }))
             )
 
+            Peserta_didik_kesehatan.bulkCreate(
+                dataenum.map(item => ({
+                    peserta_didik_kesehatan_id:uuidv4(),
+                    peserta_didik_id:item.peserta_didik_id,
+                    buta_warna:item.buta_warna,
+                    berat_badan:item.berat_badan,
+                    tinggi_badan:item.tinggi_badan,
+                    lingkar_kepala:item.lingkar_kepala,
+                    visus_mata:item.visus_mata,
+                    ldl:item.ldl,
+                    hdl:item.hdl,
+                    gula_darah:item.gula_darah,
+                    tekanan_darah:item.tekanan_darah,
+                    tanggal_test:item.tanggal_test
+                }))
+            )
+
+            Peserta_didik_kontak.bulkCreate(
+                dataenum.map(item => ({
+                    peserta_didik_kontak_id:uuidv4(),
+                    peserta_didik_id:item.peserta_didik_id,
+                    nomor_telepon_rumah:item.telepon,
+                    nomor_telepon_seluler:item.hp,
+                    email:item.email,
+                    twitter:item.twitter,
+                    facebook:item.facebook,
+                    instagram:item.instagram,
+                    youtube:item.youtube,
+                }))
+            )
+
+            Peserta_didik_rekening.bulkCreate(
+                dataenum.map(item => ({
+                    peserta_didik_rekening_id:uuidv4(),
+                    peserta_didik_id:item.peserta_didik_id,
+                    id_bank:item.bank[0],
+                    no_rekening:item.no_rekening,
+                    rekening_atas_nama:item.rekening_atas_nama,
+
+                }))
+            )
+ */
            /*  console.log(sendata) */
            
 
@@ -341,6 +430,7 @@ router.route("/peserta_didik/upload")
             res.status(200).json({
                 message:"Data berhasil ditambahkan",
                 data:dataenum,
+                id_bank:dataenum.bank,
                 /* sendata, */
                 method:req.method
             })

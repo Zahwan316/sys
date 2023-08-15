@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _mapel_sp = require("./mapel_sp");
+var _jenjang_pendidikan = require("./jenjang_pendidikan");
 
 function initModels(sequelize) {
-  var mapel_sp = _mapel_sp(sequelize, DataTypes);
+  var jenjang_pendidikan = _jenjang_pendidikan(sequelize, DataTypes);
 
 
   return {
-    mapel_sp,
+    jenjang_pendidikan,
   };
 }
 module.exports = initModels;

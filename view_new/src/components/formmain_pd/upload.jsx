@@ -104,6 +104,7 @@ const UploadPesertaDidik = () => {
                             />
                         </div>
                         <CButton type='submit' >Upload</CButton>
+                        
                         </form>
                     </CRow>
                 </CCol>

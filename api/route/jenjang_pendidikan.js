@@ -1,13 +1,14 @@
 const express = require("express");
 const router = express.Router();
-const Ref_pekerjaan = require("../models/pekerjaan")
+const {v4:uuidv4} = require("uuid")
+const Jenjang_pendidikan = require("../models/jenjang_pendidikan")
 
-router.route("/ref_pekerjaan")
+router.route("/jenjang_pendidikan")
     .get(async(req,res) => {
         try{
-            const allData = await Ref_pekerjaan.findAll()
+            const allData = await Jenjang_pendidikan.findAll()
             res.status(200).json({
-                message:"Data berhasil diambil",
+                message:'Data berhasil diambil',
                 data:allData,
                 method:req.method
             })

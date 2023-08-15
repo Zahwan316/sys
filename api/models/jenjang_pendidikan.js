@@ -3,7 +3,8 @@ const {DataTypes} = require("sequelize");
 const Jenjang_pendidikan = Sequelize.define('jenjang_pendidikan', {
     jenjang_pendidikan_id: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     nama: {
       type: DataTypes.STRING(25),
@@ -37,7 +38,16 @@ const Jenjang_pendidikan = Sequelize.define('jenjang_pendidikan', {
     Sequelize,
     tableName: 'jenjang_pendidikan',
     schema: 'ref',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "jenjang_pendidikan_pkey",
+        unique: true,
+        fields: [
+          { name: "jenjang_pendidikan_id" },
+        ]
+      },
+    ]
   });
 
 module.exports = Jenjang_pendidikan

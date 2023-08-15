@@ -1,9 +1,10 @@
 const Sequelize = require('../config');
 const {DataTypes} = require("sequelize");
-const Alat_transportasi = Sequelize.define('alat_transportasi', {
+const Alat_transportasi =  Sequelize.define('alat_transportasi', {
     alat_transportasi_id: {
       type: DataTypes.DECIMAL,
-      allowNull: false
+      allowNull: false,
+      primaryKey: true
     },
     nama: {
       type: DataTypes.STRING(40),
@@ -29,7 +30,16 @@ const Alat_transportasi = Sequelize.define('alat_transportasi', {
     Sequelize,
     tableName: 'alat_transportasi',
     schema: 'ref',
-    timestamps: false
+    timestamps: false,
+    indexes: [
+      {
+        name: "alat_transportasi_pkey",
+        unique: true,
+        fields: [
+          { name: "alat_transportasi_id" },
+        ]
+      },
+    ]
   });
 
 module.exports = Alat_transportasi
