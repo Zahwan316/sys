@@ -18,6 +18,7 @@ import {
     
   } from '@coreui/react'
 import DataPesertaDidikKeluarga from 'src/components/formmain_pd/datapesertadidikkeluarga';
+import DataPesertaDidikBantuan from 'src/components/formmain_pd/datapesertadidikbantuan';
 
 const Peserta_didik_data_page = () => {
     const[pageform,setpageform] = useState("biodata")
@@ -85,6 +86,10 @@ const Peserta_didik_data_page = () => {
                         {
                             pageform === "keluarga" &&
                             <DataPesertaDidikKeluarga />
+                        }
+                        {
+                            pageform === "bantuan" &&
+                            <DataPesertaDidikBantuan />
                         }
                     </>
                     

@@ -105,6 +105,7 @@ const MutasiSemesterForm = () => {
         })
         .then((result) => {
             if(result.isConfirmed){
+                localStorage.setItem("semester_id",idsemester)
                 editData(`semester/generate/${idsemester}`) 
                     .then(res => {
                         Swal.fire(
@@ -155,6 +156,7 @@ const MutasiSemesterForm = () => {
             CUData(`semester/${editedid}`)
 
         }
+        
     }
 
     const handlemodal = () => {

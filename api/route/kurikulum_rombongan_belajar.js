@@ -23,6 +23,7 @@ router.route("/kurikulum_rombongan_belajar")
                             attributes:['nm_jenis_rombel']
                         } 
                     ] */
+                    order:[["nama","ASC"]]
                 }
             )
             res.status(200).json(

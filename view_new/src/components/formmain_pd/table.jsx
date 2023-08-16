@@ -15,6 +15,7 @@ const TablePesertaDidik = (props) => {
                 if(props.page === "pesertadidikbiodata"  ){
                     let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
                     setdatapesertadidik(response.data.data)
+                   
                 }
                 else if(props.page === 'pesertadidikkeluarga'){
                     let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
@@ -23,6 +24,11 @@ const TablePesertaDidik = (props) => {
                     setdatapesertadidik(response.data.data)
                     setdatajenjangpendidkan(response_pendidikan.data.data)
                     setdatapekerjaan(response_pekerjaan.data.data)
+                }
+                else if(props.page === "pesertadidikbantuan"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                    setdatapesertadidik(response.data.data)
+                    
                 }
                 
             }
@@ -61,8 +67,9 @@ const TablePesertaDidik = (props) => {
                 <CTableBody>
                     {
                         props.page === "pesertadidikbiodata" &&
-                        !loading?
-                        datapesertadidik.map((item,index) => 
+                        (!loading?
+                        datapesertadidik.length > 0 ?
+                        datapesertadidik.map((item,index) =>               
                             <tr key={index} style={{verticalAlign:"middle"}}>
                                 <td>
                                     {item.nama}
@@ -100,19 +107,23 @@ const TablePesertaDidik = (props) => {
                                         </CButton>
                                     </td>
                             </tr>
-                        )
+                        ) :
+                        <div>
+                            <h2>Data Masih Kosong</h2>
+                        </div>
                         :
                         <div className='d-flex align-items-center ' style={{height:"6vh"}}>
                             <CSpinner color="primary" style={{marginRight:"1rem"}} />
                             <p className='mb-0'>Mengolah Data Siswa</p>
-                        </div>
+                        </div>)
                     }
 
                     {
                         props.page === 'pesertadidikkeluarga' && 
-                        !loading ? 
-                        datapesertadidik.map(item => 
-                            <tr>
+                       ( !loading ? 
+                        datapesertadidik.length > 0 ?
+                        datapesertadidik.map((item,index) => 
+                            <tr key={index} style={{verticalAlign:"middle"}}>
                                 <td>
                                     {item.nama}
                                 </td>
@@ -143,7 +154,7 @@ const TablePesertaDidik = (props) => {
                                     }
                                 </td>
                                 <td>
-                                    {item.nama_ibu_ibu_kandung}
+                                    {item.nama_ibu_kandung}
                                 </td>
                                 <td>
                                     {item.tanggal_lahir}
@@ -165,10 +176,58 @@ const TablePesertaDidik = (props) => {
                             </tr>    
                         )
                         :
+                        <div>
+                            <h2>Data masih kosong</h2>
+                        </div>
+
+                        :
                         <div className='d-flex align-items-center ' style={{height:"6vh"}}>
                             <CSpinner color="primary" style={{marginRight:"1rem"}} />
                             <p className='mb-0'>Mengolah Data Siswa</p>
-                         </div>
+                         </div>)
+                    }
+
+                    {
+                        props.page === 'pesertadidikbantuan' &&
+                       ( !loading ?
+                        datapesertadidik.length > 0 ?
+                        datapesertadidik.map(item => 
+                            <tr>
+                                <td>
+                                    {item.nama}
+                                </td>
+                                <td>
+                                    {item.no_kks}
+                                </td>
+                                <td>
+                                    {item.no_kps}
+                                </td>
+                                <td>
+                                    {item.penerima_kps}
+                                </td>
+                                <td>
+                                    {item.no_kip}
+                                </td>
+                                <td>
+                                    {item.layak_kip}
+                                </td>
+                                <td>
+                                    {item.alasan_layak_kip}
+                                </td>
+                                <td>
+                                    {item.nama_di_kip}
+                                </td>
+                            </tr>
+                        )
+                        :
+                        <div>
+                            <h2>Data Masih Kosong</h2>
+                        </div>
+                        :
+                        <div className='d-flex align-items-center ' style={{height:"6vh"}}>
+                            <CSpinner color="primary" style={{marginRight:"1rem"}} />
+                            <p className='mb-0'>Mengolah Data Siswa</p>
+                        </div>)
                     }
                 </CTableBody>
             </CTable>

@@ -9,7 +9,8 @@ const UploadPesertaDidik = () => {
     const[forminput,setforminput] = useState({
         file:"",
         semester_id:"",
-        sekolah_id:localStorage.getItem("sekolah_id")
+        sekolah_id:localStorage.getItem("sekolah_id"),
+        kurikulum_id:localStorage.getItem('kurikulum_sp_id'),
     })
 
     useEffect(() => {
@@ -44,6 +45,8 @@ const UploadPesertaDidik = () => {
         formdata.append('file',forminput.file)
         formdata.append('semester_id',forminput.semester_id)
         formdata.append("sekolah_id",forminput.sekolah_id)
+        formdata.append("kurikulum_id",forminput.kurikulum_id)
+        
 
         const sendData = async() => {
             try{

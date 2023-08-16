@@ -15,8 +15,14 @@ const Peserta_didik_kesehatan = require("../models/peserta_didik_kesehatan")
 const Peserta_didik_rekening = require("../models/peserta_didik_rekening")
 const Peserta_didik_kontak = require("../models/peserta_didik_kontak")
 const Bank = require("../models/bank.js")
-
+const Semester = require("../models/semester")
+const {Op} = require("sequelize")
 const multer = require("multer");
+const Kurikulum_anggota_rombel = require("../models/kurikulum_anggota_rombel")
+const kurikulum_rombongan_belajar = require('../models/kurikulum_rombongan_belajar');
+const Kurikulum_rombongan_belajar = require("../models/kurikulum_rombongan_belajar");
+const Wilayah_kemendagri = require("../models/wilayah_kemendagri_2022");
+
 
 //multer config
 const storage = multer.diskStorage({
@@ -83,6 +89,7 @@ router.route("/peserta_didik/upload")
             const data = xlsx.utils.sheet_to_json(sheet)
 
             const dataenum = []
+            const emptydatarombel = []
 
             //model relationn
             const ref_alasan_layak_pip = await Alasan_layak_pip.findAll({
@@ -116,15 +123,22 @@ router.route("/peserta_didik/upload")
                 }
             })
             const ref_wilayah_kemendagri = await wilayah_kemendagri.findAll({
+                where:{
+                    id_wilayah:{
+                        [Op.like]:"32%"
+                    }
+                },
                 attributes:{
                     exclude:"id"
-                }
+                },
+                
             })
             const ref_bank = await Bank.findAll({
                 attributes:{
                     exclude:"id"
                 }
             })
+            const kurikulum_rombongan_belajar = await Kurikulum_rombongan_belajar.findAll()
 
 
 
@@ -198,15 +212,71 @@ router.route("/peserta_didik/upload")
                     row.__EMPTY_13 = row.__EMPTY_13.substring(5)
                }
 
-               let kodewilayah;
+              
+    
+                //mengubah tulisan di kolom kelurahan menjadi titlecase
+               const toTitleCase = (input) => {
+                   if(typeof input !== 'string'){
+                    return ''
+                   }
+                   const words = input.trim().split(' ')
+                   const titlecaseword =  words.map(word => {
+                        if(word.length === 0){
+                            return ''
+                        }
+                        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
+                   })
+                   return titlecaseword.join(' ')
+               }
+
+               const kelurahan = toTitleCase(row.__EMPTY_12)
+
+               let datawilayahdesa = ref_wilayah_kemendagri.filter(item => item.nama == kelurahan )
+               let datawilayahkec = ref_wilayah_kemendagri.filter(item => item.nama == row.__EMPTY_13)
+               let dataall = ref_wilayah_kemendagri.filter(item => item.nama == kelurahan || item.nama == row.__EMPTY_13)
+        
+               let getid_wilayah = dataall.filter(item => item.id_wilayah.substring(0,6)  ) 
+              
+               /* let findsameid =  (namaKecamatan) => {
+                    let matcheddata = ref_wilayah_kemendagri.find(item => item.nama === namaKecamatan || item.id_wlayah.length === 6)
+                    if(matcheddata){
+                        const id = matcheddata.id_wilayah.substring(0,6)
+                        return id
+                    }
+                    return null
+               } */
+
+               //const idpartial = findsameid(row.__EMPTY_13)
 
 
+               //mengambil kelas
+               const rombelkelas = row.__EMPTY_41 ? row.__EMPTY_41.substring(0,2) : null
 
-                //dataalamat.kecamatan.replace()
+               //mengubah data rombel menjadi uppercase
+               const rombelUpperCase = row.__EMPTY_41 ? row.__EMPTY_41.toUpperCase() : null
+
+               //mengambil rombongan belajar id
+               const datarombel = kurikulum_rombongan_belajar.filter(item => item.nama.trim() == rombelUpperCase)
+               const getrombelid =  datarombel.length > 0?
+                datarombel.map(items => 
+                        items.rombongan_belajar_id
+                )
+                :
+                null
+
+                const resultidrombel = getrombelid || [null]
+              
                 
+                
+
 
                 let data_peserta_didik = {
                     peserta_didik_id:uuidv4(),
+                    rombongan_belajar_id:uuidv4(),
+                    kodewilayah:filtered_datawilayahkec,
+                    kelas:rombelkelas,
+                    jenis_pendaftaran_id: rombelkelas == 10 ? 1 : (rombelkelas >= 11 && rombelkelas <= 12 ? 3:0),
+                    rombongan_belajar_id:resultidrombel[0] || null,
                     nama:row.__EMPTY || null,
                     nipd:row.__EMPTY_1 || null,
                     jk:row.__EMPTY_2 || null,
@@ -219,7 +289,7 @@ router.route("/peserta_didik/upload")
                     rt:row.__EMPTY_9 || null,
                     rw:row.__EMPTY_10 || null,
                     dusun:row.__EMPTY_11 || null,
-                    kelurahan:row.__EMPTY_12 || null,
+                    kelurahan:kelurahan || null,
                     kecamatan:row.__EMPTY_13,
                     kode_pos:row.__EMPTY_14 || 0,
                     jenis_tinggal:resultJenisTinggal,
@@ -248,7 +318,7 @@ router.route("/peserta_didik/upload")
                     pekerjaan_wali:getidpekerjaan(row.__EMPTY_38),
                     penghasilan_wali:row.__EMPTY_39 || null,
                     nik_wali:row.__EMPTY_40|| null,
-                    rombel:row.__EMPTY_41 || null,
+                    rombel:row.__EMPTY_41 ? row.__EMPTY_41.toUpperCase() : null,
                     no_peserta_un:row.__EMPTY_42|| null,
                     no_seri_ijazah:row.__EMPTY_43|| null,
                     penerima_kip:row.__EMPTY_44 === "Tidak" ? 0 : 1,
@@ -284,12 +354,13 @@ router.route("/peserta_didik/upload")
                 
                 if(data_peserta_didik.kode_pos === "     "){
                     data_peserta_didik.kode_pos = null
-
                 }
+
+
 
                 if(index >= 5){
                     dataenum.push(data_peserta_didik)
-
+                    
                 }            
                 index++
             }
@@ -422,8 +493,18 @@ router.route("/peserta_didik/upload")
 
                 }))
             )
- */
-           /*  console.log(sendata) */
+ */ 
+
+         Kurikulum_anggota_rombel.bulkCreate(
+            dataenum.map(item => ({
+                    anggota_rombel_id:uuidv4(),   
+                    peserta_didik_id:item.peserta_didik_id,
+                    rombongan_belajar_id:item.rombongan_belajar_id,
+                    jenis_pendaftaran_id:item.jenis_pendaftaran_id 
+                }
+            )
+            )
+        ) 
            
 
             
@@ -431,7 +512,7 @@ router.route("/peserta_didik/upload")
                 message:"Data berhasil ditambahkan",
                 data:dataenum,
                 id_bank:dataenum.bank,
-                /* sendata, */
+                nulldatarombel:dataenum.filter(item => item.rombongan_belajar_id === null),
                 method:req.method
             })
 
