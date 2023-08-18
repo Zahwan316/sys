@@ -820,11 +820,11 @@ const DataForm = (props) => {
                                         <ButtonActionKelembagaan 
                                             width="20"
                                             height="20"
-                                            id={item.sekolah_bank_id}
+                                            id={item.sekolah_kepemilikan_id}
                                             onclick={handleClickOption}
                                         />
-                                        <CButton className='text-white mx-2' color="danger" onClick={handleClickOption} typebtn="delete" id={item.sekolah_kepemilikan_id}>Hapus</CButton>
-                                        <CButton className='text-white' color="primary" onClick={handleClickOption} typebtn="edit" id={item.sekolah_kepemilikan_id}>Edit</CButton>
+                                        {/* <CButton className='text-white mx-2' color="danger" onClick={handleClickOption} typebtn="delete" id={item.sekolah_kepemilikan_id}>Hapus</CButton>
+                                        <CButton className='text-white' color="primary" onClick={handleClickOption} typebtn="edit" id={item.sekolah_kepemilikan_id}>Edit</CButton> */}
                                 </td>
                             </tr>
                         )

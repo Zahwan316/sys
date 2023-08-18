@@ -60,7 +60,7 @@ router.route("/peserta_didik")
         try{
             const allData = await Peserta_didik.findAll({
                 order:[["nama","ASC"]],
-                include:[Peserta_didik_alamat,Agama,Alat_transportasi]
+                include:[Agama,Alat_transportasi]
 
             })
             res.status(200).json({
@@ -265,15 +265,13 @@ router.route("/peserta_didik/upload")
                 null
 
                 const resultidrombel = getrombelid || [null]
-              
-                
-                
+            
 
 
                 let data_peserta_didik = {
                     peserta_didik_id:uuidv4(),
                     rombongan_belajar_id:uuidv4(),
-                    kodewilayah:filtered_datawilayahkec,
+                    //kodewilayah:filtered_datawilayahkec,
                     kelas:rombelkelas,
                     jenis_pendaftaran_id: rombelkelas == 10 ? 1 : (rombelkelas >= 11 && rombelkelas <= 12 ? 3:0),
                     rombongan_belajar_id:resultidrombel[0] || null,
@@ -385,7 +383,7 @@ router.route("/peserta_didik/upload")
                 return uuidv4()
             }
 
-              /*  Peserta_didik.bulkCreate(
+                Peserta_didik.bulkCreate(
                 dataenum.map(item => ({
                     peserta_didik_id:item.peserta_didik_id,
                     nama:item.nama,
@@ -493,7 +491,7 @@ router.route("/peserta_didik/upload")
 
                 }))
             )
- */ 
+ 
 
          Kurikulum_anggota_rombel.bulkCreate(
             dataenum.map(item => ({
@@ -524,5 +522,75 @@ router.route("/peserta_didik/upload")
             })
         }
     })
+
+router.route("/peserta_didik/:id")
+    .put(async(req,res) => {
+        try{
+
+        }
+        catch(e){
+
+        }
+    })
+    .delete(async(req,res) => {
+        try{
+            const id = req.params.id
+            const findData = await Peserta_didik.findByPk(id)
+            const findDataAlamat = await Peserta_didik_alamat.findOne({
+                where:{
+                    peserta_didik_id:id
+                }
+            })
+            const findDataKontak = await Peserta_didik_kontak.findOne({
+                where:{
+                    peserta_didik_id:id
+                }
+            })
+            const findDataKesehatan = await Peserta_didik_kesehatan.findOne({
+                where:{
+                    peserta_didik_id:id
+                }
+            })
+            const findDataRekening = await Peserta_didik_rekening.findOne({
+                where:{
+                    peserta_didik_id:id
+                }
+            })
+            const findDataAnggotaDataRombel = await Kurikulum_anggota_rombel.findOne({
+                where:{
+                    peserta_didik_id:id
+                }
+            })
+
+
+            if(findData){
+                findDataAnggotaDataRombel.destroy()
+                findDataRekening.destroy()
+                findDataKesehatan.destroy()
+                findDataKontak.destroy()
+                findDataAlamat.destroy()
+                findData.destroy()
+
+                res.status(200).json({
+                    message:"Data berhasil dihapus",
+                    method:req.method
+                })
+            }
+            else{
+                res.status(400).json({
+                    message:e.message,
+                    method:req.method
+                })
+            }
+
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+
 
 module.exports = router

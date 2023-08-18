@@ -66,6 +66,10 @@ const ModalProgramPage = (props) => {
                             type='checkbox'
                             onClick={props.handlechecked}
                             value={props.forminput.keaktifan}
+                            checked={props.forminput.keaktifan ===1}
+                            defaultChecked={props.forminput.keaktifan === 1}
+                            defaultValue={0}
+                            
                             />
                             <p className='mb-0 mx-2'>Masih Aktif?</p>
          

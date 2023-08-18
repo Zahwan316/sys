@@ -19,6 +19,7 @@ import {
   } from '@coreui/react'
 import DataPesertaDidikKeluarga from 'src/components/formmain_pd/datapesertadidikkeluarga';
 import DataPesertaDidikBantuan from 'src/components/formmain_pd/datapesertadidikbantuan';
+import DataPesertaDidikAlamat from 'src/components/formmain_pd/datapesertadidikalamat';
 
 const Peserta_didik_data_page = () => {
     const[pageform,setpageform] = useState("biodata")
@@ -75,6 +76,18 @@ const Peserta_didik_data_page = () => {
                                 onClick={handlePageForm}      
                             />
 
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio4"
+                                autoComplete="off"
+                                code="alamat"
+                                label="Alamat"    
+                                defaultChecked={pageform == "alamat"}  
+                                onClick={handlePageForm}      
+                            />
+
                            
                         </CButtonGroup>
 
@@ -90,6 +103,10 @@ const Peserta_didik_data_page = () => {
                         {
                             pageform === "bantuan" &&
                             <DataPesertaDidikBantuan />
+                        }
+                        {
+                            pageform === "alamat" &&
+                            <DataPesertaDidikAlamat />
                         }
                     </>
                     

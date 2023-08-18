@@ -434,10 +434,33 @@ const TableMain = (props) => {
         }
     }
 
-    //method untuk update delete
-    const handleUpdateDelete = () => {
-        setupdaterdelete(uuidv4())
+    const deleteItem = async(url) => {
+        try{
+            Swal.fire({
+                title:"Apakah Anda Yakin ?",
+                text:"Item yang sudah terhapus tidak dapat dikembalikan",
+                icon:"warning",
+                showCancelButton:true,
+                confirmButtonText:"Ya,Hapus",
+                cancelButtonText:"Batal"
+            })
+                .then(result => {
+                    if(result.isConfirmed){
+                        axios.delete(`${process.env.REACT_APP_LINK}${url}`)
+                        Swal.fire(
+                            "Data Berhasil Dihapus"
+                        )
+                       
+                    }
+                })
+                .catch(e => console.log(e))
+
+        }
+        catch(e){
+            console.log(e)
+        }
     }
+   
 
     const handleClickBtn = (e) => {
         let typebtn = e.target.getAttribute("typebtn")
@@ -451,32 +474,10 @@ const TableMain = (props) => {
         if(typebtn === "delete"){
             //jika page jenis
             if(props.page === "jenis"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(process.env.REACT_APP_LINK + "kurikulum_sp/" + id)
-                            .then(res => {
-                                //hapus storage item
-                                localStorage.removeItem("kurikulum_sp_id")
-                                handleUpdateDelete()
-                            })
-                            .catch(e => {
-                
-                            })
-
-                            Swal.fire(
-                                "Data Berhasil Dihapus"
-                            )
-                        
-                    }
-                })
+               deleteItem(`kurikulum_sp/${id}`)
+                //hapus storage item
+                localStorage.removeItem("kurikulum_sp_id")
+                setupdaterdelete(uuidv4())
             }
 
             //jika page program

@@ -129,4 +129,26 @@ router.route("/kbm_mapel_sp/:id")
         }
     })
 
+router.route("/kbm_mapel_sp/nasional")
+    .get(async(req,res) => {
+        try{
+            const allitem = await Kbm_mapel_sp.findAll({
+                where:{
+                    kelompok:'A'
+                }
+            })
+            res.status(200).json({
+                message:"Data berhasil diambil",
+                data:allitem,
+                method:req.method
+            })
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+
 module.exports = router

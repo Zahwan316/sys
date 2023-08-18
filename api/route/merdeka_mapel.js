@@ -11,7 +11,7 @@ router.route("/merdeka_mapel")
                 attributes:{
                     exclude:"id"
                 },
-                order:[["nama","ASC"]]
+                order:[["kelompok","ASC"],['nama',"ASC"]]
             })
             res.status(200).json({
                 message:"data berhasil diambil",

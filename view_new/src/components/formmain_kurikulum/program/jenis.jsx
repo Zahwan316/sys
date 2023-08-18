@@ -25,7 +25,6 @@ import Swal from 'sweetalert2';
 import DataForm from 'src/components/formmain/dataform/dataform';
 
 const JenisPage = () => {
-    const[sekolahidcode,setsekolahid] = useState(localStorage.getItem("sekolah_id"))
     const[typeform,settypeform] = useState()
     const[id,setid] = useState()
     const[modalClicked,setmodalclicked] = useState(false)
@@ -33,10 +32,10 @@ const JenisPage = () => {
     const[isCheckedCheckbox,setischeckedbox] = useState(false)
     const[updater,setupdater] = useState()
     const[formInput,setforminput] = useState({
-        sekolah_id:sekolahidcode,
+        sekolah_id:localStorage.getItem("sekolah_id"),
         kurikulum_sp_id:uuidv4(),
         kurikulum_kode:"",
-        keaktifan:"",
+        keaktifan:0,
         tmt:""
     })
 
@@ -72,26 +71,31 @@ const JenisPage = () => {
                 kurikulum_sp_id:uuidv4()
             }
         )
-        localStorage.setItem("kurikulum_sp_id",formInput.kurikulum_sp_id)
+        
         
         console.log(formInput)
         const sendData = async() => {
             try{
-                setupdater(uuidv4())
                 if(typeform === "tambah"){
                     let response = await axios.post(`${process.env.REACT_APP_LINK}kurikulum_sp`,formInput)
+                    if(formInput.keaktifan === 1){
+                        localStorage.setItem("kurikulum_sp_id",formInput.kurikulum_sp_id)
+                    }
                     Swal.fire({
                         title:"Data Tersimpan",
                         text:"Terima kasih sudah mengisi data",
                         icon:"success",
                         confirmButtonText:"Ok",
                     })
-
+                    
                 }
                 //
                 else if(typeform === "edit"){
                     setupdater(uuidv4())
                     let response = await axios.put(`${process.env.REACT_APP_LINK}kurikulum_sp/`+ id,formInput)
+                    if(formInput.keaktifan === 1){
+                        localStorage.setItem("kurikulum_sp_id",formInput.kurikulum_sp_id)
+                    }
                     Swal.fire({
                         title:"Data Teredit",
                         text:"Terima kasih sudah mengedit data",
@@ -99,7 +103,8 @@ const JenisPage = () => {
                         confirmButtonText:"Ok",
                     })
                 }
-
+                setupdater(uuidv4())
+                
                 //
             }
             catch(e){
@@ -123,7 +128,8 @@ const JenisPage = () => {
     }
 
     useEffect(() => {
-        console.log(typeform)
+        console.log(formInput)
+        console.log(id)
        
     })
 
@@ -151,11 +157,22 @@ const JenisPage = () => {
                 if(typeform === "edit" || typeform === "detail"){
                     setforminput(
                         {
+                            sekolah_id:localStorage.getItem("sekolah_id"),
+                            kurikulum_sp_id:data.kurikulum_sp_id,
                             kurikulum_kode:data.kurikulum_kode,
                             tmt:data.tmt,
                             keaktifan:data.keaktifan
                         }
                     )
+                }
+                else{
+                    setforminput({
+                        sekolah_id:localStorage.getItem("sekolah_id"),
+                        kurikulum_sp_id:uuidv4(),
+                        kurikulum_kode:"",
+                        keaktifan:0,
+                        tmt:""
+                    })
                 }
             }
             catch(e){

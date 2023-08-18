@@ -1,16 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const ALasan_layak_pip = require("../models/alasan_layak_pip");
-const Alasan_layak_pip = require("../models/alasan_layak_pip");
+const {v4:uuidv4} = require("uuid")
+const Agama = require('../models/agama')
 
-router.route("/alasan_layak_pip")
+router.route("/agama")
     .get(async(req,res) => {
         try{
-            const allData = await Alasan_layak_pip.findAll({
-                attributes:{
-                    exclude:"id"
-                }
-            })
+            const allData = await Agama.findAll()
+
             res.status(200).json({
                 message:"Data berhasil didapatkan",
                 data:allData,

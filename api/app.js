@@ -50,6 +50,9 @@ const Jenis_pendaftaran_route = require("./route/jenis_pendaftaran");
 //peserta didik  route
 const Ref_pekerjaan = require("./route/pekerjaan")
 const Jenjang_pendidikan_route = require("./route/jenjang_pendidikan.js")
+const Jenis_kewarganegaraan = require("./route/jenis_kewarganegaraan")
+const Agama = require("./route/agama.js")
+const Alasan_layak_pip_route = require("./route/alasan_layak_pip")
 
 
 //library
@@ -110,6 +113,9 @@ app.use(Jenis_pendaftaran_route)
 //peserta didik
 app.use(Ref_pekerjaan)
 app.use(Jenjang_pendidikan_route)
+app.use(Jenis_kewarganegaraan)
+app.use(Agama)
+app.use(Alasan_layak_pip_route)
 
 
 //end route

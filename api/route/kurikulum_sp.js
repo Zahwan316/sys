@@ -105,8 +105,10 @@ router.route("/kurikulum_sp/:uuid")
                 }
             })
             if(findItem){
+                if(findItemProgram){
+                    findItemProgram.destroy()
+                }
                 findItem.destroy()
-                findItemProgram.destroy()
                 res.status(200).json(
                     {
                         message:"Data berhasil dihapus",
