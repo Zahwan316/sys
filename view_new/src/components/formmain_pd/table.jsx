@@ -14,6 +14,8 @@ const TablePesertaDidik = (props) => {
     const[loading,setloading] = useState(true)
     const[updaterdelete,setupdaterdelete] = useState()
     const[dataalamat,setdataalamat] = useState([])
+    const[datajenistinggal,setdatajenistinggal] = useState([])
+    const[datakesehatan,setdatakesehatan] = useState([])
 
     useEffect(() => {
         let getData = async() => {
@@ -38,6 +40,23 @@ const TablePesertaDidik = (props) => {
 
                     setdatapesertadidik(response.data.data)
                     setdatalayakpip(response_layak_pip.data.data)
+                }
+                else if(props.page === 'pesertadidikalamat'){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                    let response_alamat = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat`)
+                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
+
+                    setdatapesertadidik(response.data.data)
+                    setdataalamat(response_alamat.data.data)
+                    setdatajenistinggal(response_jenis_tinggal.data.data)
+                }   
+                else if(props.page === "pesertadidikkesehatan"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                    let response_kesehatan = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan`)
+                    
+
+                    setdatapesertadidik(response.data.data)
+                    setdatakesehatan(response_kesehatan.data.data)
                 }
                 
             }
@@ -82,6 +101,10 @@ const TablePesertaDidik = (props) => {
         getData()
     },[updaterdelete])
     
+    useEffect(() => {
+        //console.log(datakesehatan)
+    })
+
     const deleteData = async(url) => {
         try{
             Swal.fire({
@@ -146,9 +169,14 @@ const TablePesertaDidik = (props) => {
                                  </th>    
                             )
                         }
-                        <th> 
-                            <img onClick={handleclickbutton}  typebtn="tambah" style={{cursor:"pointer"}} src="./img/icon/add bw.png" width="30" height="30" />   
-                        </th>
+                        {
+                            props.page != "pesertadidikbantuan" || props.page != "pesertaddidikkeluarga"?
+                            <th> 
+                                <img onClick={handleclickbutton}  typebtn="tambah" style={{cursor:"pointer"}} src="./img/icon/add bw.png" width="30" height="30" />   
+                            </th>
+                            :
+                            ""
+                        }
 
                     </CTableRow>
                 </CTableHead>
@@ -324,15 +352,148 @@ const TablePesertaDidik = (props) => {
                     }
 
                     {
-                        props.page === "pesertaddidikalamat" &&
+                        props.page === "pesertadidikalamat" &&
                         (!loading ?
                             dataalamat.map(item => 
-                                <RowTable>
-                                    
-                                </RowTable>
+                               <tr style={{verticalAlign:"middle"}}>
+                                    <td>
+                                        {
+                                            datapesertadidik.map(items => 
+                                                item.peserta_didik_id === items.peserta_didik_id &&
+                                                items.nama
+                                            )
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.rt
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.rw
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.nama_dusun
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.kode_wilayah
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.kode_pos
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.lintang
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.bujur
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            datajenistinggal.map(items => 
+                                                items.jenis_tinggal_id === item.jenis_tinggal_id &&
+                                                items.nama
+                                            )
+                                        }
+                                    </td>
+                                    <td>
+                                        {
+                                            item.jarak_ke_sekolah
+                                        }
+                                    </td>
+                                    <td>
+                                        <input 
+                                            type='checkbox' 
+                                            defaultChecked={item.keaktifan == 1}
+
+                                        />
+                                    </td>
+                                    <td>
+                                         <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="delete" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                    </td>
+                               </tr>
                             )
                         :
                         <h3>Data Masih Kosong</h3>
+                        )
+                    }
+                    {
+                        props.page === "pesertadidikkesehatan" &&
+                        (!loading ?
+                            datakesehatan.map(item =>
+                                <tr style={{verticalAlign:"middle"}}>
+                                    <td>
+                                        {
+                                            datapesertadidik.map(items => 
+                                                items.peserta_didik_id == item.peserta_didik_id &&
+                                                items.nama 
+                                            )
+                                        }
+                                    </td>
+                                    <td>
+                                        {item.buta_warna}
+                                    </td>
+                                    <td>
+                                        {item.berat_badan}
+                                    </td>
+                                    <td>
+                                        {item.tinggi_badan}
+                                    </td>
+                                    <td>
+                                        {item.lingkar_kepala}
+                                    </td>
+                                    <td>
+                                        {item.visus_mata}
+                                    </td>
+                                    <td>
+                                        {item.ldl}
+                                    </td>
+                                    <td>
+                                        {item.hdl}
+                                    </td>
+                                    <td>
+                                        {item.gula_darah}
+                                    </td>
+                                    <td>
+                                        {item.tekanan_darah}
+                                    </td>
+                                    <td>
+                                        {item.tanggal_test}
+                                    </td>
+                                    <td>
+                                         <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="delete" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                    </td>
+                                </tr>    
+                            )
+                        :
+                        <h2>Data Masih Kosong</h2>    
                         )
                     }
                 </CTableBody>

@@ -76,6 +76,63 @@ router.route("/peserta_didik")
             })
         }
     })
+    .post(async(req,res) => {
+        try{
+            const addData = await Peserta_didik.create({
+                peserta_didik_id:uuidv4(),
+                sekolah_id:req.body.sekolah_id,
+                nama:req.body.nama,
+                jenis_kelamin:req.body.jenis_kelamin,
+                tempat_lahir:req.body.tempat_lahir,
+                tanggal_lahir:req.body.tanggal_lahir,
+                agama_id:req.body.agama_id,
+                golongan_darah:req.body.golongan_darah,
+                kewarganegaraan:req.body.kewarganegaraan,
+                anak_keberapa:req.body.anak_keberapa,
+                jumlah_saudara_kandung:req.body.jumlah_saudara_kandung,
+                alat_transportasi_id:req.body.alat_transportasi_id,
+                nama_ayah:req.body.nama_ayah,
+                pendidikan_ayah_id:req.body.pendidikan_ayah_id,
+                pekerjaan_ayah_id:req.body.pekerjaan_ayah_id,
+                tanggal_lahir_ayah:req.body.tanggal_lahir_ayah,
+                nama_ibu_kandung:req.body.nama_ibu,
+                pendidikan_ibu_id:req.body.pendidikan_ibu_id,
+                pekerjaan_ibu_id:req.body.pekerjaan_ibu_id,
+                tanggal_lahir_ibu:req.body.tanggal_lahir_ibu,
+                nama_wali:req.body.nama_wali,
+                pendidikan_wali_id:req.body.pendidikan_wali_id,
+                pekerjaan_wali_id:req.body.pekerjaan_wali_id,
+                tanggal_lahir_wali:req.body.tanggal_lahir_wali,
+                nik:req.body.nik,
+                nisn:req.body.nisn,
+                nipd:req.body.nipd,
+                no_kk:req.body.no_kk,
+                reg_akta_lahir:req.body.reg_akta_lahir,
+                no_kks:req.body.no_kks,
+                penerima_kps:req.body.penerima_kps,
+                no_kps:req.body.no_kps,
+                penerima_kip:req.body.penerima_kip,
+                layak_pip:req.body.layak_pip,
+                alasan_layak_pip:req.body.alasan_layak_pip,
+                no_kip:req.body.no_kip,
+                nama_di_kip:req.body.nama_di_kip,
+                npsn_jenjang_sebelumnya:req.body.npsn_jenjang_sebelumnya,
+                penerima_pip:req.body.penerima_pip,
+                jenis_tinggal_id:req.body.jenis_tinggal
+            })
+
+            res.status(200).json({
+                message:"Data berhasil ditambahkan",
+                method:req.method
+            })
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
 
 router.route("/peserta_didik/upload")
     .post(upload.single('file'),async(req,res) => {

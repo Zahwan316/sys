@@ -4,9 +4,9 @@ const RowTable = (props) => {
     return(
         <>
             <tr>
-                <td>
+               <td>
                     {props.children}
-                </td>
+               </td>
             </tr>
         </>
     )

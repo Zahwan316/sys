@@ -51,7 +51,8 @@ router.route("/kurikulum_rombongan_belajar")
                 tingkat_pendidikan_id:req.body.tingkat_pendidikan_id,
                 nama:req.body.nama,
                 jenis_rombel:req.body.jenis_rombel,
-                semester_id:req.body.semester_id
+                semester_id:req.body.semester_id,
+                is_industri:req.body.is_industri
             })
             res.status(200).json(
                 {
@@ -82,7 +83,8 @@ router.route("/kurikulum_rombongan_belajar/:uuid")
                     tingkat_pendidikan_id:req.body.tingkat_pendidikan_id,
                     nama:req.body.nama,
                     jenis_rombel:req.body.jenis_rombel,
-                    semester_id:req.body.semester_id
+                    semester_id:req.body.semester_id,
+                    is_industri:req.body.is_industri
                 })
                 res.status(200).json(
                     {
@@ -216,7 +218,8 @@ router.route("/kurikulum_rombongan_belajar/mutasi/:semesterid")
                 tingkat_pendidikan_id:item.tingkat_pendidikan_id,
                 nama:item.nama,
                 jenis_rombel:item.jenis_rombel,
-                semester_id:req.params.semesterid
+                semester_id:req.params.semesterid,
+                is_industri:item.is_industri
             }))
             const adData = await Kurikulum_rombongan_belajar.bulkCreate(datainsert)
             res.status(200).json({

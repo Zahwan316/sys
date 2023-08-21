@@ -1,8 +1,5 @@
 const Sequelize = require('../config');
 const {DataTypes} = require("sequelize");
-//const Jenis_rombel = require("../models/jenis_rombel")
-const Tingkat_pendidikan = require("./tingkat_pendidikan")
-
 const Kurikulum_rombongan_belajar = Sequelize.define('kurikulum_rombongan_belajar', {
     rombongan_belajar_id: {
       type: DataTypes.UUID,
@@ -53,6 +50,11 @@ const Kurikulum_rombongan_belajar = Sequelize.define('kurikulum_rombongan_belaja
     updater_id: {
       type: DataTypes.UUID,
       allowNull: true
+    },
+    is_industri: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0
     }
   }, {
     Sequelize,
@@ -70,18 +72,4 @@ const Kurikulum_rombongan_belajar = Sequelize.define('kurikulum_rombongan_belaja
     ]
   });
 
-  /* Kurikulum_rombongan_belajar.hasMany (Jenis_rombel,{
-    foreignKey:"jenis_rombel",
-    as:"jenisrombel",
-    sourceKey:"jenis_rombel"
-  })
-  Jenis_rombel.belongsTo(Kurikulum_rombongan_belajar,
-    {foreignKey:"jenis_rombel",
-    as:"jenisrombel",
-    targetKey:"jenis_rombel"
-  }) */
-
-  Kurikulum_rombongan_belajar.belongsTo(Tingkat_pendidikan,{foreignKey:"tingkat_pendidikan_id"})
-  Tingkat_pendidikan.hasOne(Kurikulum_rombongan_belajar,{foreignKey:"tingkat_pendidikan_id"})
-
-module.exports = Kurikulum_rombongan_belajar
+  module.exports = Kurikulum_rombongan_belajar

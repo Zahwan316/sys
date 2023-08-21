@@ -100,7 +100,7 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                     setdatajenis(response_jenis.data.data)
                 }
-                else if(props.page === "rombel"){
+                else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
                     let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
@@ -213,7 +213,7 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                     setdatajenis(response_jenis.data.data)
                 }
-                else if(props.page === "rombel"){
+                else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
                     let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
@@ -317,7 +317,7 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                     setdatajenis(response_jenis.data.data)
                 }
-                else if(props.page === "rombel"){
+                else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
                     let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
@@ -399,7 +399,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-           
+           console.log(props.page)
     })
 
     //jika jurusan id ditemukan di page mapel industri
@@ -505,7 +505,7 @@ const TableMain = (props) => {
             }
 
             //jika page rombel
-            else if(props.page === "rombel"){
+            else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                 Swal.fire({
                     title:"Apakah Anda Yakin ?",
                     text:"Item yang sudah terhapus tidak dapat dikembalikan",
@@ -756,8 +756,9 @@ const TableMain = (props) => {
                         }
 
                        {
-                            props.page === "rombel" &&
+                            props.page === "rombelreguler" ?
                             dataRombel.map((item,index) => 
+                                item.is_industri == 0 &&
                                 <tr key={index} style={{verticalAlign:"middle"}}>
                                     <td>
                                         {
@@ -814,9 +815,71 @@ const TableMain = (props) => {
                                     </td>
                                 </tr>
                             )
+                            :
+                            (
+                                props.page === 'rombelindustri' &&
+                                dataRombel.map((item,index) => 
+                                item.is_industri == 1 &&
+                                    <tr key={index} style={{verticalAlign:"middle"}}>
+                                    <td>
+                                        {
+                                            dataSemester.map((items,index) => 
+                                                items.semester_id == item.semester_id &&
+                                                items.nama
+                                            )
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {
+                                            dataProgram.map((items,index) => 
+                                                items.kurikulum_program_id == item.kurikulum_program_id &&
+                                                    jurusan.map((data,index) => 
+                                                        data.jurusan_id == items.jurusan_id &&
+                                                        data.nama_jurusan
+                                                    )
+                                            )
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {
+                                            item.nama
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {
+                                            item.tingkat_pendidikan_id
+                                        }
+                                    </td>
+
+                                    <td>
+                                        {
+                                            dataJenisRombel.map((items,index) => 
+                                                items.jenis_rombel == item.jenis_rombel &&
+                                                items.nm_jenis_rombel
+                                            )
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <CButton color="link" typebtn="detail" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="edit" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="delete" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                        </CButton>
+                                    </td>
+                                    </tr>
                             
-                            //console.log(dataRombel)
+                                )
+                             )
                        }
+
 
 
                        {

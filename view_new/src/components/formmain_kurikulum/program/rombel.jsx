@@ -31,7 +31,7 @@ import {v4 as uuidv4} from "uuid"
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
-const RombelPage = () => {
+const RombelPage = (props) => {
     const[dataSemester,setdatasemester] = useState()
     const[dataProgram,setdataprogram] = useState()
     const[dataJurusan,setdatajurusan] = useState()
@@ -51,10 +51,11 @@ const RombelPage = () => {
         nama:"",
         jenis_rombel:"",
         semester_id:"",
+        is_industri:0
     })
 
     const tablehead = [
-        "Semeter",
+        "Semester",
         "Program",
         "Nama Rombel",
         "Tingkat",
@@ -76,6 +77,13 @@ const RombelPage = () => {
                 setdatatingkat(response_tingkat_pendidikan.data.data)
                 setdataprogram(response_program.data.data)
                 setdatajurusan(response_jurusan.data.data)
+
+                if(props.page === "rombelindustri"){
+                    setforminput({...forminput,is_industri:1})
+                }
+                else{
+                    setforminput({...forminput,is_industri:0})
+                }
             }
             catch(e){
                 console.log(e)
@@ -97,6 +105,7 @@ const RombelPage = () => {
                         nama:data.nama,
                         jenis_rombel:data.jenis_rombel,
                         semester_id:data.semester_id,
+                        is_industri:data.is_industri
                     })
                 }
                 else{
@@ -104,8 +113,9 @@ const RombelPage = () => {
                         kurikulum_program_id:"",
                         tingkat_pendidikan_id:"",
                         nama:"",
-                        jenis_rombel:"",
+                        jenis_rombel:props.page === 'rombelindustri'?14:"",
                         semester_id:"",
+                        is_industri:props.page === 'rombelindustri'?1:0
                     })
                 }
             }
@@ -176,7 +186,7 @@ const RombelPage = () => {
     return(
         <div>
              <TableMain
-                page="rombel"
+                page={props.page}
                 tablehead={tablehead}
                 handleModal={handleModal}
                 getTypeBtn = {getTypeBtn}
@@ -186,7 +196,7 @@ const RombelPage = () => {
             {
                 modal &&
                 <ModalProgramPage
-                    page="rombel"
+                    page={props.page}
                     title={typeform === "tambah"?"Tambah Data" : (typeform==="edit"?"Edit Data":"Detail Data")}
                     handleModal={handleModal}
                     handlesubmit={handleSubmit}

@@ -53,7 +53,10 @@ const Jenjang_pendidikan_route = require("./route/jenjang_pendidikan.js")
 const Jenis_kewarganegaraan = require("./route/jenis_kewarganegaraan")
 const Agama = require("./route/agama.js")
 const Alasan_layak_pip_route = require("./route/alasan_layak_pip")
-
+const Jenis_tinggal_route = require("./route/jenis_tinggal")
+const Alat_transportasi_route = require("./route/alat_transportasi")
+const Peserta_didik_alamat = require("./route/peserta_didik__alamat")
+const Peserta_didik_kesehatan = require("./route/peserta_didik_kesehatan")
 
 //library
 const multer = require("multer")
@@ -116,7 +119,10 @@ app.use(Jenjang_pendidikan_route)
 app.use(Jenis_kewarganegaraan)
 app.use(Agama)
 app.use(Alasan_layak_pip_route)
-
+app.use(Jenis_tinggal_route)
+app.use(Alat_transportasi_route)
+app.use(Peserta_didik_alamat)
+app.use(Peserta_didik_kesehatan)
 
 //end route
 

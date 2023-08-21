@@ -20,6 +20,7 @@ import {
 import DataPesertaDidikKeluarga from 'src/components/formmain_pd/datapesertadidikkeluarga';
 import DataPesertaDidikBantuan from 'src/components/formmain_pd/datapesertadidikbantuan';
 import DataPesertaDidikAlamat from 'src/components/formmain_pd/datapesertadidikalamat';
+import DataPersertaDidikKesehatan from 'src/components/formmain_pd/datapesertadidikkesehatan';
 
 const Peserta_didik_data_page = () => {
     const[pageform,setpageform] = useState("biodata")
@@ -87,6 +88,39 @@ const Peserta_didik_data_page = () => {
                                 defaultChecked={pageform == "alamat"}  
                                 onClick={handlePageForm}      
                             />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio5"
+                                autoComplete="off"
+                                code="kesehatan"
+                                label="Kesehatan"    
+                                defaultChecked={pageform == "kesehatan"}  
+                                onClick={handlePageForm}      
+                            />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio6"
+                                autoComplete="off"
+                                code="kontak"
+                                label="Kontak"    
+                                defaultChecked={pageform == "kontak"}  
+                                onClick={handlePageForm}      
+                            />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio7"
+                                autoComplete="off"
+                                code="rekening"
+                                label="Rekening"    
+                                defaultChecked={pageform == "rekening"}  
+                                onClick={handlePageForm}      
+                            />
 
                            
                         </CButtonGroup>
@@ -107,6 +141,10 @@ const Peserta_didik_data_page = () => {
                         {
                             pageform === "alamat" &&
                             <DataPesertaDidikAlamat />
+                        }
+                        {
+                            pageform === "kesehatan" &&
+                            <DataPersertaDidikKesehatan />
                         }
                     </>
                     

@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _jenjang_pendidikan = require("./jenjang_pendidikan");
+var _jenis_rombel = require("./jenis_rombel");
 
 function initModels(sequelize) {
-  var jenjang_pendidikan = _jenjang_pendidikan(sequelize, DataTypes);
+  var jenis_rombel = _jenis_rombel(sequelize, DataTypes);
 
 
   return {
-    jenjang_pendidikan,
+    jenis_rombel,
   };
 }
 module.exports = initModels;

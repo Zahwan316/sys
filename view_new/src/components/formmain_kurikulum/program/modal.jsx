@@ -170,7 +170,7 @@ const ModalProgramPage = (props) => {
                 }
 
                 {
-                    props.page === "rombel" &&
+                    props.page === "rombelreguler" || props.page === 'rombelindustri' ?
                     <div>
                         <div className='mb-3'>
                             <CFormLabel>Semester</CFormLabel>
@@ -250,6 +250,8 @@ const ModalProgramPage = (props) => {
                             </CFormSelect>
                         </div>
                     </div>
+                    :
+                    ""
                 }
 
                 {
