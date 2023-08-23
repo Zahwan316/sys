@@ -68,6 +68,15 @@ const DataPersertaDidikKesehatan = (props) => {
                     })
                     setupdater(uuidv4())
                 }
+                if(typeform === "edit"){
+                    let response = await axios.put(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan/${editedid}`,forminput)
+                    Swal.fire({
+                        icon:"success",
+                        title:"Data terkirim",
+                        text:"Terima kasih sudah mengisi data"
+                    })
+                    setupdater(uuidv4())
+                }
             }
             catch(e){
                 console.log(e)
@@ -84,13 +93,43 @@ const DataPersertaDidikKesehatan = (props) => {
         const getData = async() => {
             try{
                 if(typeform === "edit" || typeform === "detail"){
-                    let response = await axios.get()
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan/${editedid}`)
+                    let data = response.data.data
+                    setforminput({...forminput,
+                        peserta_didik_id:data.peserta_didik_id,
+                        buta_warna:data.buta_warna,
+                        berat_badan:data.berat_badan,
+                        tinggi_badan:data.tinggi_badan,
+                        lingkar_kepala:data.lingkar_kepala,
+                        visus_mata:data.visus_mata,
+                        ldl:data.ldl,
+                        hdl:data.hdl,
+                        gula_darah:data.gula_darah,
+                        tekanan_darah:data.tekanan_darah,
+                        tanggal_uji:data.tanggal_test
+                    })
+                }
+                else{
+                    setforminput({
+                        peserta_didik_id:id,
+                        buta_warna:null,
+                        berat_badan:null,
+                        tinggi_badan:null,
+                        lingkar_kepala:null,
+                        visus_mata:null,
+                        ldl:null,
+                        hdl:null,
+                        gula_darah:null,
+                        tekanan_darah:null,
+                        tanggal_uji:null
+                    })
                 }
             }
             catch(e){
                 console.log(e)
             }
         }
+        getData()
     },[editedid])
 
 
@@ -103,6 +142,7 @@ const DataPersertaDidikKesehatan = (props) => {
                 tablehead={tablehead}
                 getTypeBtn={getTypeBtn}
                 handlemodal={handlemodal}
+                updater={updater}
              />
 
             {
@@ -114,6 +154,7 @@ const DataPersertaDidikKesehatan = (props) => {
                     forminput={forminput}
                     title={typeform === "tambah" ? "Tambah Data" : (typeform === "edit" ? "Edit data" : "Detail Data")}
                     handlesubmit={handlesubmit}
+                    updater={updater}
                     />
             }
         </>

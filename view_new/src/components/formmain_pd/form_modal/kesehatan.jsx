@@ -10,6 +10,7 @@ const FormKesehatanPesertaDidik = (props) => {
                     type="date"
                     name="tanggal_uji"
                     onChange={props.handleforminput}
+                    value={props.forminput.tanggal_uji}
                 />
             </div>
             <div className='mb-3'>
@@ -17,10 +18,11 @@ const FormKesehatanPesertaDidik = (props) => {
                 <CFormSelect
                     name="buta_warna"
                     onChange={props.handleforminput}
+                    value={props.forminput.buta_warna}
                 >
                     <option>Pilih</option>
-                    <option value='0'>Iya</option>
-                    <option value='1'>Tidak</option>
+                    <option value='1'>Iya</option>
+                    <option value='0'>Tidak</option>
                 </CFormSelect>
             </div>
             <div className='d-flex mb-3 flex-wrap'>       
@@ -30,6 +32,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="tinggi_badan"
                         onChange={props.handleforminput}
+                        value={props.forminput.tinggi_badan}
                     />
                 </div>
                 <div className='mx-3'>
@@ -38,6 +41,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="berat_badan"
                         onChange={props.handleforminput}
+                        value={props.forminput.berat_badan}
                     />
                 </div>
                 <div className='mx-3'>
@@ -46,6 +50,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="lingkar_kepala"
                         onChange={props.handleforminput}
+                        value={props.forminput.lingkar_kepala}
                     />
                 </div>
                 <div className='mx-3'>
@@ -54,6 +59,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="text"
                         name="visus_mata"
                         onChange={props.handleforminput}
+                        value={props.forminput.visus_mata}
                     />
                 </div>
             </div>
@@ -64,6 +70,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="hdl"
                         onChange={props.handleforminput}
+                        value={props.forminput.hdl}
                     />
                 </div>
                 <div className='mx-3'>
@@ -72,6 +79,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="ldl"
                         onChange={props.handleforminput}
+                        value={props.forminput.ldl}
                     />
                 </div>
                 <div className='mx-3'>
@@ -80,6 +88,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="number"
                         name="gula_darah"
                         onChange={props.handleforminput}
+                        value={props.forminput.gula_darah}
                     />
                 </div>
                 <div className='mx-3'>
@@ -88,6 +97,7 @@ const FormKesehatanPesertaDidik = (props) => {
                         type="text"
                         name="tekanan_darah"
                         onChange={props.handleforminput}
+                        value={props.forminput.tekanan_darah}
                     />
                 </div>
             </div>

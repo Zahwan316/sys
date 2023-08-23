@@ -5,6 +5,7 @@ import ModalPesertaDidik from './modal';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import {v4 as uuidv4} from "uuid"
 
 const DataPesertaDidikAlamat = (props) => {
     const tablehead = [   
@@ -32,6 +33,7 @@ const DataPesertaDidikAlamat = (props) => {
     const[databujur,setdatabujur] = useState()    
     const[check,setcheck] = useState(false)
     const {id} = useParams()
+    const[updater,setupdater] = useState()
 
     const[forminput,setforminput] = useState({
         peserta_didik_id:id,
@@ -200,6 +202,7 @@ const DataPesertaDidikAlamat = (props) => {
                         title:"Data terkirim",
                         text:"Terima kasih sudah mengisi data"
                     })
+                    setupdater(uuidv4())
                 }
                 else if(typeform === "edit"){
                     let response = await axios.put(`${process.env.REACT_APP_LINK}peserta_didik_alamat/${editedid}`,forminput)
@@ -208,7 +211,9 @@ const DataPesertaDidikAlamat = (props) => {
                         title:"Data diedit",
                         text:"Terima kasih sudah mengedit data"
                     })
+                    setupdater(uuidv4())
                 }
+               
             }
             catch(e){
                 console.log(e)
@@ -226,6 +231,7 @@ const DataPesertaDidikAlamat = (props) => {
                 tablehead={tablehead}
                 handlemodal = {handleModal}
                 getTypeBtn={getTypeBtn}
+                updater={updater}
             />
 
             {

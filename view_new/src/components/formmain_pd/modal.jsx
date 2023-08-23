@@ -491,6 +491,7 @@ const ModalPesertaDidik = (props) => {
                             props.page === "pesertadidikkesehatan" &&
                             <FormKesehatanPesertaDidik 
                                 handleforminput={props.handleforminput}
+                                forminput={props.forminput}
                             />
 
                         }

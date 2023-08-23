@@ -201,6 +201,33 @@ const TablePesertaDidik = (props) => {
                     setdatapesertadidik(response.data.data)
                     
                 }
+                else if(props.page === 'pesertadidikalamat'){    
+                    let response_alamat = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat`)
+                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
+
+                    setdataalamat(response_alamat.data.data)
+                    setdatajenistinggal(response_jenis_tinggal.data.data)
+                }   
+                else if(props.page === "pesertadidikkesehatan"){
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                    let response_kesehatan = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan`)
+                    
+
+                    setdatapesertadidik(response.data.data)
+                    setdatakesehatan(response_kesehatan.data.data)
+                }
+                else if(props.page === "pesertadidikkontak"){
+                    let response_kontak = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kontak`)
+       
+                    setdatakontak(response_kontak.data.data)
+                }
+                else if(props.page === "pesertadidikrekening"){
+                    let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
+                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_bank`)
+                    
+                    setdatarekening(response_rekening.data.data)
+                    setdatabank(response_bank.data.data)
+                }
                 
             }
             catch(e){

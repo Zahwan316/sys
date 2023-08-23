@@ -50,6 +50,37 @@ router.route('/peserta_didik_kesehatan')
     })
 
 router.route("/peserta_didik_kesehatan/:id")
+    .put(async(req,res) => {
+        try{
+            let id = req.params.id
+            const findItem = await Peserta_didik_kesehatan.findByPk(id)
+            if(findItem){
+                findItem.update({
+                    buta_warna:req.body.buta_warna,
+                    berat_badan:req.body.berat_badan,
+                    tinggi_badan:req.body.tinggi_badan,
+                    lingkar_kepala:req.body.lingkar_kepala,
+                    visus_mata:req.body.visus_mata,
+                    ldl:req.body.ldl,
+                    hdl:req.body.hdl,
+                    gula_darah:req.body.gula_darah,
+                    tekanan_darah:req.body.tekanan_darah,
+                    tanggal_test:req.body.tanggal_uji
+                })
+                res.status(200).json({
+                    message:"data berhasil didapatkan",
+                    method:req.method
+                })
+            }
+            
+        }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
     .delete(async(req,res) => {
         try{
             let id = req.params.id
