@@ -57,6 +57,8 @@ const Jenis_tinggal_route = require("./route/jenis_tinggal")
 const Alat_transportasi_route = require("./route/alat_transportasi")
 const Peserta_didik_alamat = require("./route/peserta_didik__alamat")
 const Peserta_didik_kesehatan = require("./route/peserta_didik_kesehatan")
+const Peserta_didik_kontak = require("./route/peserta_didik_kontak.js")
+const Peserta_didik_rekening = require("./route/peserta_didik_rekening")
 
 //library
 const multer = require("multer")
@@ -123,6 +125,8 @@ app.use(Jenis_tinggal_route)
 app.use(Alat_transportasi_route)
 app.use(Peserta_didik_alamat)
 app.use(Peserta_didik_kesehatan)
+app.use(Peserta_didik_kontak)
+app.use(Peserta_didik_rekening)
 
 //end route
 

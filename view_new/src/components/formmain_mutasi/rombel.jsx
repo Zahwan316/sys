@@ -42,7 +42,7 @@ const MutasiRombelForm = () => {
                 })
                 .then((result) => {
                     if(result.isConfirmed){
-                        axios.post(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar/mutasi/${semesterid}`)
+                        axios.post(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar/mutasi/${semesterid}`,semesterid)
                             .then(res => {
                                 console.log(res)
                                 console.log(semesterid)
@@ -50,15 +50,15 @@ const MutasiRombelForm = () => {
                                     "Rombel berhasil dimutasi"
                                 )
                             })
-                            .catch(e => {
-                                Swal.fire(
-                                    "Kesalahan"
-                                )
-                                console.log(e)
-                                
-                            })   
-                    }
-                })
+                        }
+                    })
+                    .catch(e => {
+                        Swal.fire(
+                            "Kesalahan"
+                        )
+                        console.log(e)
+                        
+                    })   
             
             
         }

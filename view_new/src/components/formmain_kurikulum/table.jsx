@@ -61,6 +61,7 @@ const TableMain = (props) => {
     const[dataJadwal,setdatajadwal] = useState([])
     const[waktukbm,setwaktukbm] = useState([])
     const[hari,sethari] = useState([])
+    const[dataspesifik,setdataspesifik] = useState([])
 
     //mapel page
     //|
@@ -125,7 +126,7 @@ const TableMain = (props) => {
                     setdatatugasmengajar(responsetugasmengajar.data.data)
 
                 }
-                else if(props.page === "jadwal"){
+                else if(props.page === "jadwalreguler" || props.page ==="jadwalindustri" ){
                     response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
                     let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
@@ -133,10 +134,11 @@ const TableMain = (props) => {
                     let response_rombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let responsewaktukbm = await axios.get(`${process.env.REACT_APP_LINK}waktu_kbm`)
                     let responsehari = await axios.get(`${process.env.REACT_APP_LINK}hari`)
-        
+    
+
+                    setdatajadwal(response.data.data)
                     setdatatugasmengajar(responsetugasmengajar.data.data)
                     setdatamapel(responsemapel.data.data)
-                    setdatajadwal(response.data.data)
                     setgurumapel(responseguru.data.data)
                     setdatarombel(response_rombel.data.data)
                     setwaktukbm(responsewaktukbm.data.data)
@@ -221,6 +223,7 @@ const TableMain = (props) => {
                     let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
                     let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
 
+
                     setdatarombel(response.data.data)
                     setdatajenisrombel(response_jenis_rombel.data.data)
                     setdatasemester(response_semester.data.data)
@@ -238,7 +241,7 @@ const TableMain = (props) => {
                     setdatatugasmengajar(responsetugasmengajar.data.data)
 
                 }
-                else if(props.page === "jadwal"){
+                else if(props.page === "jadwalreguler" || props.page === "jadwalindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
                     let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
@@ -342,7 +345,7 @@ const TableMain = (props) => {
                     setdatatugasmengajar(responsetugasmengajar.data.data)
 
                 }
-                else if(props.page === "jadwal"){
+                else if(props.page === "jadwalreguler" || props.page === "jadwalindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
                     let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
@@ -399,7 +402,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-           console.log(props.page)
+           console.log(dataRombel)
     })
 
     //jika jurusan id ditemukan di page mapel industri
@@ -422,6 +425,37 @@ const TableMain = (props) => {
         }
         getData()
     },[props.jurusanid])
+
+    //jika di halaman jadwal ada parameter ptk id
+    useEffect(() => {
+        if(props.page === "jadwalspesifik"){
+            let getdata = async() => {
+
+                try{
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm/${props.ptk_id.id}`)
+                    let response_tugas_mengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
+                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                    let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    let response_rombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                    let responsewaktukbm = await axios.get(`${process.env.REACT_APP_LINK}waktu_kbm`)
+                    let responsehari = await axios.get(`${process.env.REACT_APP_LINK}hari`)
+
+                    setdataspesifik(response.data.data)
+                    setdatatugasmengajar(response_tugas_mengajar.data.data)
+                    setdatamapel(responsemapel.data.data)
+                    setgurumapel(responseguru.data.data)
+                    setdatarombel(response_rombel.data.data)
+                    setwaktukbm(responsewaktukbm.data.data)
+                    sethari(responsehari.data.data)
+            
+                }
+                catch(e){
+                    console.log(e)
+                }
+            }
+            getdata()
+        }
+    },[props.ptk_id])
 
     //jika tombol view guru ditekan
     const getDataJadwal = async() => {
@@ -553,7 +587,7 @@ const TableMain = (props) => {
             }
 
             //jika page jadwal
-            else if(props.page === "jadwal"){
+            else if(props.page === "jadwalreguler"|| props.page === "jadwalindustri" || props.page === "jadwalspesifik"){
                 Swal.fire({
                     title:"Apakah Anda Yakin ?",
                     text:"Item yang sudah terhapus tidak dapat dikembalikan",
@@ -604,7 +638,7 @@ const TableMain = (props) => {
 
         if(typebtn === "lihat"){
             setTimeout(() => {
-                navigate(`/jadwal/${id}`)
+                navigate(`/jadwal/jadwalspesifik/${id}`)
 
             },500)  
         }
@@ -880,8 +914,6 @@ const TableMain = (props) => {
                              )
                        }
 
-
-
                        {
                             props.page === "tugas" &&
                             props.gurumapel.map((item,index) => 
@@ -927,7 +959,7 @@ const TableMain = (props) => {
                        }
 
                        {
-                            props.page === "jadwal" ?
+                            props.page === "jadwalreguler" || props.page === "jadwalindustri" ?
                             (!loading ?                      
                                 props.datajadwal.map((item,index) => 
                                     dataTugasMengajar.map((items,index1) =>
@@ -954,7 +986,9 @@ const TableMain = (props) => {
                                                         
                                                 }
                                             </td>
-                                            <td>
+                                            {
+                                                props.page === "jadwalreguler" ? 
+                                                <td>
                                                 {
                                                    
                                                         items.ptk_penugasan_id == item.ptk_penugasan_id &&
@@ -965,62 +999,103 @@ const TableMain = (props) => {
                                                         ) 
                                                     
                                                 }
-                                            </td>
-                                            <td>
-                                                {
+                                                </td>
+                                                : 
+                                                (
+                                                    props.page === "jadwalindustri" &&
+                                                        <td>
+                                                            {
+                                                                dataRombel.map(items =>
+                                                                    items.rombongan_belajar_id === item.rombongan_belajar_id &&
+                                                                    items.nama
+                                                                )
+                                                            }
+                                                        </td>
+
+                                                )
+                                            }
+                                            
+                                            {
+                                                props.page === "jadwalreguler" &&
+                                                <td>
+                                                    {
+                                                        
+                                                            items.ptk_penugasan_id === item.ptk_penugasan_id &&
+                                                            //console.log(item.hari_ke)
+                                                            hari.map((data,index) => 
+                                                                //console.log(data)
+                                                                data.hari_ke == item.hari_ke &&
+                                                                data.nama 
+            
+                                                            ) 
+                                                        
+                                                    }
+                                                </td>
+
+
+                                            }
+
+                                            {
+                                                props.page === "jadwalreguler" ?
+                                                <td>
+                                                    {
                                                     
-                                                        items.ptk_penugasan_id === item.ptk_penugasan_id &&
-                                                        //console.log(item.hari_ke)
-                                                        hari.map((data,index) => 
-                                                            //console.log(data)
-                                                            data.hari_ke == item.hari_ke &&
-                                                            data.nama 
-        
-                                                        ) 
-                                                    
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                   
-                                                        items.ptk_penugasan_id === item.ptk_penugasan_id &&
-                                                        waktukbm.map((data,index) => 
-                                                            data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
-                                                            data.jam_ke
-                                                            :
-                                                            "   "
-                                                        )
-                                                    
-                                        
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    
-                                                        items.ptk_penugasan_id === item.ptk_penugasan_id &&
-                                                        waktukbm.map((data,index) => 
-                                                        data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
-                                                            data.waktu1
-                                                        :
-                                                        ""
-                                                        )
-                                                    
-    
-                                                }
-                                            </td>
-                                            <td>
-                                                {
-                                                    
-                                                        items.ptk_penugasan_id === item.ptk_penugasan_id &&
-                                                        waktukbm.map((data,index) => 
-                                                        data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
-                                                                data.waktu2
-                                                            :
-                                                            ""
-                                                        )
+                                                            items.ptk_penugasan_id === item.ptk_penugasan_id &&
+                                                            waktukbm.map((data,index) => 
+                                                                data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
+                                                                data.jam_ke
+                                                                :
+                                                                "   "
+                                                            )
+                                                        
+                                            
+                                                    }
+                                                </td>
+                                                :
+                                                (
+                                                    props.page === "jadwalindustri" &&
+                                                    <td>
+                                                        {
+                                                            item.tanggal
+                                                        }
+                                                    </td>
+                                                )
+                                            }
+
+                                            {
+                                                props.page === "jadwalreguler" &&
+                                                <>
+                                                    <td>
+                                                        {
+                                                            
+                                                                items.ptk_penugasan_id === item.ptk_penugasan_id &&
+                                                                waktukbm.map((data,index) => 
+                                                                data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
+                                                                    data.waktu1
+                                                                :
+                                                                ""
+                                                                )
+                                                            
+            
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        {
+                                                            
+                                                                items.ptk_penugasan_id === item.ptk_penugasan_id &&
+                                                                waktukbm.map((data,index) => 
+                                                                data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
+                                                                        data.waktu2
+                                                                    :
+                                                                    ""
+                                                                )
+                                                        
+                                                        }
+                                                    </td>
                                                 
-                                                }
-                                            </td>
+                                                </>
+                                                
+                                            }
                                             <td>
                                             
                                                     <CButton color="link" typebtn="detail" id={item.jadwal_kbm_id} onClick={handleClickBtn} >
@@ -1048,6 +1123,77 @@ const TableMain = (props) => {
                             </div>)
                             :
                             ""                                  
+                       }
+
+                       {/* Jadwal Spesifik */}
+                       {
+                            props.page === "jadwalspesifik" &&
+                            (
+                                !loading ?
+                                dataspesifik === "" ?
+                                "Data kosong"
+                                :
+                                dataspesifik.map(item =>
+                                    dataTugasMengajar.map(items =>
+                                        item.ptk_penugasan_id === items.ptk_penugasan_id &&
+                                        <tr>
+                                            <td>
+                                                {
+                                                    dataMapel.map(data =>
+                                                        data.mapel_sp_id === items.mapel_sp_id &&
+                                                        data.nama
+                                                    )
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    gurumapel.map(data =>
+                                                        data.ptk_id == items.ptk_id &&
+                                                        data.nama   
+                                                    )
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                        dataRombel.map((data,index) => 
+                                                            data.rombongan_belajar_id === item.rombongan_belajar_id &&
+                                                            data.nama
+                                                        ) 
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                   hari.map((data,index) => 
+                                                    //console.log(data)
+                                                    data.hari_ke == item.hari_ke &&
+                                                    data.nama 
+
+                                               ) 
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    
+                                                    items.ptk_penugasan_id === item.ptk_penugasan_id &&
+                                                    waktukbm.map((data,index) => 
+                                                    data.jam_ke === item.jam_ke && item.hari_ke === data.hari_ke ?
+                                                        data.waktu1
+                                                    :
+                                                    ""
+                                                    )
+                                                }
+                                            </td>
+                                            <td>
+                                                {
+                                                    item.tanggal
+                                                }
+                                            </td>
+                                        </tr>       
+                                    )
+                                )
+                                :
+                                <p>Loading</p>
+                            )
                        }
 
                        {

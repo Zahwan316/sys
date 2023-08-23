@@ -42,7 +42,8 @@ router.route("/jadwal_kbm")
                     ptk_id:req.body.ptk_id,
                     rombongan_belajar_id:req.body.rombongan_belajar_id,
                     hari_ke:req.body.hari_ke,
-                    jam_ke:req.body.jam_ke
+                    jam_ke:req.body.jam_ke,
+                    tanggal:req.body.tanggal
                 }
             )
             res.status(200).json({
@@ -105,7 +106,8 @@ router.route("/jadwal_kbm/:id")
                     ptk_id:req.body.ptk_id,
                     rombongan_belajar_id:req.body.rombongan_belajar_id,
                     hari_ke:req.body.hari_ke,
-                    jam_ke:req.body.jam_ke
+                    jam_ke:req.body.jam_ke,
+                    tanggal:req.body.tanggal,
                 })
                 res.status(200).json({
                     message:"Data berhasil diedit",

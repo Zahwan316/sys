@@ -1,5 +1,6 @@
 const Sequelize = require('../config');
 const {DataTypes} = require("sequelize");
+
 const Kurikulum_rombongan_belajar = Sequelize.define('kurikulum_rombongan_belajar', {
     rombongan_belajar_id: {
       type: DataTypes.UUID,
@@ -72,4 +73,4 @@ const Kurikulum_rombongan_belajar = Sequelize.define('kurikulum_rombongan_belaja
     ]
   });
 
-  module.exports = Kurikulum_rombongan_belajar
+module.exports = Kurikulum_rombongan_belajar

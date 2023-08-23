@@ -205,23 +205,24 @@ router.route("/kurikulum_rombongan_belajar/mutasi/:semesterid")
 
     })
     .post(async(req,res) => {
+        let semesterid = req.params.id
+        console.log(semesterid) 
+        const dataprev = await Kurikulum_rombongan_belajar.findAll({
+            where:{
+                semester_id:semesterid - 1
+            }
+        })
+        const datainsert = dataprev.map((item) => ({
+            rombongan_belajar_id:uuidv4(),
+            kurikulum_program_id:item.kurikulum_program_id,
+            tingkat_pendidikan_id:item.tingkat_pendidikan_id,
+            nama:item.nama,
+            jenis_rombel:item.jenis_rombel,
+            semester_id:semesterid,
+            is_industri:item.is_industri
+        }))
+        const adData = await Kurikulum_rombongan_belajar.bulkCreate(datainsert)
         try{
-            let semesterid = req.params.id
-            const dataprev = await Kurikulum_rombongan_belajar.findAll({
-                where:{
-                    semester_id:semesterid - 1
-                }
-            })
-            const datainsert = dataprev.map((item) => ({
-                rombongan_belajar_id:uuidv4(),
-                kurikulum_program_id:item.kurikulum_program_id,
-                tingkat_pendidikan_id:item.tingkat_pendidikan_id,
-                nama:item.nama,
-                jenis_rombel:item.jenis_rombel,
-                semester_id:req.params.semesterid,
-                is_industri:item.is_industri
-            }))
-            const adData = await Kurikulum_rombongan_belajar.bulkCreate(datainsert)
             res.status(200).json({
                 message:"Data berhasil ditambahkan",
                 data:adData,
@@ -231,12 +232,13 @@ router.route("/kurikulum_rombongan_belajar/mutasi/:semesterid")
         catch(e){
             res.status(200).json({
                 message:e.message,
+                data:dataprev,
                 method:req.method
             })
         }
     })
 
-router.route("/kurikulum_rombongan_belajar/mutasi")
+
     
 
 module.exports = router

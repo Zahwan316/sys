@@ -6,7 +6,7 @@ import {v4 as uuidv4} from "uuid"
 import Swal from 'sweetalert2';
 import { CFormLabel, CFormSelect } from '@coreui/react';
 
-const JadwalPage = () => {
+const JadwalPage = (props) => {
     const[dataJadwal,setdatajadwal] = useState([])
     const[dataJadwalRaw,setdatajadwalraw] = useState([])
     const[dataMapel,setdatamapel] = useState()
@@ -26,13 +26,16 @@ const JadwalPage = () => {
     const[selectmapelid,setselectmapelid] = useState()
 
     const[forminput,setforminput] = useState({
-        ptk_penugasan_id:"",
-        ptk_id:"",
-        rombongan_belajar_id:"",
-        hari_ke:"",
-        jam_ke:"",
+        ptk_penugasan_id:null,
+        ptk_id:null,
+        rombongan_belajar_id:null,
+        hari_ke:null,
+        jam_ke:null,
+        tanggal:null,
     })
 
+
+    //header table
     const tablehead = [    
         "Mapel",
         "Guru",
@@ -43,13 +46,22 @@ const JadwalPage = () => {
         "Waktu Berakhir"
     ]
 
+    const tablehead_industri = [
+        "Mapel",
+        "Guru",
+        "Kelas",
+        "Tanggal",
+    ]
+
     useEffect(() => {
         //console.log(selectedTugasMengajar)
         console.log(selectmapelid)
         console.log(dataJadwalRaw)
         console.log(forminput)
+        console.log(props.page)
     })
 
+    //ketika id edit dan delete ditemukan
     useEffect(() => {
         const getData = async() => {
             try{
@@ -74,18 +86,20 @@ const JadwalPage = () => {
                         ptk_id:data.ptk_id,
                         rombongan_belajar_id:data.rombongan_belajar_id,
                         hari_ke:data.hari_ke,
-                        jam_ke:data.jam_ke
+                        jam_ke:data.jam_ke,
+                        tanggal:data.tanggal
                     })
                     setmdapelid(mapelid)
                     
                 }
                 else{
                     setforminput({
-                        ptk_penugasan_id:"",
-                        ptk_id:"",
-                        rombongan_belajar_id:"",
-                        hari_ke:"",
-                        jam_ke:""
+                        ptk_penugasan_id:null,
+                        ptk_id:null,
+                        rombongan_belajar_id:null,
+                        hari_ke:null,
+                        jam_ke:null,
+                        tanggal:null
                     })
                 }
             }
@@ -96,7 +110,7 @@ const JadwalPage = () => {
         getData()
     },[itemid])
 
-
+    //ketika form guru terisi
     useEffect(() => {
         const getData = async() => {
             try{
@@ -110,6 +124,7 @@ const JadwalPage = () => {
         getData()
     },[forminput.ptk_penugasan_id])
 
+    //ketika mata pelajaran terpilih
     useEffect(() => {
         const getData = async() => {
             try{
@@ -218,6 +233,7 @@ const JadwalPage = () => {
                 }
             }
             catch(e){
+                console.log(e)
                 Swal.fire({
                     title:"Error",
                     text:e.message,
@@ -244,17 +260,28 @@ const JadwalPage = () => {
                 >
                     <option>Silahkan Pilih Mata Pelajaran</option>
                     {
-                        dataMapel.map((item,index) => 
-                            <option value={item.mapel_sp_id}>{item.nama}</option>
-                        )
+                        dataMapel.map((item) => 
+                            props.page === "jadwalreguler" ?
+                                (
+                                    item.is_industri == 0 &&
+                                        <option value={item.mapel_sp_id}>{item.nama}</option>
+
+                                )
+                                :
+                                (
+                                    item.is_industri == 1 &&
+                                        <option value={item.mapel_sp_id}>{item.nama}</option>
+
+                                )
+                                )
                     }
                 </CFormSelect>
             </>
 
         }
         <TableMain 
-            page="jadwal"
-            tablehead={tablehead}
+            page={props.page}
+            tablehead={props.page === "jadwalreguler" ? tablehead : tablehead_industri}
             handleModal={handlemodal}
             getTypeBtn={getTypeBtn}
             getdatamain={getdatamain}
@@ -264,7 +291,7 @@ const JadwalPage = () => {
        {
         modal && 
         <ModalProgramPage 
-            page="jadwal"
+            page={props.page}
             handleModal={handlemodal}
             title={typeform === "tambah" ? "Tambah data" : (typeform === "edit" ? "Edit Data" :"Detail Data")}
             dataJadwal={dataJadwal}

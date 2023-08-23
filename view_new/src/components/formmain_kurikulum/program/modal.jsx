@@ -304,7 +304,7 @@ const ModalProgramPage = (props) => {
                 }
 
                 {
-                    props.page === "jadwal" &&
+                    props.page === "jadwalreguler" ?
                     <div>
                         <div className='mb-3'>
                             <CFormLabel>Mapel</CFormLabel>
@@ -431,6 +431,110 @@ const ModalProgramPage = (props) => {
                                 } */}
                            
                     </div>
+                    :
+                    (
+                        props.page === "jadwalindustri" &&
+                        <div>
+                        <div className='mb-3'>
+                            <CFormLabel>Mapel</CFormLabel>
+                            <CFormSelect
+                                name="mapelid"
+                                onChange={props.setmapelid}
+                                value={props.mapelid}
+                            >
+                                <option>Pilih Mapel</option>
+                                {
+                                props.dataMapel.map((item,index) => 
+                                        props.page === "jadwalreguler" ?
+                                        (
+                                            item.is_industri == 0 &&
+                                            <option value={item.mapel_sp_id}>{item.nama}</option>
+                                        )
+                                        :
+                                        (
+                                            item.is_industri == 1 &&
+                                            <option value={item.mapel_sp_id}>{item.nama}</option>
+
+                                        )
+
+                                )
+                                }
+                            </CFormSelect>
+
+                        </div>
+                        
+                        <div className='mb-3'>
+                            <CFormLabel>Guru</CFormLabel>
+                            <CFormSelect
+                                name="ptk_id"
+                                onChange={props.handleforminput}
+                                value={props.forminput.ptk_id}
+                                onBlur={props.guruonblur}
+                            >
+                                <option >Pilih Guru</option>
+                                {
+                                    props.dataTugasMengajar.map((item,index) => 
+                                        props.dataGuru.map((items,index) => 
+                                            item.mapel_sp_id === props.mapelid &&
+                                            items.ptk_id === item.ptk_id &&
+                                            <option value={items.ptk_id}>{items.nama}</option>
+                                        )
+                                    )
+                                }
+
+                                {/* {
+                                    props.dataGuru.map((item,index) => 
+                                        <option value={item.ptk_id}>{item.nama}</option>
+                                    )
+                                } */}
+                            </CFormSelect>
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Rombel</CFormLabel>
+                            <CFormSelect
+                                name="rombongan_belajar_id"
+                                onChange={props.handleforminput}
+                                value={props.forminput.rombongan_belajar_id}
+                            >
+                                <option >Pilih Rombel</option>
+                                {
+                                    props.dataRombel.map((item) => 
+                                        props.page === "jadwalreguler" ?
+                                        (
+                                            item.is_industri == 0 &&
+                                            <option value={item.rombongan_belajar_id}>{item.nama}</option>
+
+                                        )
+                                        :
+                                        (
+                                            item.is_industri == 1 &&
+                                            <option value={item.rombongan_belajar_id}>{item.nama}</option>
+                                        )
+                                        
+                                    )
+                                }
+                            </CFormSelect>
+                        </div>
+                        <div className='mb-3'>
+                            <CFormLabel>Tanggal</CFormLabel>
+                            <CFormInput 
+                                type="date"
+                                name='tanggal'
+                                onChange={props.handleforminput}
+                                value={props.forminput.tanggal}
+                            />
+                        </div>
+                        <CFormInput
+                                name="ptk_penugasan_id"
+                                onChange={props.handleforminput}
+                                value={props.forminput.ptk_penugasan_id}
+                                readOnly
+                                style={{opacity:0}}
+                            />
+                        
+                    </div>
+                        
+                    )
                 }
 
                 {

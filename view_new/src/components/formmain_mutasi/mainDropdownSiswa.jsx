@@ -5,7 +5,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 
-const MainDropdownSiswa = () => {
+const MainDropdownSiswa = (props) => {
     //data from api
     const[dataRombel,setdatarombel] = useState([])
     const[dataSiswa,setdatasiswa] = useState([])
@@ -80,7 +80,7 @@ const MainDropdownSiswa = () => {
         
     },[idrombel])
 
-    //ambil data ketika memilih rombel bagian kanan
+    //ambil data rombel id ketika memilih rombel bagian kanan
     useEffect(() => {
         const getData = async() => {
             try{
@@ -97,17 +97,22 @@ const MainDropdownSiswa = () => {
         getData()
     },[idrombelnew])
 
-    //ambil data ketika memilih semester baigan kanan
+    //ambil data rombel ketika memilih semester baigan kanan
     useEffect(() => {
         let getdata = async() => {
-
             try{
-                
-                let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
-                
-                let datarombel = responseRombel.data.data
-                let datarombelnew = datarombel.filter(item => item.semester_id == idsemester && item)
-                setdatarombelnew(datarombelnew)
+                if(props.page === "siswareguler"){
+                    let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                    let datarombel = responseRombel.data.data
+                    let datarombelnew = datarombel.filter(item => item.semester_id == idsemester && item)
+                    setdatarombelnew(datarombelnew)
+                }
+                else if(props.page === "siswaindustri"){
+                    let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                    let datarombel = responseRombel.data.data
+                    let datarombelnew = datarombel.filter(item => item.semester_id == idsemester && item.is_industri == 1 ? item : "")
+                    setdatarombelnew(datarombelnew)
+                }
             }
             catch(e){
                 console.log(e)
@@ -116,14 +121,14 @@ const MainDropdownSiswa = () => {
         getdata()
     },[idsemester])
 
-    //ambil data ketika meimilih semester bagian kiri
+    //ambil data rombel ketika meimilih semester bagian kiri
     useEffect(() => {
         const getData = async() => {
             try{
-                let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
-                let responserombel = responseRombel.data.data
-                let datarombelold = responserombel.filter(item => item.semester_id == idsemesterold)
-                setdatarombel(datarombelold)
+                    let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                    let responserombel = responseRombel.data.data
+                    let datarombelold = responserombel.filter(item => item.semester_id == idsemesterold)
+                    setdatarombel(datarombelold)
             }
             catch(e){
                 console.log(e)
@@ -154,17 +159,22 @@ const MainDropdownSiswa = () => {
     },[updater])
 
     useEffect(() => {
-        /* console.log(idrombel)
-        console.log(idsemester) 
-        console.log(siswaterpilih)
-        console.log(idrombelnew)
-        console.log(forminput)
-        console.log(selectAll) */
+       /*   console.log(idrombel)
+       console.log(siswaterpilih)
+       console.log(idrombelnew)
+       console.log(forminput)
+       console.log(selectAll)  */
+       console.log(idsemester) 
+        console.log(dataRombel)
     })
 
     const handleOptionRombelLama = (e) => {
         setidrombel(e.target.value)
         setforminput({...forminput,rombellama:e.target.value})
+    }
+    
+    const handleOptionSemesterIdOld = (e) => {
+        setidsemesterold(e.target.value)
     }
 
     const handleOptionSemesterId = (e) => {
@@ -174,10 +184,6 @@ const MainDropdownSiswa = () => {
     const handleOptionIdRombelNew = (e) => {
         setidrombelnew(e.target.value)
         setforminput({...forminput,rombelbaru:e.target.value})
-    }
-
-    const handleOptionSemesterIdOld = (e) => {
-        setidsemesterold(e.target.value)
     }
 
     const handleSelectAll = (e) => {

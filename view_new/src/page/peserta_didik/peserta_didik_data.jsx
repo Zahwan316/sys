@@ -21,6 +21,10 @@ import DataPesertaDidikKeluarga from 'src/components/formmain_pd/datapesertadidi
 import DataPesertaDidikBantuan from 'src/components/formmain_pd/datapesertadidikbantuan';
 import DataPesertaDidikAlamat from 'src/components/formmain_pd/datapesertadidikalamat';
 import DataPersertaDidikKesehatan from 'src/components/formmain_pd/datapesertadidikkesehatan';
+import PesertaDidikKontak from 'src/components/formmain_pd/datapesertadidikkontak';
+import PesertaDidikRekening from 'src/components/formmain_pd/datapesertarekening';
+import useStore from 'src/state';
+import { useParams } from 'react-router-dom';
 
 const Peserta_didik_data_page = () => {
     const[pageform,setpageform] = useState("biodata")
@@ -30,10 +34,13 @@ const Peserta_didik_data_page = () => {
         setpageform(code)
     }
 
-    useEffect(() => {
-        console.log(pageform)
-    })
-
+    const {id} = useParams()
+    const setnamasiswa = useStore((state) => state.setnamasiswa)
+    //const namasiswa = useStore((state) => state.namasiswa)
+    const datasiswa  = useStore((state) => state.pesertadidik)
+    const namasiswaraw = datasiswa.filter(item => item.peserta_didik_id == id)
+    const namasiswa = namasiswaraw.length > 0 ? namasiswaraw[0].nama : ""
+   
     return(
         <div>
             <CardMain 
@@ -132,19 +139,39 @@ const Peserta_didik_data_page = () => {
                         }
                         {
                             pageform === "keluarga" &&
-                            <DataPesertaDidikKeluarga />
+                            <DataPesertaDidikKeluarga 
+                                namasiswa={namasiswa}
+                            />
                         }
                         {
                             pageform === "bantuan" &&
-                            <DataPesertaDidikBantuan />
+                            <DataPesertaDidikBantuan 
+                             namasiswa={namasiswa}
+                            />
                         }
                         {
                             pageform === "alamat" &&
-                            <DataPesertaDidikAlamat />
+                            <DataPesertaDidikAlamat 
+                            namasiswa={namasiswa}
+                            />
                         }
                         {
                             pageform === "kesehatan" &&
-                            <DataPersertaDidikKesehatan />
+                            <DataPersertaDidikKesehatan 
+                            namasiswa={namasiswa}
+                            />
+                        }
+                        {
+                            pageform === "kontak" && 
+                            <PesertaDidikKontak
+                            namasiswa={namasiswa}
+                            />
+                        }
+                        {
+                            pageform === "rekening" &&
+                            <PesertaDidikRekening
+                            namasiswa={namasiswa}
+                            />
                         }
                     </>
                     

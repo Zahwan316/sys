@@ -35,7 +35,8 @@ router.route("/kbm_mapel_sp")
                 mapel_kode:req.body.mapel_kode,
                 mapel_rank:req.body.urutan,
                 nama:req.body.nama,
-                is_industri:req.body.is_industri
+                is_industri:req.body.is_industri,
+                tanggal:req.body.tanggal
             })
             res.status(200).json({
                 message:"data berhasil dikirim",
@@ -63,7 +64,8 @@ router.route("/kbm_mapel_sp/:id")
                     kelompok:req.body.kelompok,
                     mapel_kode:req.body.mapel_kode,
                     mapel_rank:req.body.urutan,
-                    nama:req.body.nama
+                    nama:req.body.nama,
+                    tanggal:req.body.tanggal
                 })
                 res.status(200).json({
                     message:"Data berhasil ditambahkan",

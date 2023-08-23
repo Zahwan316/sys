@@ -32,6 +32,7 @@ import Swal from 'sweetalert2';
 import sweetAlert from 'sweet-alert';
 import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
+import useStore from 'src/state';
 
 const AlamatForm = (props) => {
     const[dataWilayah,setdatawilayah] = useState([]);
@@ -86,6 +87,10 @@ const AlamatForm = (props) => {
         "Action"
 
     ]
+    const setdatadesa = useStore((state) => state.setdatadesa)
+    const setdatakecamatan = useStore((state) => state.setdatakecamatan)
+    const setdatakota = useStore((state) => state.setdatakota)
+
     //filter data provinsi
     const provinsi = dataWilayah.filter(item => {
         const jabar = item.id_wilayah.startsWith(32);
@@ -97,6 +102,7 @@ const AlamatForm = (props) => {
     const kota = dataWilayah.filter(item => {
         const jabar = item.id_wilayah.startsWith(32);
         if(item.id_wilayah.length > 2 && item.id_wilayah.length < 5 && jabar){
+            setdatakota(item)
             return item
         }
     })
@@ -107,15 +113,18 @@ const AlamatForm = (props) => {
         if(item.id_wilayah.length > 4 && item.id_wilayah.length < 7 && jabar){
             datakecamatan = item
         }
+        setdatakecamatan(datakecamatan)
         return datakecamatan
     })
     //memfilter data daerah
     const desa = dataWilayah.filter(item => {
         const jabar = item.id_wilayah.startsWith(32)
          if(item.id_wilayah.length > 6 && jabar){    
+                setdatadesa(item)
                 return item  
             }
-        })
+    })
+
     const[typeform,settypeform] = useState()
     const[iditem,setiditem] = useState();
     const[clickededit,setclickededit] = useState(false);

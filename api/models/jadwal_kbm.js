@@ -59,6 +59,10 @@ const Jadwal_kbm = Sequelize.define('jadwal_kbm', {
     updater_id: {
       type: DataTypes.UUID,
       allowNull: true
+    },
+    tanggal:{
+      type: DataTypes.UUID,
+      allowNull: true
     }
   }, {
     Sequelize,

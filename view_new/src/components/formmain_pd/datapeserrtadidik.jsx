@@ -4,6 +4,7 @@ import ModalPesertaDidik from './modal';
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 import Swal from "sweetalert2"
+import useStore from 'src/state';
 
 const DataPesertaDidikMain = () => {
     const tablehead = [
@@ -69,7 +70,7 @@ const DataPesertaDidikMain = () => {
         npsn_jenjang_sebelumnya:null,
         penerima_pip:null,
         jenis_tinggal:null,
-      
+        tmt:null,
     })
     
     useEffect(() => {
@@ -180,6 +181,7 @@ const DataPesertaDidikMain = () => {
                     npsn_jenjang_sebelumnya:null,
                     penerima_pip:null,
                     jenis_tinggal:null,
+                    tmt:null,
                      })
                 }
             }
@@ -191,6 +193,9 @@ const DataPesertaDidikMain = () => {
         handlesenddata()
     }
 
+    const pesertadidikid = useStore((state) => state.pesertadidikid)
+
+    
 
     return(
         <>

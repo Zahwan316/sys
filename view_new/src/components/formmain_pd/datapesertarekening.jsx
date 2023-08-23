@@ -1,27 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import TablePesertaDidik from './table';
 
-const DataPesertaDidikBantuan = (props) => {
+const PesertaDidikRekening = (props) => {
     const tablehead = [
+        "Nama Bank",
+        "Nomor Rekening",
+        "Rekening Atas Nama",
         
-        "No KKS",
-        "No KPS",
-        "Penerima KPS",
-        'No KIP',
-        "Layak KIP",
-        "Alasan Layak PIP",
-        "Nama Di KIP"
     ]
-    
+
     return(
         <>
             <h5>Nama Siswa : {props.namasiswa}</h5>
             <TablePesertaDidik 
-                page="pesertadidikbantuan"
+                page="pesertadidikrekening"
                 tablehead={tablehead}
             />
         </>
     )
 }
 
-export default DataPesertaDidikBantuan;
+export default PesertaDidikRekening

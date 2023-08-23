@@ -71,7 +71,7 @@ const TugasPage = () => {
 
     useEffect(() => {
         console.log("Mapel sp id = "+mapelid)
-        console.log(typeform)
+        console.log(refsemester)
         console.log("item id = " + itemid)
         console.log(forminput)
     })

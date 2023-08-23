@@ -125,7 +125,7 @@ const routes = [
   { path: '/rombel', name: 'Pengelolaan / Kurikulum / Rombel', element: RombelMain, },
   { path: '/tugasmengajar', name: 'Pengelolaan / Kurikulum / Tugas Mengajar', element: TugasMain },
   { path: '/jadwal', name: 'Pengelolaan / Kurikulum / Jadwal', element: JadwalMain },
-  { path: '/jadwal/:id', name: 'Pengelolaan / Kurikulum / Jadwal', element: JadwalMain },
+  { path: '/jadwal/:type/:id', name: 'Pengelolaan / Kurikulum / Jadwal', element: JadwalMain },
   { path: '/mapel', name: 'Pengelolaan / Kurikulum / Mata Pelajaran', element: MapelPage },
   
   
@@ -141,6 +141,7 @@ const routes = [
   //Peserta Didik
   { path: '/pesertadidik', name: 'Pengelolaan / Peserta Didik / Upload Peserta', element: PesertaDidikPage    },
   { path: '/datapesertadidik', name: 'Pengelolaan / Peserta Didik / Data Peserta Didik', element: PesertaDidikDataPage    },
+  { path: '/datapesertadidik/:id', name: 'Pengelolaan / Peserta Didik / Data Peserta Didik', element: PesertaDidikDataPage    },
   
   
 ]

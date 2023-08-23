@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { CModal,CModalBody,CModalHeader,CButton,CModalTitle, CFormLabel, CFormInput,CModalFooter, CFormSelect } from '@coreui/react';
 import Select from 'react-select'
+import FormAlamat from './form_modal/alamat';
+import FormKesehatanPesertaDidik from './form_modal/kesehatan';
 
 const ModalPesertaDidik = (props) => {
     return(
@@ -454,6 +456,14 @@ const ModalPesertaDidik = (props) => {
                                     </div>  
                                 </div>
                                 <div className='mb-3'>
+                                    <CFormLabel>Menjadi siswa mulai tanggal</CFormLabel>
+                                    <CFormInput
+                                        type="date"
+                                        name='tmt'
+                                        onChange={props.handleforminput}
+                                    />
+                                </div>  
+                                <div className='mb-3'>
                                     <CFormLabel>NPSN Jenjang Sebelumnya</CFormLabel>
                                     <CFormInput
                                         type="text"
@@ -463,6 +473,28 @@ const ModalPesertaDidik = (props) => {
                                 </div>  
                             </div>
                         }
+                        {
+                            props.page === "pesertadidikalamat" &&
+                            <FormAlamat 
+                                datakota={props.datakota}
+                                handlekodekota={props.handlekodekota}
+                                datakecamatan={props.datakecamatan}
+                                handlekodekecamatan={props.handlekodekecamatan}
+                                datadesa={props.datadesa}
+                                handlekodedesa={props.handlekodedesa}
+                                handleforminput={props.handleforminput}
+                                forminput={props.forminput}
+                                handlecheck={props.handlecheck}
+                            />
+                        }
+                        {
+                            props.page === "pesertadidikkesehatan" &&
+                            <FormKesehatanPesertaDidik 
+                                handleforminput={props.handleforminput}
+                            />
+
+                        }
+
                     </CModalBody>
                     <CModalFooter>
                         <CButton color="secondary" onClick={props.handlemodal}>Close</CButton>

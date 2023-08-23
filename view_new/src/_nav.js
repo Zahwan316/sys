@@ -145,7 +145,7 @@ const _nav = [
           },
           {
             component:CNavItem,
-            name:"Data",
+            name:"Biodata",
             icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
             to:"/datapesertadidik"
           },
