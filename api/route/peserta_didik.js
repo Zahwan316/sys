@@ -560,8 +560,6 @@ router.route("/peserta_didik/upload")
             )
             )
         ) 
-           
-
             
             res.status(200).json({
                 message:"Data berhasil ditambahkan",
@@ -583,10 +581,67 @@ router.route("/peserta_didik/upload")
 router.route("/peserta_didik/:id")
     .put(async(req,res) => {
         try{
-
+            let id = req.params.id
+            const findItems = await Peserta_didik.findByPk(id)
+            if(findItems){
+                findItems.update({
+                    sekolah_id:req.body.sekolah_id,
+                    nama:req.body.nama,
+                    jenis_kelamin:req.body.jenis_kelamin,
+                    tempat_lahir:req.body.tempat_lahir,
+                    tanggal_lahir:req.body.tanggal_lahir,
+                    agama_id:req.body.agama_id,
+                    golongan_darah:req.body.golongan_darah,
+                    kewarganegaraan:req.body.kewarganegaraan,
+                    anak_keberapa:req.body.anak_keberapa,
+                    jumlah_saudara_kandung:req.body.jumlah_saudara_kandung,
+                    alat_transportasi_id:req.body.alat_transportasi_id,
+                    nama_ayah:req.body.nama_ayah,
+                    pendidikan_ayah_id:req.body.pendidikan_ayah_id,
+                    pekerjaan_ayah_id:req.body.pekerjaan_ayah_id,
+                    tanggal_lahir_ayah:req.body.tanggal_lahir_ayah,
+                    nama_ibu_kandung:req.body.nama_ibu,
+                    pendidikan_ibu_id:req.body.pendidikan_ibu_id,
+                    pekerjaan_ibu_id:req.body.pekerjaan_ibu_id,
+                    tanggal_lahir_ibu:req.body.tanggal_lahir_ibu,
+                    nama_wali:req.body.nama_wali,
+                    pendidikan_wali_id:req.body.pendidikan_wali_id,
+                    pekerjaan_wali_id:req.body.pekerjaan_wali_id,
+                    tanggal_lahir_wali:req.body.tanggal_lahir_wali,
+                    nik:req.body.nik,
+                    nisn:req.body.nisn,
+                    nipd:req.body.nipd,
+                    no_kk:req.body.no_kk,
+                    reg_akta_lahir:req.body.reg_akta_lahir,
+                    no_kks:req.body.no_kks,
+                    penerima_kps:req.body.penerima_kps,
+                    no_kps:req.body.no_kps,
+                    penerima_kip:req.body.penerima_kip,
+                    layak_pip:req.body.layak_pip,
+                    alasan_layak_pip:req.body.alasan_layak_pip,
+                    no_kip:req.body.no_kip,
+                    nama_di_kip:req.body.nama_di_kip,
+                    npsn_jenjang_sebelumnya:req.body.npsn_jenjang_sebelumnya,
+                    penerima_pip:req.body.penerima_pip,
+                    jenis_tinggal_id:req.body.jenis_tinggal
+                })
+                res.status(200).json({
+                    messagge:"Data berhasil diedit",
+                    method:req.method
+                })
+            }
+            else{
+                res.status(404).json({
+                    messagge:"Data tidak ditemukan",
+                    method:req.method
+                })
+            }
         }
         catch(e){
-
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
         }
     })
     .delete(async(req,res) => {
@@ -648,6 +703,42 @@ router.route("/peserta_didik/:id")
             })
         }
     })
+
+    router.route("/peserta_didik/edit/biodata/:id")
+        .put(async(req,res) => {
+            try{
+                let id = req.params.id
+                const findItems = await Peserta_didik.findByPk(id)
+                if(findItems){
+                    findItems.update({
+                        nama:req.body.nama,
+                        jenis_kelamin:req.body.jenis_kelamin,
+                        tempat_lahir:req.body.tempat_lahir,
+                        tanggal_lahir:req.body.tanggal_lahir,
+                        agama_id:req.body.agama_id,
+                        kewarganegaraan:req.body.kewarganegaraan,                     
+                        nik:req.body.nik,
+                        nipd:req.body.nipd,
+                    })
+                    res.status(200).json({
+                        messagge:"Data berhasil diedit",
+                        method:req.method
+                    })
+                }
+                else{
+                    res.status(404).json({
+                        messagge:"Data tidak ditemukan",
+                        method:req.method
+                    })
+                }
+            }
+            catch(e){
+                res.status(400).json({
+                    message:e.message,
+                    method:req.method
+                })
+            }
+        })
 
 
 module.exports = router

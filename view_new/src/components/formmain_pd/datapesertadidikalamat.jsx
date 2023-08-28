@@ -145,9 +145,9 @@ const DataPesertaDidikAlamat = (props) => {
     useEffect(() => {
         const getdata = async() => {
             try{
+                if(typeform === "edit"){
                 let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat/${editedid}`)
                 let data = response.data.data
-                if(typeform === "edit"){
                     setforminput({
                         peserta_didik_id:data.peserta_didik_id,
                         alamat_jalan:data.alamat_jalan,
@@ -167,18 +167,18 @@ const DataPesertaDidikAlamat = (props) => {
                 else if(typeform === "tambah"){
                     setforminput({
                         peserta_didik_id:id,
-                        alamat_jalan:null,
-                        rt:null,
-                        rw:null,
-                        nama_dusun:null,
-                        kode_wilayah:null,
-                        kode_pos:null,
-                        lintang:null,
-                        bujur:null,
-                        jenis_tinggal_id:null,
-                        jarak_ke_sekolah:null,
-                        keaktifan:null,
-                        tmt:null
+                        alamat_jalan:"",
+                        rt:"",
+                        rw:"",
+                        nama_dusun:"",
+                        kode_wilayah:"",
+                        kode_pos:"",
+                        lintang:"",
+                        bujur:"",
+                        jenis_tinggal_id:"",
+                        jarak_ke_sekolah:"",
+                        keaktifan:"",
+                        tmt:""
                     })
                 }
             }

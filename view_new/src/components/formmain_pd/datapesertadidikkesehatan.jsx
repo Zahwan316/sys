@@ -112,16 +112,16 @@ const DataPersertaDidikKesehatan = (props) => {
                 else{
                     setforminput({
                         peserta_didik_id:id,
-                        buta_warna:null,
-                        berat_badan:null,
-                        tinggi_badan:null,
-                        lingkar_kepala:null,
-                        visus_mata:null,
-                        ldl:null,
-                        hdl:null,
-                        gula_darah:null,
-                        tekanan_darah:null,
-                        tanggal_uji:null
+                        buta_warna:"",
+                        berat_badan:"",
+                        tinggi_badan:"",
+                        lingkar_kepala:"",
+                        visus_mata:"",
+                        ldl:"",
+                        hdl:"",
+                        gula_darah:"",
+                        tekanan_darah:"",
+                        tanggal_uji:""
                     })
                 }
             }

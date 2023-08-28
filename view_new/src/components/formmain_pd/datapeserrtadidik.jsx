@@ -6,7 +6,7 @@ import {v4 as uuidv4} from "uuid"
 import Swal from "sweetalert2"
 import useStore from 'src/state';
 
-const DataPesertaDidikMain = () => {
+const DataPesertaDidikMain = (props) => {
     const tablehead = [
         "Nama",
         "NIPD",
@@ -30,6 +30,7 @@ const DataPesertaDidikMain = () => {
     const[datajenistinggal,setdatajenistinggal] = useState([])
     const[dataalattransportasi,setdataalattransportasi] = useState([])
     const[updater,setupdater] = useState()
+    const[namasiswa,setnamasiswa]= useState()
     const[forminput,setforminput] = useState({
         sekolah_id:localStorage.getItem("sekolah_id"),
         nama:null,
@@ -103,6 +104,14 @@ const DataPesertaDidikMain = () => {
     useEffect(() => {
         console.log(forminput)
         console.log(typeform)
+    })
+
+    useEffect(() => {
+        setnamasiswa(props.namasiswa)
+    },[props.namasiswa])
+
+    useEffect(() => {
+
     })
 
     const handleforminput = (e) => {
@@ -199,6 +208,7 @@ const DataPesertaDidikMain = () => {
 
     return(
         <>
+             <h5>Nama Siswa : {namasiswa}</h5>
             <TablePesertaDidik
                 tablehead={tablehead}
                 page="pesertadidikbiodata"
@@ -221,6 +231,7 @@ const DataPesertaDidikMain = () => {
                     handleforminput={handleforminput}
                     handleKewarganegaraan={handleKewarganegaraan}
                     handleLayakpip={handleLayakpip}
+                    typeform={typeform}
                     title={typeform === "tambah" ? "Tambah Data" : (typeform === "edit" ? "Edit Data" : "Detail Data")}
                 />
             }

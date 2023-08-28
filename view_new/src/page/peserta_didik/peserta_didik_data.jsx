@@ -35,12 +35,13 @@ const Peserta_didik_data_page = () => {
     }
 
     const {id} = useParams()
-    const setnamasiswa = useStore((state) => state.setnamasiswa)
+    //const setnamasiswa = useStore((state) => state.setnamasiswa)
     //const namasiswa = useStore((state) => state.namasiswa)
     const datasiswa  = useStore((state) => state.pesertadidik)
     const namasiswaraw = datasiswa.filter(item => item.peserta_didik_id == id)
-    const namasiswa = namasiswaraw.length > 0 ? namasiswaraw[0].nama : ""
-   
+    let namasiswa = namasiswaraw.length > 0 ? namasiswaraw[0].nama : ""
+    
+
     return(
         <div>
             <CardMain 

@@ -89,7 +89,7 @@ const TablePesertaDidik = (props) => {
                 }
                 else if(props.page === "pesertadidikrekening"){
                     let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
-                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_bank`)
+                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}bank`)
                     
                     setdatarekening(response_rekening.data.data)
                     setdatabank(response_bank.data.data)
@@ -162,7 +162,7 @@ const TablePesertaDidik = (props) => {
                 }
                 else if(props.page === "pesertadidikrekening"){
                     let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
-                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_bank`)
+                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}bank`)
                     
                     setdatarekening(response_rekening.data.data)
                     setdatabank(response_bank.data.data)
@@ -223,7 +223,7 @@ const TablePesertaDidik = (props) => {
                 }
                 else if(props.page === "pesertadidikrekening"){
                     let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
-                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_bank`)
+                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}bank`)
                     
                     setdatarekening(response_rekening.data.data)
                     setdatabank(response_bank.data.data)
@@ -238,7 +238,7 @@ const TablePesertaDidik = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        console.log(id)
+        console.log()
         
     })
 
@@ -296,6 +296,13 @@ const TablePesertaDidik = (props) => {
             if(props.page === "pesertadidikkesehatan"){
                 deleteData(`peserta_didik_kesehatan/${id}`)
             }
+            if(props.page === "pesertadidikkontak"){
+                deleteData(`peserta_didik_kontak/${id}`)
+            }
+            if(props.page === "pesertadidikrekening"){
+                deleteData(`peserta_didik_rekening/${id}`)
+            }
+            
         }
 
     }
@@ -310,7 +317,7 @@ const TablePesertaDidik = (props) => {
 
     return(
         <>
-            <CTable>
+            <CTable hover >
                 <CTableHead>
                     <CTableRow className='table-dark'>
                         {
@@ -331,7 +338,7 @@ const TablePesertaDidik = (props) => {
 
                     </CTableRow>
                 </CTableHead>
-                <CTableBody>
+                <CTableBody style={{cursor:"pointer"}}>
                     {/* form biodata */}
                     {
                         props.page === "pesertadidikbiodata" &&
@@ -658,7 +665,7 @@ const TablePesertaDidik = (props) => {
                             datakontak.map(item =>
                                 id != null ?
                                     item.peserta_didik_id === id &&
-                                <tr>
+                                <tr style={{verticalAlign:"middle"}}>
                                     <td>
                                         {
                                            item.nomor_telepon_rumah
@@ -686,13 +693,24 @@ const TablePesertaDidik = (props) => {
                                     </td>
                                     <td>
                                         {
-                                           item.instaram
+                                           item.instagram
                                         }
                                     </td>
                                     <td>
                                         {
                                            item.youtube
                                         }
+                                    </td>
+                                    <td>
+                                                <CButton color="link" typebtn="detail" id={item.peserta_didik_kontak_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_kontak_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="edit" id={item.peserta_didik_kontak_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_kontak_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="delete" id={item.peserta_didik_kontak_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_kontak_id} ></img>
+                                                </CButton>
                                     </td>
                                 </tr>    
                                 :
@@ -710,11 +728,11 @@ const TablePesertaDidik = (props) => {
                             datarekening.map(item =>
                                 id != null ?
                                 item.peserta_didik_id === id &&
-                                <tr>
+                                <tr style={{verticalAlign:"middle"}}>
                                     <td>
                                         {
                                             databank.map(items =>
-                                                items.id_bank === item.id_bank &&
+                                                items.id_bank == item.id_bank.trim() &&
                                                 items.nm_bank
                                             )
                                         }
@@ -728,6 +746,17 @@ const TablePesertaDidik = (props) => {
                                         {
                                             item.rekening_atas_nama
                                         }
+                                    </td>
+                                    <td>
+                                                <CButton color="link" typebtn="detail" id={item.peserta_didik_rekening_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_rekening_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="edit" id={item.peserta_didik_rekening_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_rekening_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="delete" id={item.peserta_didik_rekening_id} onClick={handleclickbutton}  >
+                                                    <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_rekening_id} ></img>
+                                                </CButton>
                                     </td>
                                 </tr>
                                 :
