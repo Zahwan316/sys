@@ -4,6 +4,10 @@ import Select from "react-select"
 
 
 const FormPesertaDidik = (props) => {
+    useEffect(() => {
+        console.log(props.typeform)
+    })
+
     return(
         <>
              {/* form nama */}
@@ -11,7 +15,7 @@ const FormPesertaDidik = (props) => {
                 props.page === "pesertadidikbiodata" &&
                 <> 
                                 {
-                                    props.typeform == "tambah" || props.typeform == "edit" ?
+                                    props.typeform == "tambah" || props.typeform == "edit" || props.typeform =="detail" ?
                                     <>
                                         <div className='mb-3'>
                                                         <CFormLabel>
@@ -21,30 +25,36 @@ const FormPesertaDidik = (props) => {
                                                             name='nama'
                                                             type="text"
                                                             onChange={props.handleforminput}
+                                                            value={props.forminput.nama}
+                                                            required
                                                         />
                                         </div>
                                                     {/* Form nipd dan nisn */}
                                         <div className='mb-3 d-flex '>
-                                                        <div>
-                                                            <CFormLabel>
-                                                                NIPD
-                                                            </CFormLabel>
-                                                            <CFormInput 
-                                                                name='nipd'
-                                                                type="text"
-                                                                onChange={props.handleforminput}
-                                                                />
-                                                        </div>
-                                                        <div className='mx-3'>
-                                                            <CFormLabel>
-                                                                NISN
-                                                            </CFormLabel>
-                                                            <CFormInput 
-                                                                name='nisn'
-                                                                type="text"
-                                                                onChange={props.handleforminput}
-                                                                />
-                                                        </div>
+                                            <div>
+                                                <CFormLabel>
+                                                    NIPD
+                                                </CFormLabel>
+                                                <CFormInput 
+                                                    name='nipd'
+                                                    type="text"
+                                                    onChange={props.handleforminput}
+                                                    value={props.forminput.nipd}
+                                                    required
+                                                />
+                                                </div>
+                                                <div className='mx-3'>
+                                                    <CFormLabel>
+                                                        NISN
+                                                    </CFormLabel>
+                                                    <CFormInput 
+                                                         name='nisn'
+                                                         type="text"
+                                                         onChange={props.handleforminput}
+                                                         value={props.forminput.nisn}
+                                                         required
+                                                         />
+                                                    </div>
                                         </div>
                                                     {/* Form Jenis Kelamin */}
                                         <div className='mb-3'>
@@ -54,6 +64,8 @@ const FormPesertaDidik = (props) => {
                                                         <CFormSelect
                                                             name='jenis_kelamin'
                                                             onChange={props.handleforminput}
+                                                            value={props.forminput.jenis_kelamin}
+                                                            required
                                                         >
                                                             <option>Pilih Jenis Kelamin</option>
                                                             <option value='L'>Laki Laki</option>
@@ -70,6 +82,8 @@ const FormPesertaDidik = (props) => {
                                                     name='tempat_lahir'
                                                     type="text"
                                                     onChange={props.handleforminput}
+                                                    value={props.forminput.tempat_lahir}
+                                                    required
                                                 />
                                             </div>
                                             <div className='mx-3'>
@@ -80,6 +94,8 @@ const FormPesertaDidik = (props) => {
                                                     name='tanggal_lahir'
                                                     type="date"
                                                     onChange={props.handleforminput}
+                                                    value={props.forminput.tanggal_lahir}
+                                                    required
                                                 />
                                             </div>
                                         </div>
@@ -92,6 +108,8 @@ const FormPesertaDidik = (props) => {
                                                 <CFormSelect
                                                     name='agama_id'
                                                     onChange={props.handleforminput}
+                                                    value={props.forminput.agama_id}
+                                                    required
                                                 >
                                                     <option>Pilih Agama</option>
                                                     {
@@ -107,6 +125,7 @@ const FormPesertaDidik = (props) => {
                                                 </CFormLabel>
                                                 <Select 
                                                     onChange={props.handleKewarganegaraan}
+                                                    required
                                                     options={
                                                         props.datakewarganegaraan.map(item => {
                                                             let data = {
@@ -131,7 +150,7 @@ const FormPesertaDidik = (props) => {
                                     props.typeform === "tambah" &&
                                     <>
                                         <div className='mb-2'>
-                                    <h4>Keluarga</h4>
+                                        <h4>Keluarga</h4>
                                 </div>
 
                                 <div className='mb-3'>
@@ -483,14 +502,55 @@ const FormPesertaDidik = (props) => {
              }
 
              {
-                props.page === "pesertadidikkeluarga" && props.typeform === "edit" ?
+                props.page === "pesertadidikkeluarga" && props.typeform === "edit" ||props.typeform ==="detail" ?
                 <>
-                    <div className='mb-3'>
+                                <div className='mb-3'>
+                                    <CFormLabel>No KK</CFormLabel>
+                                    <CFormInput
+                                        type="text"
+                                        name='no_kk'
+                                        onChange={props.handleforminput}
+                                        required
+                                        value={props.forminput.no_kk}
+                                    />
+                                </div>  
+                                <div className='mb-3'>
+                                    <CFormLabel>NIK</CFormLabel>
+                                    <CFormInput
+                                        type="text"
+                                        name='nik'
+                                        onChange={props.handleforminput}
+                                        required
+                                        value={props.forminput.nik}
+                                    />
+                                </div>  
+                                <div className='mb-3'>
+                                        <CFormLabel>Anak Ke Berapa</CFormLabel>
+                                        <CFormInput
+                                            type="text"
+                                            name='anak_keberapa'
+                                            onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.anak_keberapa}
+                                        />
+                                    </div>  
+                                <div className='mb-3'>
+                                        <CFormLabel>Jumlah Saudara Kandung</CFormLabel>
+                                        <CFormInput
+                                            type="text"
+                                            name='jumlah_saudara_kandung'
+                                            onChange={props.handleforminput}
+                                            value={props.forminput.jumlah_saudara_kandung}
+                                        />
+                                    </div>  
+                                <div className='mb-3'>
                                     <CFormLabel>Nama Ayah</CFormLabel>
                                     <CFormInput
                                         name='nama_ayah'
                                         type="text"
                                         onChange={props.handleforminput}
+                                        required
+                                        value={props.forminput.nama_ayah}
                                     />
                                 </div>
                                 <div className='mb-3 d-flex'>
@@ -499,6 +559,8 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pendidikan_ayah_id'
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.pendidikan_ayah_id}
                                         >
                                             <option>Pilih pendidikan ayah</option>
                                             {
@@ -513,6 +575,8 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pekerjaan_ayah_id'
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.pekerjaan_ayah_id}
                                         >
                                             <option>Pilih Pekerjaan ayah</option>
                                             {
@@ -528,6 +592,8 @@ const FormPesertaDidik = (props) => {
                                             name='tanggal_lahir_ayah'
                                             type="date"
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.tanggal_lahir_ayah}
                                         />
                                     </div>
                                 </div>
@@ -538,6 +604,8 @@ const FormPesertaDidik = (props) => {
                                         name='nama_ibu'
                                         type="text"
                                         onChange={props.handleforminput}
+                                        required
+                                        value={props.forminput.nama_ibu}
                                     />
                                 </div>
                                 <div className='mb-3 d-flex'>
@@ -546,6 +614,8 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pendidikan_ibu_id'
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.pendidikan_ibu_id}
                                         >
                                             <option>Pilih pendidikan ibu</option>
                                             {
@@ -560,6 +630,8 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pekerjaan_ibu_id'
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.pekerjaan_ibu_id}
                                         >
                                             <option>Pilih Pekerjaan ibu</option>
                                             {
@@ -575,6 +647,8 @@ const FormPesertaDidik = (props) => {
                                             name='tanggal_lahir_ibu'
                                             type="date"
                                             onChange={props.handleforminput}
+                                            required
+                                            value={props.forminput.tanggal_lahir_ibu}
                                         />
                                     </div>
                                 </div>
@@ -585,6 +659,7 @@ const FormPesertaDidik = (props) => {
                                         name='nama_wali'
                                         type="text"
                                         onChange={props.handleforminput}
+                                        value={props.forminput.nama_wali}
                                     />
                                 </div>
                                 <div className='mb-3 d-flex'>
@@ -593,6 +668,7 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pendidikan_wali_id'
                                             onChange={props.handleforminput}
+                                            value={props.forminput.pendidikan_wali_id}
                                         >
                                             <option>Pilih pendidikan wali</option>
                                             {
@@ -607,6 +683,7 @@ const FormPesertaDidik = (props) => {
                                         <CFormSelect
                                             name='pekerjaan_wali_id'
                                             onChange={props.handleforminput}
+                                            value={props.forminput.pekerjaan_wali_id}
                                         >
                                             <option>Pilih Pekerjaan wali</option>
                                             {
@@ -622,6 +699,7 @@ const FormPesertaDidik = (props) => {
                                             type="date"
                                             name='tanggal_lahir_wali'
                                             onChange={props.handleforminput}
+                                            value={props.forminput.tanggal_lahir_wali}
                                         />
                                     </div>
                                 </div>
@@ -631,7 +709,7 @@ const FormPesertaDidik = (props) => {
              }
 
              {
-                props.page === "pesertadidikbantuan" && props.typeform  === "edit" ?
+                props.page === "pesertadidikbantuan" && props.typeform  === "edit" ||props.typeform ==="detail" ?
                 <>
                     <div className='d-flex mb-3 flex-wrap'>
                                     <div className='mb-3'>

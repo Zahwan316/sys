@@ -135,7 +135,9 @@ const Peserta_didik_data_page = () => {
 
                         {
                             pageform === "biodata" &&
-                            <DataPesertaDidikMain />
+                            <DataPesertaDidikMain
+                                namasiswa={namasiswa}
+                            />
 
                         }
                         {

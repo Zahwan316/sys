@@ -6,6 +6,10 @@ import {v4 as uuidv4} from "uuid"
 import RowTable from '../table/row';
 import useStore from 'src/state';
 import { useNavigate, useParams } from 'react-router-dom';
+/* import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css'; */
+import { MDBDataTable } from 'mdbreact';
 
 
 const TablePesertaDidik = (props) => {
@@ -130,11 +134,14 @@ const TablePesertaDidik = (props) => {
                     setjenistinggal(response_jenis_tinggal.data.data)
                 }
                 else if(props.page === 'pesertadidikkeluarga'){
-                    let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
+                    /* let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
                     let response_pekerjaan= await axios.get(`${process.env.REACT_APP_LINK}ref_pekerjaan`)
 
                     setdatapendidikan(response_pendidikan.data.data)
-                    setdatapekerjaan(response_pekerjaan.data.data)
+                    setdatapekerjaan(response_pekerjaan.data.data) */
+
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                    setdatapesertadidik(response.data.data)
                 }
                 else if(props.page === "pesertadidikbantuan"){ 
                     let response_layak_pip = await axios.get(`${process.env.REACT_APP_LINK}alasan_layak_pip`)
@@ -306,6 +313,7 @@ const TablePesertaDidik = (props) => {
         }
 
     }
+
     const navigate = useNavigate()
 
     const handleNama = (e) => {
@@ -314,6 +322,7 @@ const TablePesertaDidik = (props) => {
        navigate(`/datapesertadidik/${id}`)
        setpesertadidikid(id)
     }
+
 
     return(
         <>
@@ -328,12 +337,14 @@ const TablePesertaDidik = (props) => {
                             )
                         }
                         {
-                            props.page != "pesertadidikbantuan" || props.page != "pesertaddidikkeluarga"?
+                            props.page == "pesertadidikbantuan" || props.page == "pesertadidikkeluarga"?
+                            <th>
+
+                            </th>
+                            :
                             <th> 
                                 <img onClick={handleclickbutton}  typebtn="tambah" style={{cursor:"pointer"}} src="./img/icon/add bw.png" width="30" height="30" />   
                             </th>
-                            :
-                            ""
                         }
 
                     </CTableRow>
@@ -404,6 +415,12 @@ const TablePesertaDidik = (props) => {
                                 <tr key={index} style={{verticalAlign:"middle"}}>
                                   
                                     <td>
+                                        {item.no_kk}
+                                    </td>
+                                    <td>
+                                        {item.nik}
+                                    </td>
+                                    <td>
                                         {item.anak_keberapa}
                                     </td>
                                     <td>
@@ -449,6 +466,17 @@ const TablePesertaDidik = (props) => {
                                             )
                                         }
                                     </td>
+                                    <td>
+                                         <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                       {/*  <CButton color="link" typebtn="delete" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton> */}
+                                    </td>
                                 </tr> 
                                 :
                                 "" 
@@ -473,7 +501,7 @@ const TablePesertaDidik = (props) => {
                         datapesertadidik.map(item => 
                             id != null ?
                                 item.peserta_didik_id == id &&
-                                <tr>
+                                <tr style={{verticalAlign:"middle"}}>
                                     <td>
                                         {item.no_kks}
                                     </td>
@@ -499,6 +527,15 @@ const TablePesertaDidik = (props) => {
                                     </td>
                                     <td>
                                         {item.nama_di_kip}
+                                    </td>
+                                    <td>
+                                         <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                        </CButton>
+                                        
                                     </td>
                                 </tr>
                                 :
@@ -769,6 +806,8 @@ const TablePesertaDidik = (props) => {
                     }
                 </CTableBody>
             </CTable>
+
+          
         </>
     )
 }

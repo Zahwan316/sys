@@ -31,6 +31,7 @@ const ModalPesertaDidik = (props) => {
                                 handleLayakpip={props.handleLayakpip}
                                 typeform={props.typeform}
                                 page={props.page}
+                                forminput={props.forminput}
                             />
                             :
                             ""
@@ -80,7 +81,10 @@ const ModalPesertaDidik = (props) => {
                     </CModalBody>
                     <CModalFooter>
                         <CButton color="secondary" onClick={props.handlemodal}>Close</CButton>
-                        <CButton color="primary" type='submit'>Save changes</CButton>
+                        {
+                            props.typeform != "detail" &&
+                                <CButton color="primary" type='submit'>Save changes</CButton>
+                        }
                     </CModalFooter>
                 </form>
             </CModal>

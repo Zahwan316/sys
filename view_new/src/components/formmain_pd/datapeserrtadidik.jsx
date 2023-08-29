@@ -30,6 +30,7 @@ const DataPesertaDidikMain = (props) => {
     const[datajenistinggal,setdatajenistinggal] = useState([])
     const[dataalattransportasi,setdataalattransportasi] = useState([])
     const[updater,setupdater] = useState()
+    const datapesertadidik = useStore((state) => state.pesertadidik)
     const[namasiswa,setnamasiswa]= useState()
     const[forminput,setforminput] = useState({
         sekolah_id:localStorage.getItem("sekolah_id"),
@@ -38,11 +39,13 @@ const DataPesertaDidikMain = (props) => {
         tempat_lahir:null,
         tanggal_lahir:null,
         agama_id:null,
-        golongan_darah:null,
         kewarganegaraan:null,
+        nisn:null,
+        nipd:null,
+        golongan_darah:null,
+        alat_transportasi_id:null,
         anak_keberapa:null,
         jumlah_saudara_kandung:null,
-        alat_transportasi_id:null,
         nama_ayah:null,
         pendidikan_ayah_id:null,
         pekerjaan_ayah_id:null,
@@ -56,8 +59,6 @@ const DataPesertaDidikMain = (props) => {
         pekerjaan_wali_id:null,
         tanggal_lahir_wali:null,
         nik:null,
-        nisn:null,
-        nipd:null,
         no_kk:null,
         reg_akta_lahir:null,
         no_kks:null,
@@ -111,8 +112,44 @@ const DataPesertaDidikMain = (props) => {
     },[props.namasiswa])
 
     useEffect(() => {
-
-    })
+       const getddata = async() => {
+            try{
+                if(typeform == "edit"){
+                    const getTargetedPesertaDidik_object = datapesertadidik.filter(item => item.peserta_didik_id == editedid)
+                    const getTargetedPesertaDidik = getTargetedPesertaDidik_object[0]
+                    console.log(getTargetedPesertaDidik)
+                    setforminput({
+                        sekolah_id:localStorage.getItem("sekolah_id"),
+                        nama:getTargetedPesertaDidik.nama,
+                        jenis_kelamin:getTargetedPesertaDidik.jenis_kelamin,
+                        tempat_lahir:getTargetedPesertaDidik.tempat_lahir,
+                        tanggal_lahir:getTargetedPesertaDidik.tanggal_lahir,
+                        agama_id:getTargetedPesertaDidik.agama_id,
+                        kewarganegaraan:getTargetedPesertaDidik.kewarganegaraan,
+                        nisn:getTargetedPesertaDidik.nisn,
+                        nipd:getTargetedPesertaDidik.nipd,
+                    })
+                }
+                else if(typeform === 'tambah'){
+                    setforminput({...forminput,
+                        nama:"",
+                        jenis_kelamin:"",
+                        tempat_lahir:"",
+                        tanggal_lahir:"",
+                        agama_id:"",
+                        kewarganegaraan:"",
+                        nisn:"",
+                        nipd:"",
+                    })
+                }
+                
+            }
+            catch(e){
+                console.log(e)
+            }
+       }
+       getddata()
+    },[editedid])
 
     const handleforminput = (e) => {
         setforminput({...forminput,[e.target.name]:e.target.value})
@@ -133,8 +170,6 @@ const DataPesertaDidikMain = (props) => {
     const handleLayakpip = (option) => {
         setforminput({...forminput,alasan_layak_pip:option.value})
     }
-
-    
 
     const handlesubmit = (e) => {
         e.preventDefault()
@@ -193,6 +228,15 @@ const DataPesertaDidikMain = (props) => {
                     tmt:null,
                      })
                 }
+                else if(typeform == "edit"){
+                    let response = await axios.put(`${process.env.REACT_APP_LINK}peserta_didik/edit/biodata/${editedid}`,forminput)
+                    Swal.fire({
+                        icon:"success",
+                        title:"Data terkirim",
+                        text:"Terima kasih sudah mengedit data"
+                    })
+                }
+                setupdater(uuidv4())
             }
             catch(e){
                 console.log(e)
@@ -208,12 +252,13 @@ const DataPesertaDidikMain = (props) => {
 
     return(
         <>
-             <h5>Nama Siswa : {namasiswa}</h5>
+             <h5>Nama Siswa : {props.namasiswa}</h5>
             <TablePesertaDidik
                 tablehead={tablehead}
                 page="pesertadidikbiodata"
                 handlemodal={handlemodal}
                 getTypeBtn={getTypeBtn}
+                updater={updater}
             />
             {
                 modal && 
@@ -232,6 +277,7 @@ const DataPesertaDidikMain = (props) => {
                     handleKewarganegaraan={handleKewarganegaraan}
                     handleLayakpip={handleLayakpip}
                     typeform={typeform}
+                    forminput={forminput}
                     title={typeform === "tambah" ? "Tambah Data" : (typeform === "edit" ? "Edit Data" : "Detail Data")}
                 />
             }
