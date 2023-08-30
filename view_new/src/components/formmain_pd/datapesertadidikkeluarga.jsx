@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import TablePesertaDidik from './table';
 import { useParams } from 'react-router-dom';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 import ModalPesertaDidik from './modal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -139,7 +139,7 @@ const DataPesertaDidikKeluarga = (props) => {
                     datapekerjaan={pekerjaan}
                     handleforminput={handleforminput}
                     handlesubmit={handleSubmit}
-                    title="Edit Data"
+                    title={typeform === "edit" ? "Edit data" : "Detail data"}
                     forminput={forminput}
                 />
             }

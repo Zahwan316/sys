@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import TablePesertaDidik from './table';
 import ModalPesertaDidik from './modal';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
+import axios from 'axios';
+import Swal from 'sweetalert2';
+import {v4 as uuidv4}from "uuid"
 
 const DataPesertaDidikBantuan = (props) => {
     const tablehead = [
@@ -15,18 +18,23 @@ const DataPesertaDidikBantuan = (props) => {
     ]
 
     const[forminput,setforminput] = useState({
-        no_kks: "",
-        no_kps: "",
-        penerima_kps: "",
-        no_kip: "",
-        layak_kip: "",
-        alasan_layak_pip: "",
-        nama_di_kip: ""
+        no_kks: null,
+        no_kps: null,
+        penerima_kps: null,
+        no_kip: null,
+        layak_pip: null,
+        alasan_layak_pip: null,
+        nama_di_kip: null,
+        penerima_kip:null,
+        
+
     })
     const[modal,setmodal] = useState(false)
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
     const pesertadidik = useStore((state)  => state.pesertadidik)
+    const dataalasanlayakpip = useStore((state) => state.alasanlayakpip)
+    const[updater,setupdater] = useState()
 
     const handleforminput = (e) => {
         setforminput({
@@ -44,16 +52,59 @@ const DataPesertaDidikBantuan = (props) => {
         seteditedid(id)
     }
 
+    const handleLayakpip = (option) => {
+        setforminput({...forminput,alasan_layak_pip:option.value})
+    }
+
+    const PutData = async(url) => {
+        try{
+            let response = await axios.put(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            Swal.fire({
+                icon:"success",
+                title:"Data terkirim",
+                text:"Terima kasih sudah mengedit data"
+            })      
+            setupdater(uuidv4())
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
+
+    const handleSubmit= (e) => {
+        e.preventDefault()  
+
+        PutData(`peserta_didik/edit/bantuan/${editedid}`)
+    }
+
     useEffect(()=> {
         const getdata = async() => {
             try{
+                let databantuan_object = pesertadidik.filter(item => item.peserta_didik_id === editedid)
+                let databantuan = databantuan_object[0]
+                setforminput({
+                    no_kks: databantuan.no_kks,
+                    no_kps: databantuan.no_kps,
+                    penerima_kps: databantuan.penerima_kps,
+                    no_kip: databantuan.no_kip,
+                    layak_pip: databantuan.layak_pip,
+                    alasan_layak_pip: databantuan.alasan_layak_pip,
+                    nama_di_kip: databantuan.nama_di_kip,
+                    penerima_kip:databantuan.penerima_kip,
+                   
+                })
 
             }
-            catch(e){
-
+            catch(e){   
+                console.log(e)  
             }
         }
+        getdata()
     },[editedid])
+
+    useEffect(() =>{
+       console.log(forminput)
+    })
 
     return(
         <>
@@ -63,16 +114,21 @@ const DataPesertaDidikBantuan = (props) => {
                 tablehead={tablehead}
                 getTypeBtn={getTypeBtn}
                 handlemodal={handlemodal}
+                updater={updater}
             />
 
             {
                 modal && 
                     <ModalPesertaDidik 
                         page="pesertadidikbantuan"
+                        title={typeform === "edit" ? "Edit Data" : "Detail Data" }  
                         forminput={forminput}
                         handleforminput={handleforminput}
                         handlemodal={handlemodal}
-                        typeform={typeform}                                            
+                        typeform={typeform}  
+                        dataalasanlayakpip={dataalasanlayakpip}   
+                        handleLayakpip={handleLayakpip}   
+                        handlesubmit={handleSubmit}                                    
                     />
             }
         </>

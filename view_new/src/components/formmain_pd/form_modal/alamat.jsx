@@ -1,6 +1,6 @@
 import { CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 
 const FormAlamat = (props) => {
     const jenistinggal = useStore((state) => state.jenistinggal)

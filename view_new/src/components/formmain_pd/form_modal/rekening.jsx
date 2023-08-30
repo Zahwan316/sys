@@ -1,7 +1,7 @@
 import { CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
 import Select from "react-select"
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 
 const FormRekeningPesertaDidik = (props) => {
     const bank = useStore((state) => state.namabank)

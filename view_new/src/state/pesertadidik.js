@@ -1,6 +1,6 @@
 import {create} from "zustand"
 
-const useStore =create((set) => ({
+const usePesertaDidikStore =create((set) => ({
     //state peserta didik
     pesertadidik:[],
     pesertadidikid:[],
@@ -9,21 +9,20 @@ const useStore =create((set) => ({
     pesertadidikkontak:[],
     pesertadidikrekening:[],
     namasiswa:"",
-
-
     namabank:[],
     datadesa:[],
     datakecamatan:[],
     datakota:[],
     datawilayah:[],
-
     jenis_tinggal:[],
-
-    //state peserta didik menu
     pendidikan:[],
     pekerjaan:[],
+    alasanlayakpip:[],
+
+    
 
 
+    //method menu peserta didik
     setdatapesertadidik:(name) => set(() => ({pesertadidik:name})),
     setpesertadidikid:(id) => set(() => ({pesertadidikid:id})),
     setdatapesertadidikalamat:(name) => set(() => ({pesertadidikalamat:name})),
@@ -32,16 +31,16 @@ const useStore =create((set) => ({
     setdatapesertadidikrekening:(name) => set(() => ({pesertadidikrekening:name})),
     setnamasiswa:(nama) => set(() => ({namasiswa:nama})),
     setnamabank:(nama) => set(() => ({namabank:nama})),
-
     setdatadesa:(item) => set(() => ({datadesa:item})),
     setdatakecamatan:(item) => set(() => ({datakecamatan:item})),
     setdatakota:(item) => set(() => ({datakota:item})),
     setdatawilayah:(item) => set(() => ({datawilayah:item})),
-
     setjenistinggal:(item) => set(() => ({jenistinggal:item})),
-    
     setdatapendidikan:(data) => set(() => ({pendidikan:data})),
     setdatapekerjaan:(data) => set(() => ({pekerjaan:data})),
-}))
+    setalasanlayakpip:(data) => set(() => ({alasanlayakpip:data})),
 
-export default useStore
+    
+}))
+    
+export default usePesertaDidikStore

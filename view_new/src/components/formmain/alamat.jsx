@@ -32,7 +32,7 @@ import Swal from 'sweetalert2';
 import sweetAlert from 'sweet-alert';
 import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 
 const AlamatForm = (props) => {
     const[dataWilayah,setdatawilayah] = useState([]);

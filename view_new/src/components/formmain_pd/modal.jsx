@@ -8,6 +8,10 @@ import FormRekeningPesertaDidik from './form_modal/rekening';
 import FormPesertaDidik from './form_modal/pesertadidik';
 
 const ModalPesertaDidik = (props) => {
+    useEffect(() => {
+
+    })
+
     return(
         <>
             <CModal visible={true} onClose={props.handlemodal} size='xl'>
@@ -16,8 +20,7 @@ const ModalPesertaDidik = (props) => {
                         <CModalTitle>{props.title}</CModalTitle>
                     </CModalHeader>
                     <CModalBody>
-                        {
-                            props.page === "pesertadidikbiodata" || props.page === "pesertadidikkeluarga" ||  props.page === "pesertadidikbantuan" ?
+                      
                             <FormPesertaDidik 
                                 dataagama={props.dataagama}
                                 datakewarganegaraan={props.datakewarganegaraan}
@@ -33,9 +36,7 @@ const ModalPesertaDidik = (props) => {
                                 page={props.page}
                                 forminput={props.forminput}
                             />
-                            :
-                            ""
-                        }
+                         
                         {
                             props.page === "pesertadidikalamat" &&
                             <FormAlamat 

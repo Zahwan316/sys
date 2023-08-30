@@ -4,7 +4,7 @@ import ModalPesertaDidik from './modal';
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 import Swal from "sweetalert2"
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 
 const DataPesertaDidikMain = (props) => {
     const tablehead = [
@@ -26,7 +26,7 @@ const DataPesertaDidikMain = (props) => {
     const[dataKewarganegaraan,setdatakewarganegaraan] = useState([])
     const[datapekerjaan,setdatapekerjaan] = useState([])
     const[datapendidikan,setdatapendidikan] = useState([])
-    const[dataalasanlyakpiip,setdataalasanlayakpip] = useState([])
+    const[dataalasanlyakpiip,setdataalasanlayakpip] = useStore((state) => [state.alasanlayakpip,state.setalasanlayakpip])
     const[datajenistinggal,setdatajenistinggal] = useState([])
     const[dataalattransportasi,setdataalattransportasi] = useState([])
     const[updater,setupdater] = useState()
@@ -104,7 +104,7 @@ const DataPesertaDidikMain = (props) => {
 
     useEffect(() => {
         console.log(forminput)
-        console.log(typeform)
+        console.log(dataalasanlyakpiip)
     })
 
     useEffect(() => {

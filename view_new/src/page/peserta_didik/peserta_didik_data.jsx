@@ -23,7 +23,7 @@ import DataPesertaDidikAlamat from 'src/components/formmain_pd/datapesertadidika
 import DataPersertaDidikKesehatan from 'src/components/formmain_pd/datapesertadidikkesehatan';
 import PesertaDidikKontak from 'src/components/formmain_pd/datapesertadidikkontak';
 import PesertaDidikRekening from 'src/components/formmain_pd/datapesertarekening';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 import { useParams } from 'react-router-dom';
 
 const Peserta_didik_data_page = () => {

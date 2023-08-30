@@ -70,6 +70,10 @@ const SkPenetapan = React.lazy(() => import("./page/pembayaran/skpenetapan"))
 const PesertaDidikPage = React.lazy(() =>  import("./page/peserta_didik/peserda_didik_page"))
 const PesertaDidikDataPage = React.lazy(() => import("./page/peserta_didik/peserta_didik_data"))
 
+//ptk
+const PtkPage = React.lazy(() => import("./page/ptk/ptkmain"))
+
+
 const routes = [
   { path: '/', exact: true, name: 'Home' },
   { path: '/dashboard', name: 'Dashboard', element: Dashboard },
@@ -143,6 +147,9 @@ const routes = [
   { path: '/datapesertadidik', name: 'Pengelolaan / Peserta Didik / Data Peserta Didik', element: PesertaDidikDataPage    },
   { path: '/datapesertadidik/:id', name: 'Pengelolaan / Peserta Didik / Data Peserta Didik', element: PesertaDidikDataPage    },
   
+  //ptk
+  { path: '/dataptk', name: 'Pengelolaan / Ptk / Data Ptk', element: PtkPage},
+
   
 ]
 

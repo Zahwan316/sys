@@ -150,7 +150,26 @@ const _nav = [
             to:"/datapesertadidik"
           },
         ]
-      }
+      },
+      {
+        component:CNavGroup,
+        name:"PTK",
+        icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
+        items:[
+          {
+            component:CNavItem,
+            name:"Upload",
+            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            to:"/uploadptk"
+          },
+          {
+            component:CNavItem,
+            name:"Biodata",
+            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            to:"/dataptk"
+          },
+        ]
+      },
      
     ]
     

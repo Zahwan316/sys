@@ -4,7 +4,7 @@ import axios from 'axios';
 import Swal from "sweetalert2"
 import {v4 as uuidv4} from "uuid"
 import RowTable from '../table/row';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 import { useNavigate, useParams } from 'react-router-dom';
 /* import '@fortawesome/fontawesome-free/css/all.min.css';
 import 'bootstrap-css-only/css/bootstrap.min.css';
@@ -515,7 +515,7 @@ const TablePesertaDidik = (props) => {
                                         {item.no_kip}
                                     </td>
                                     <td>
-                                        {item.layak_kip}
+                                        {item.layak_pip === 1 ? "Iya":"Tidak"}
                                     </td>
                                     <td>
                                         {
@@ -526,7 +526,7 @@ const TablePesertaDidik = (props) => {
                                         }
                                     </td>
                                     <td>
-                                        {item.nama_di_kip}
+                                        {item.nama_di_kip === 1 ? "Terdaftar" : "Tidak Terdaftar"}
                                     </td>
                                     <td>
                                          <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >

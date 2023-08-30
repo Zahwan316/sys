@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TablePesertaDidik from './table';
-import useStore from 'src/state';
+import useStore from 'src/state/pesertadidik';
 import ModalPesertaDidik from './modal';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';

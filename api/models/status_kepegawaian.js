@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('status_kepegawaian', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Status_kepegawaian = Sequelize.define('status_kepegawaian', {
     status_kepegawaian_id: {
       type: DataTypes.SMALLINT,
       allowNull: false
@@ -32,7 +32,7 @@ module.exports = function(sequelize, DataTypes) {
       primaryKey: true
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'status_kepegawaian',
     schema: 'ref',
     timestamps: false,
@@ -46,4 +46,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+
+  module.exports = Status_kepegawaian;

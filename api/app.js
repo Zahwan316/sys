@@ -60,6 +60,10 @@ const Peserta_didik_kesehatan = require("./route/peserta_didik_kesehatan")
 const Peserta_didik_kontak = require("./route/peserta_didik_kontak.js")
 const Peserta_didik_rekening = require("./route/peserta_didik_rekening")
 
+//ptk route
+const Status_kepegawaian_route = require("./route/status_kepegawaian");
+const Jenis_ptk_route = require("./route/jenis_ptk");
+
 //library
 const multer = require("multer")
 
@@ -127,6 +131,10 @@ app.use(Peserta_didik_alamat)
 app.use(Peserta_didik_kesehatan)
 app.use(Peserta_didik_kontak)
 app.use(Peserta_didik_rekening)
+
+//ptk
+app.use(Status_kepegawaian_route)
+app.use(Jenis_ptk_route)
 
 //end route
 
