@@ -37,6 +37,9 @@ const BiodataTableBody = (props) => {
                         <td>    
                             {item.no_kk}
                         </td>
+                        <td>    
+                            {item.kewarganegaraan}
+                        </td>
                         <td>
                              <CButton color="link" typebtn="detail" id={item.ptk_id} onClick={props.handleclickbutton}  >
                                 <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={props.handleclickbutton}  id={item.ptk_id} ></img>

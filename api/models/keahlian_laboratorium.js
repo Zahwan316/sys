@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('keahlian_laboratorium', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Keahlian_laboratorium = Sequelize.define('keahlian_laboratorium', {
     keahlian_laboratorium_id: {
       type: DataTypes.SMALLINT,
       allowNull: false
@@ -26,9 +26,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'keahlian_laboratorium',
     schema: 'ref',
     timestamps: false
   });
-};
+
+module.exports = Keahlian_laboratorium;

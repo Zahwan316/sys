@@ -1,52 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { CButton } from '@coreui/react';
-import useRefStore from 'src/state/ref';
 
-const KepegawaianTableBody = (props) => {
-    const status_kepegawaian = useRefStore((state) => state.status_kepegawaian)
-    const jenis_ptk = useRefStore((state) => state.jenis_ptk)
+const KompetensiTableData = (props) => {
+   
 
     return(
         <>
             {
-                props.dataptk.map(item =>
+                props.dataptk.map(item => 
                     <tr>
                         <td>
-                            {item.nip}
-                        </td>
-                        <td>
-                            {item.nuptk}
-                        </td>
-                        <td>
-                            {item.nuks}
-                        </td>
-                        <td>
-                            {item.karpeg}
-                        </td>
-                        <td>
-                            {item.karpas}
-                        </td>
-                        <td>
                             {
-                                status_kepegawaian.map(items =>
-                                    items.status_kepegawaian_id === item.status_kepegawaian_id &&
-                                    items.nama
-                                )
+                                item.sudah_lisensi_kepala_sekolah
                             }
                         </td>
                         <td>
                             {
-                               jenis_ptk.map(items =>
-                                    items.jenis_ptk_id === item.jenis_ptk_id &&
-                                    items.jenis_ptk
-                                )
+                                item.keahlian_laboratorium_id
                             }
                         </td>
                         <td>
                             {
-                                item.tmt_pengangkatan
+                                item.mampu_handle_kk
                             }
-
+                        </td>
+                        <td>
+                            {
+                                item.keahlian_braille == 1 ? "Iya" : "Tidak"
+                            }
+                        </td>
+                        <td>
+                            {
+                                item.keahlian_bhs_isyarat == 1 ? "Iya" : "Tidak"
+                            }
                         </td>
                         <td>
                             <CButton color="link" typebtn="detail" id={item.ptk_id} onClick={props.handleclickbutton}  >
@@ -63,4 +49,4 @@ const KepegawaianTableBody = (props) => {
     )
 }
 
-export default KepegawaianTableBody;
+export default KompetensiTableData;

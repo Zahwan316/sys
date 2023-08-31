@@ -3,6 +3,8 @@ import CardMain from 'src/components/card/card';
 import { CButton,CFormCheck,CButtonGroup } from '@coreui/react';
 import PtkBiodata from 'src/components/formmain_ptk/ptkbiodata';
 import PtkKepegawaian from 'src/components/formmain_ptk/kepegawaian';
+import PtkKontak from 'src/components/formmain_ptk/kontak';
+import PtkKompetensi from 'src/components/formmain_ptk/kopentensi';
 
 const PtkMainPage = () => {
     const[pageform,setpageform] = useState("identitas")
@@ -45,6 +47,28 @@ const PtkMainPage = () => {
                                 code="kepegawaian"
                                 defaultChecked={pageform == "kepegawaian"}
                                 onClick={handlePageForm}
+                            />      
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio3"
+                                autoComplete="off"
+                                label="Kontak"
+                                code="kontak"
+                                defaultChecked={pageform == "kontak"}
+                                onClick={handlePageForm}
+                            />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio4   "
+                                autoComplete="off"
+                                label="Kompetensi Khusus"
+                                code="kompetensi"
+                                defaultChecked={pageform == "kompetensi"}
+                                onClick={handlePageForm}
                             />
                                
                         </CButtonGroup>
@@ -56,6 +80,14 @@ const PtkMainPage = () => {
                         {
                             pageform === "kepegawaian" &&
                             <PtkKepegawaian />
+                        }
+                        {
+                            pageform == "kontak" &&
+                            <PtkKontak />
+                        }
+                        {
+                            pageform == "kompetensi" &&
+                            <PtkKompetensi />
                         }
                     </>
                 }            

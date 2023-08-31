@@ -9,7 +9,8 @@ const PtkKepegawaian = (props) => {
         "Karpeg",
         "Karpas",
         "Status Kepegawaian",
-        "Jenis PTK"
+        "Jenis PTK",
+        "TMT Pengangkatan"
     ]
     
     return(
