@@ -22,7 +22,7 @@ const ModalPtk = (props) => {
                         {
                             props.typeform != "detail" &&
                             <>
-                                <CButton color="primary">Save changes</CButton>
+                                <CButton color="primary" type='submit'>Save changes</CButton>
                             </>
                         }
                     </CModalFooter>

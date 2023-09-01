@@ -2,9 +2,17 @@ import { CFormInput,CFormLabel, CFormSelect } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
 import useRefStore from 'src/state/ref';
 import axios from 'axios';
+import useFormPtkStore from 'src/state/form/ptkform';
 
 const KompetensiForm = () => {
     const[keahlian_laboratorium,setkeahlian_laboratorium] = useRefStore((state) => [state.keahlian_laboratorium,state.setkeahlian_laboratorium,state.setkeahlian_laboratorium])
+    const setdata = useFormPtkStore((state) => state.setform)
+    const forminput = useFormPtkStore((state) => state)
+
+    const handleforminput = (e) => {
+        const{name,value} = e.target;
+        setdata(name, value);
+    }
 
     useEffect(() => {
         const getData = async() => {
@@ -28,7 +36,25 @@ const KompetensiForm = () => {
                 <CFormLabel>
                     Punya Lisensi Kepala Sekolah?
                 </CFormLabel>
-                <CFormSelect>
+                <CFormSelect
+                    name="sudah_lisensi_kepala_sekolah"
+                    onChange={handleforminput}
+                    value={forminput.sudah_lisensi_kepala_sekolah}
+                >
+                    <option>Pilih</option>
+                    <option value="0">Tidak</option>
+                    <option value="1">Ya</option>
+                </CFormSelect>
+            </div>
+            <div className='mb-3'>
+                <CFormLabel>
+                    Pernah Diklat Pengawasan?
+                </CFormLabel>
+                <CFormSelect
+                    name="pernah_diklat_kepengawasan"
+                    onChange={handleforminput}
+                    value={forminput.pernah_diklat_kepengawasan}
+                >
                     <option>Pilih</option>
                     <option value="0">Tidak</option>
                     <option value="1">Ya</option>
@@ -38,7 +64,11 @@ const KompetensiForm = () => {
                 <CFormLabel>
                     Keahlian Laboratorium
                 </CFormLabel>
-                <CFormSelect>
+                <CFormSelect
+                    name="keahlian_laboratorium_id"
+                    onChange={handleforminput}
+                    value={forminput.keahlian_laboratorium_id}
+                >
                     <option>Pilih</option>
                     {
                         keahlian_laboratorium!== null && keahlian_laboratorium.map((item,index) => {
@@ -54,7 +84,11 @@ const KompetensiForm = () => {
                     <CFormLabel>
                         Mampu Menangani Kebutuhan Khusus?
                     </CFormLabel>
-                    <CFormSelect>
+                    <CFormSelect
+                        name="mampu_handle_kk"
+                        onChange={handleforminput}
+                        value={forminput.mampu_handle_kk}
+                    >
                         <option>Pilih</option>
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>
@@ -64,7 +98,11 @@ const KompetensiForm = () => {
                     <CFormLabel>
                         Keahlian Braille
                     </CFormLabel>
-                    <CFormSelect>
+                    <CFormSelect
+                        name="keahlian_braille"
+                        onChange={handleforminput}
+                        value={forminput.keahlian_braille}
+                    >
                         <option>Pilih</option>
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>
@@ -74,7 +112,11 @@ const KompetensiForm = () => {
                     <CFormLabel>
                         Keahlian Bahasa Isyarat
                     </CFormLabel>
-                    <CFormSelect>
+                    <CFormSelect
+                        name="keahlian_bhs_isyarat"
+                        onChange={handleforminput}
+                        value={forminput.keahlian_bhs_isyarat}
+                    >
                         <option>Pilih</option>
                         <option value="0">Tidak</option>
                         <option value="1">Ya</option>

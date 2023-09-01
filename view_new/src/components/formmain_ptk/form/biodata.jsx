@@ -4,10 +4,11 @@ import IdentitasForm from './biodata_form/identitas';
 import KepegawaianForm from './biodata_form/kepegawaian';
 import KompetensiForm from './biodata_form/kompetensi';
 import KontakForm from './biodata_form/kontak';
+import RekeningForm from './biodata_form/rekening';
 
 const FormBiodata = () => {
     const[page,setpage] = useState(1)
-    const[maxpage,setmaxpage] = useState(4)
+    const[maxpage,setmaxpage] = useState(5)
 
     const handleprevpage = () => {
         setpage((prev) => prev -1)
@@ -62,6 +63,14 @@ const FormBiodata = () => {
                     <h5 className='mb-2'>Kontak</h5>
                     <KontakForm /
                     >
+                </>
+            }
+
+            {
+                page === 5 &&
+                <>
+                    <h5 className='mb-2'>Rekening</h5>
+                    <RekeningForm />
                 </>
             }
 

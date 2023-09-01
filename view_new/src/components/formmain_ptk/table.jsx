@@ -48,6 +48,19 @@ const TablePtk = (props) => {
     },[])
 
     useEffect(() => {
+        const refetch_data = async() => {
+            try{
+                let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                setptk(res.data.data)
+            }
+            catch(e){
+
+            }
+        }
+        refetch_data()
+    },[props.updater])
+
+    useEffect(() => {
         console.log(agama)
     },[])
 
