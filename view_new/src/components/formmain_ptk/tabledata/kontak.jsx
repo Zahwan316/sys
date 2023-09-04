@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { CButton } from '@coreui/react';
+import { useParams } from 'react-router-dom';
 
 const KontakTableBody = (props) => {
-
+    const{id} = useParams()
 
     return(
         <>
             {
                 props.dataptk.map(item => 
+                    id != null ?
+                    item.ptk_id == id &&
                     <tr>
                         <td>
                             {
@@ -32,7 +35,9 @@ const KontakTableBody = (props) => {
                                 <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={props.handleclickbutton}  id={item.ptk_id} ></img>
                             </CButton>
                         </td>
-                    </tr>        
+                    </tr>     
+                    :
+                    <h4>Data Kosong</h4>   
                 )
             }
         </>

@@ -318,7 +318,6 @@ const TablePesertaDidik = (props) => {
 
     const handleNama = (e) => {
        let id = e.target.getAttribute("id")
-       console.log(id)
        navigate(`/datapesertadidik/${id}`)
        setpesertadidikid(id)
     }

@@ -9,15 +9,19 @@ import KontakTableBody from './tabledata/kontak';
 import KompetensiTableData from './tabledata/kompetensi';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid";
+import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 const TablePtk = (props) => {
     const[ptk,setptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
+    const[ptkselected,setptkselected] = usePtkStore((state) => [state.ptkselected,state.setptkselected])
     const[agama,setagama] = useRefStore((state) => [state.agama,state.setagama])
     const[jenisptk,setjenisptk] = useRefStore((state) => [state.jenisptk,state.setjenis_ptk])
     const[status_kepegawaian,setstatus_kepegawaian] = useRefStore((state) => [state.status_kepegawaian,state.setstatus_kepegawaian])
     const[kewarganegaraan,setkewarganegaraan] = useRefStore ((state) => [state.kewarganegaraan,state.setkewarganegaraan])
     const[updaterdelete,setupdaterdelete] = useState()
-
+    const navigate = useNavigate()
+    const{id} = useParams()
 
     useEffect(() => {
         const getData = async() => {
@@ -61,8 +65,34 @@ const TablePtk = (props) => {
     },[props.updater])
 
     useEffect(() => {
-        console.log(agama)
-    },[])
+        const refetch_data = async() => {
+            try{
+                let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                setptk(res.data.data)
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
+        refetch_data()
+    },[updaterdelete])
+
+    useEffect(() => {
+        const fetchData = async() => {
+            try{
+                let res = await axios.get(`${process.env.REACT_APP_LINK}ptk/${id}`)
+                setptkselected(res.data.data)
+            }
+            catch(e){
+                console.log(e)
+            }
+        }
+        fetchData()
+    },[id])
+
+    useEffect(() => {
+        console.log(ptkselected)
+    })
 
     const handledelete = async(url) => {
         try{
@@ -78,6 +108,7 @@ const TablePtk = (props) => {
                 if(result.isConfirmed){
                     axios.delete(`${process.env.REACT_APP_LINK}${url}`)
                         .then(res => {
+                            console.log(res.data)
                             setupdaterdelete(uuidv4())
                             Swal.fire(
                                 "Data berhasil dihapus"
@@ -108,14 +139,20 @@ const TablePtk = (props) => {
 
         if(typebtn == "delete"){
             if(props.page === "ptkbiodata"){
-                handledelete(`${process.env.REACT_APP_LINK}ptk/${id}`)
+                handledelete(`ptk/${id}`)
             }
         }
     }
 
+    const selectPtk = (e) => {
+        let id = e.target.getAttribute("id")
+        navigate(`/dataptk/${id}`)
+        console.log(id)
+    }
+
     return(
         <>
-            <CTable style={{verticalAlign:"middle"}} hover>
+            <CTable style={{verticalAlign:"middle",cursor:"pointer"}} hover>
                 <CTableHead className='table-dark'>
                     <CTableRow style={{verticalAlign:"middle"}}>
                         {
@@ -143,6 +180,7 @@ const TablePtk = (props) => {
                         <BiodataTableBody 
                             dataptk={ptk}
                             handleclickbutton={handleclickbutton}
+                            selectPtk={selectPtk}
                         />
                     }
 

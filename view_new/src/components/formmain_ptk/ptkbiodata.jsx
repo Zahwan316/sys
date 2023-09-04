@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 
-const PtkBiodata = () => {
+const PtkBiodata = (props) => {
     const tablehead = [
         "Nama",
         "Jenis Kelamin",
@@ -27,6 +27,7 @@ const PtkBiodata = () => {
 
     const handlemodal = () => {
         setmodal(!modal)
+        !modal && resetform()
     }
 
     const getTypeBtn = (typebtn,id) => {
@@ -100,12 +101,18 @@ const PtkBiodata = () => {
     },[editedid]);
 
     useEffect(() => {
+        if(typeform == "tambah"){
+            resetform()
+        }
+    },[typeform]);
+
+    useEffect(() => {
         console.log(forminput)
     })
 
     return(
         <>
-            <h5>Nama Ptk : </h5>
+            <h5>Nama Ptk : {props.namaptk} </h5>
             <TablePtk 
                 tablehead={tablehead}
                 page="ptkbiodata"

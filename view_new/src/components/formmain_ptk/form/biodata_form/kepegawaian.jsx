@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import useRefStore from 'src/state/ref';
 import useFormPtkStore from 'src/state/form/ptkform';
 
-const KepegawaianForm = () => {
+const KepegawaianForm = (props) => {
     const[status_kepegawaian,setstatus_kepegawaian] = useRefStore((state) => [state.status_kepegawaian, state.setstatus_kepegawaian])
     const[jenis_ptk,setjenis_ptk] = useRefStore((state) => [state.jenis_ptk,state.setjenis_ptk])
     const[lembaga_pengangkatan,setlembaga_pengangkatan] = useRefStore((state) => [state.lembaga_pengangkatan,state.setlembaga_pengangkatan])
@@ -54,6 +54,8 @@ const KepegawaianForm = () => {
             getdata()
         
     },[])
+
+    
 
 
 

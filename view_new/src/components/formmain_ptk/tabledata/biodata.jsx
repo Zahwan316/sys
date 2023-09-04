@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { CButton } from '@coreui/react';
 import useRefStore from 'src/state/ref';
-
+import { useParams } from 'react-router-dom';
 const BiodataTableBody = (props) => {
     const agama = useRefStore((state) => state.agama)
-
+   
     return(
         <>
             {
                 props.dataptk.map(item => 
                     <tr>
-                        <td>
+                        <td onClick={props.selectPtk} id={item.ptk_id}>
                             {item.nama}
                         </td>
                         <td>

@@ -149,6 +149,7 @@ const routes = [
   
   //ptk
   { path: '/dataptk', name: 'Pengelolaan / Ptk / Data Ptk', element: PtkPage},
+  { path: '/dataptk/:id', name: 'Pengelolaan / Ptk / Data Ptk', element: PtkPage},
 
   
 ]

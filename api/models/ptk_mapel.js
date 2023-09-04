@@ -1,6 +1,6 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ptk_mapel', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+const Ptk_mapel = Sequelize.define('ptk_mapel', {
     ptk_mapel_id: {
       type: DataTypes.UUID,
       allowNull: false,
@@ -44,7 +44,7 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'ptk_mapel',
     schema: 'kbm',
     timestamps: false,
@@ -58,4 +58,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+
+  module.exports = Ptk_mapel;

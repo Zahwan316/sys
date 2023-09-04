@@ -5,17 +5,24 @@ import PtkBiodata from 'src/components/formmain_ptk/ptkbiodata';
 import PtkKepegawaian from 'src/components/formmain_ptk/kepegawaian';
 import PtkKontak from 'src/components/formmain_ptk/kontak';
 import PtkKompetensi from 'src/components/formmain_ptk/kopentensi';
+import { useParams } from 'react-router-dom';
+import usePtkStore from 'src/state/ptk';
 
 const PtkMainPage = () => {
     const[pageform,setpageform] = useState("identitas")
+    const ptk =  usePtkStore((state) => state.ptk)
+    const{id} = useParams()
 
     const handlePageForm = (e) => {
         let code = e.target.getAttribute("code")
         setpageform(code)
     }
 
+    const findPtkName = ptk.filter(item => item.ptk_id === id)
+    const ptkName = findPtkName.length > 0 ? findPtkName[0].nama: null
+
     useEffect(() => {
-        console.log(pageform)
+        console.log(ptkName)
     })
 
     return(
@@ -75,19 +82,27 @@ const PtkMainPage = () => {
 
                         {
                             pageform === "identitas" &&
-                            <PtkBiodata />
+                            <PtkBiodata
+                                namaptk={ptkName}
+                            />
                         }
                         {
                             pageform === "kepegawaian" &&
-                            <PtkKepegawaian />
+                            <PtkKepegawaian 
+                                namaptk={ptkName}
+                            />
                         }
                         {
                             pageform == "kontak" &&
-                            <PtkKontak />
+                            <PtkKontak
+                                namaptk={ptkName}
+                            />
                         }
                         {
                             pageform == "kompetensi" &&
-                            <PtkKompetensi />
+                            <PtkKompetensi 
+                                namaptk={ptkName}
+                            />
                         }
                     </>
                 }            

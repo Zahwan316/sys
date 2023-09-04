@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { CButton } from '@coreui/react';
 import useRefStore from 'src/state/ref';
+import { useParams } from 'react-router-dom';
 
 const KepegawaianTableBody = (props) => {
     const status_kepegawaian = useRefStore((state) => state.status_kepegawaian)
     const jenis_ptk = useRefStore((state) => state.jenis_ptk)
+    const{id} = useParams()
 
     return(
         <>
             {
                 props.dataptk.map(item =>
+                    id != null ?
+                    item.ptk_id == id &&
                     <tr>
                         <td>
                             {item.nip}
@@ -57,6 +61,8 @@ const KepegawaianTableBody = (props) => {
                             </CButton>
                         </td>
                     </tr>
+                    :
+                    "Data Kosong"
                 )
             }
         </>

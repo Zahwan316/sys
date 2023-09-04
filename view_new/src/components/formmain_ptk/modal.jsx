@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { CModal,CModalBody,CModalFooter,CModalTitle,CModalHeader,CButton } from '@coreui/react';
 import FormBiodata from './form/biodata';
+import KepegawaianForm from './form/biodata_form/kepegawaian';
+import KontakForm from './form/biodata_form/kontak';
+import KompetensiForm from './form/biodata_form/kompetensi';
 
 const ModalPtk = (props) => {
     return(
@@ -15,6 +18,20 @@ const ModalPtk = (props) => {
                             props.page === "ptkbiodata" &&
                             <FormBiodata 
                             />
+                        }
+                        {
+                            props.page === "ptkkepegawaian" &&
+                            <KepegawaianForm
+                                typeform={props.typeform}
+                            />
+                        }
+                        {
+                            props.page === "ptkkontak" &&
+                            <KontakForm />
+                        }
+                        {
+                            props.page === "ptkkompetensi" &&
+                            <KompetensiForm />
                         }
                     </CModalBody>
                     <CModalFooter>
