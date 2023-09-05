@@ -7,6 +7,25 @@ const Jadwal_kbm = require("../models/jadwal_kbm")
 const Ptk_pend_formal = require("../models/ptk_pend_formal")
 const Ptk_pangkat_gol = require("../models/ptk_pangkat_gol") 
 const Ptk_mapel = require("../models/ptk_mapel")
+const multer = require("multer")
+const xlsx = require("xlsx");
+const exceljs = require("exceljs");
+
+
+//multer config
+const storage = multer.diskStorage({
+    destination:(req,file,cb) => {
+        cb(null,'uploads')
+    },
+    filename:(req,file,cb) => {
+        const unique = Date.now() + '' + Math.round(Math.random() * 1E9)
+        cb(null,file.fieldname + '-' + unique + file.originalname)
+    }
+})
+
+const upload = multer({storage:storage,limits:{
+    fileSize:10 * 1024 * 1024
+}})
 
 router.route("/ptk")
     .get(async(req,res) => {
@@ -360,6 +379,174 @@ router.route("/ptk/edit/kompetensi/:id")
                 })
             }
         }
+        catch(e){
+            res.status(400).json({
+                message:e.message,
+                method:req.method
+            })
+        }
+    })
+
+router.route("/ptk/upload")
+    .post(upload.single('file'),async(req,res) => {
+        try{
+            const file = req.file
+            const filebody = req.body.file
+
+            const workbook = xlsx.readFile(file.path)
+            const sheetname = workbook.SheetNames[0]
+            const sheet = workbook.Sheets[sheetname]
+            const data = xlsx.utils.sheet_to_json(sheet)
+
+            const ptk = []
+            let index = 0
+            const raw_object = {
+                        nama:null,
+                        nuptk: null,       
+                        jenis_kelamin: null,
+                        tempat_lahir: null,
+                        tanggal_lahir: null,
+                        nip: null,
+                        status_kepegawaian_id: null,
+                        jenis_ptk: null,
+                        agama: null,
+                        alamat_jalan: null,
+                        rt: null,
+                        rw: null,
+                        nama_dusun: null,
+                        desa: null,
+                        kecamatan: null,
+                        kode_pos: null,
+                        telepon_rumah: null,
+                        no_hp: null,
+                        email: null,
+                        tugas_tambahan: null,
+                        sk_cpns: null,
+                        tanggal_cpns: null,
+                        sk_pengangkatan: null,
+                        tmt_pengangkatan: null,
+                        lembaga_pengangkatan: null,
+                        pangkat_golongan: null,
+                        sumber_gaji: null,
+                        nama_ibu_kandung: null,
+                        status_perkawinan: null,
+                        nama_suami_istri: null,
+                        nip_suami_istri: null,
+                        pekerjaan_suami_istri: null,
+                        tmt_pns:null,
+                        sudah_lisensi_kepala_sekolah: null,
+                        pernah_diklat_kepengawasan: null,
+                        keahlian_braille: null,
+                        keahlian_bahasa_isyarat: null,
+                        npwp: null,
+                        nm_wop: null,
+                        kewarganegaraan: null,
+                        bank: null,
+                        nomor_rekening: null,
+                        rekening_atas_nama: null,
+                        nik: null,
+                        no_kk: null,
+                        karpeg: null,
+                        karsu: null,
+                        lintang: null,
+                        bujur: null,
+                        nuks: null,
+            }   
+    
+            data.forEach(item => {
+                if(index > 3){
+                    const raw_ptk = {
+                        nama:item.__EMPTY || null,
+                        nuptk:item.__EMPTY_1 || null,       
+                        jenis_kelamin:item.__EMPTY_2 || null,
+                        tempat_lahir:item.__EMPTY_3 || null,
+                        tanggal_lahir:item.__EMPTY_4 || null,
+                        nip:item.__EMPTY_5 || null,
+                        status_kepegawaian:item.__EMPTY_6 || null,
+                        jenis_ptk:item.__EMPTY_7 || null,
+                        agama:item.__EMPTY_8 || null,
+                        alamat_jalan:item.__EMPTY_9 || null,
+                        rt:item.__EMPTY_10 || null,
+                        rw:item.__EMPTY_11 || null,
+                        nama_dusun:item.__EMPTY_12 || null,
+                        desa:item.__EMPTY_13 || null,
+                        kecamatan:item.__EMPTY_14 || null,
+                        kode_pos:item.__EMPTY_15 || null,
+                        telepon_rumah:item.__EMPTY_16 || null,
+                        no_hp:item.__EMPTY_17 || null,
+                        email:item.__EMPTY_18 || null,
+                        tugas_tambahan:item.__EMPTY_19 || null,
+                        sk_cpns:item.__EMPTY_20 || null,
+                        tanggal_cpns:item.__EMPTY_21 || null,
+                        sk_pengangkatan:item.__EMPTY_22 || null,
+                        tmt_pengangkatan:item.__EMPTY_23 || null,
+                        lembaga_pengangkatan:item.__EMPTY_24 || null,
+                        pangkat_golongan:item.__EMPTY_25 || null,
+                        sumber_gaji:item.__EMPTY_26 || null,
+                        nama_ibu_kandung:item.__EMPTY_27 || null,
+                        status_perkawinan:item.__EMPTY_28 || null,
+                        nama_suami_istri:item.__EMPTY_29 || null,
+                        nip_suami_istri:item.__EMPTY_30 || null,
+                        pekerjaan_suami_istri:item.__EMPTY_31 || null,
+                        tmt_pns:item.__EMPTY_32 ||null,
+                        sudah_lisensi_kepala_sekolah:item.__EMPTY_33 || null,
+                        pernah_diklat_kepengawasan:item.__EMPTY_34 || null,
+                        keahlian_braille:item.__EMPTY_35 || null,
+                        keahlian_bahasa_isyarat:item.__EMPTY_36 || null,
+                        npwp:item.__EMPTY_37 || null,
+                        nm_wp:item.__EMPTY_38 || null,
+                        kewarganegaraan:item.__EMPTY_39 || null,
+                        bank:item.__EMPTY_40 || null,
+                        nomor_rekening:item.__EMPTY_41 || null,
+                        rekening_atas_nama:item.__EMPTY_42 || null,
+                        nik:item.__EMPTY_43 || null,
+                        no_kk:item.__EMPTY_44 || null,
+                        karpeg:item.__EMPTY_45 || null,
+                        karsu:item.__EMPTY_46 || null,
+                        lintang:item.__EMPTY_47 || null,
+                        bujur:item.__EMPTY_48 || null,
+                        nuks:item.__EMPTY_49 || null,
+
+                    }
+                    
+                    for(const key in raw_ptk){
+                        if(raw_ptk[key] === "   "){
+                            raw_ptk[key] = null
+                        }
+                    }
+
+                    ptk.push(raw_ptk)
+                }
+                index++
+            }) 
+
+            await Ptk.bulkCreate(
+                ptk.map(item => ({
+                    ptk_id:uuidv4(),
+                    nama:item.nama,
+                    jenis_kelamin:item.jenis_kelamin,
+                    tempat_lahir:item.tempat_lahir,
+                    tanggal_lahir:item.tanggal_lahir,
+                    agama_id:item.agama,
+                    nik:item.nik,
+                    nip:item.nip,
+                    no_kk:item.no_kk,
+                    nuptk:item.nuptk,
+                    nuks:item.nuks,
+                    karpeg:item.karpeg,
+                    karpas:item.karpas,
+                    status_kepegawaian_id:item.status_kepegawaian,
+                    jenis_ptk_id:item.jenis_ptk
+
+
+                }))
+            )
+            res.status(200).json({
+                message:"Daat berhasil diupload",
+                data:ptk,
+                method:req.method
+            })
+        }   
         catch(e){
             res.status(400).json({
                 message:e.message,

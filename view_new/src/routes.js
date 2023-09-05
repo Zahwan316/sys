@@ -72,6 +72,7 @@ const PesertaDidikDataPage = React.lazy(() => import("./page/peserta_didik/peser
 
 //ptk
 const PtkPage = React.lazy(() => import("./page/ptk/ptkmain"))
+const PtkUploadPage = React.lazy(() => import("./page/ptk/ptkupload"))
 
 
 const routes = [
@@ -150,6 +151,7 @@ const routes = [
   //ptk
   { path: '/dataptk', name: 'Pengelolaan / Ptk / Data Ptk', element: PtkPage},
   { path: '/dataptk/:id', name: 'Pengelolaan / Ptk / Data Ptk', element: PtkPage},
+  { path: '/uploadptk', name: 'Pengelolaan / Ptk / Upload Ptk', element: PtkUploadPage},
 
   
 ]

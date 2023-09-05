@@ -62,7 +62,7 @@ const KepegawaianTableBody = (props) => {
                         </td>
                     </tr>
                     :
-                    "Data Kosong"
+                    <h4>Data Kosong</h4>
                 )
             }
         </>

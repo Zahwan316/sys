@@ -24,7 +24,7 @@ const KontakTableBody = (props) => {
                         </td>
                         <td>
                             {
-                                item.nomor_telepon_rumah
+                                item.no_telepon_rumah
                             }
                         </td>
                         <td>

@@ -10,6 +10,7 @@ const useRefStore = create((set) => ({
    pangkat:[],
    keahlian_laboratorium:[],
    bank:[],
+   semester:[],
 
    setagama:(data) => set(()=> ({agama:data})),
    setjenis_ptk:(data) => set(()=> ({jenis_ptk:data})),
@@ -19,7 +20,8 @@ const useRefStore = create((set) => ({
    setsumber_gaji:(data) => set(()=> ({sumber_gaji:data})),
    setpangkat:(data) => set(()=> ({pangkat:data})),
    setkeahlian_laboratorium:(data) => set(()=> ({keahlian_laboratorium:data})),
-   setbank:(data) => set(()=> ({bank:data}))
+   setbank:(data) => set(()=> ({bank:data})),
+   setsemester:(data) => set(()=> ({semester:data}))
 }))
 
 export default useRefStore
