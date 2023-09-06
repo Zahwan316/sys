@@ -55,12 +55,6 @@ const KepegawaianForm = (props) => {
         
     },[])
 
-    
-
-
-
-
-
     return(
         <>
             <div className='mb-3'>

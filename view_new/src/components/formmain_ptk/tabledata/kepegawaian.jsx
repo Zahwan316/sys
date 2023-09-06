@@ -11,8 +11,8 @@ const KepegawaianTableBody = (props) => {
     return(
         <>
             {
+                id != null ?
                 props.dataptk.map(item =>
-                    id != null ?
                     item.ptk_id == id &&
                     <tr>
                         <td>
@@ -61,9 +61,9 @@ const KepegawaianTableBody = (props) => {
                             </CButton>
                         </td>
                     </tr>
-                    :
-                    <h4>Data Kosong</h4>
                 )
+                :
+                <h4>Data Kosong</h4>
             }
         </>
     )

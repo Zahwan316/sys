@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect,useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
@@ -17,10 +17,30 @@ import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
 import { AppBreadcrumb } from './index'
 import { AppHeaderDropdown } from './header/index'
 import { logo } from 'src/assets/brand/logo'
+import axios from 'axios'
 
 const AppHeader = () => {
   const dispatch = useDispatch()
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const ptk_id = localStorage.getItem("user")
+  const [ptk,setptk] = useState()
+
+  useEffect(() => {
+    const getdata = async() => {
+      try{
+        let res = await axios.get(`${process.env.REACT_APP_LINK}ptk/${ptk_id}`)
+        setptk(res.data.data)
+      }
+      catch(e){
+        console.log(e)
+      }
+    }
+    getdata()
+  },[])
+  
+  useEffect(() => {
+    console.log(ptk)
+  })
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -40,15 +60,15 @@ const AppHeader = () => {
               Dashboard
             </CNavLink>
           </CNavItem>
-          <CNavItem>
+           {/* <CNavItem>
             <CNavLink href="#">Users</CNavLink>
           </CNavItem>
           <CNavItem>
             <CNavLink href="#">Settings</CNavLink>
-          </CNavItem>
+          </CNavItem> */}
         </CHeaderNav>
-        <CHeaderNav>
-          <CNavItem>
+        <CHeaderNav className='d-flex align-items-center'>
+          {/* <CNavItem>
             <CNavLink href="#">
               <CIcon icon={cilBell} size="lg" />
             </CNavLink>
@@ -62,8 +82,13 @@ const AppHeader = () => {
             <CNavLink href="#">
               <CIcon icon={cilEnvelopeOpen} size="lg" />
             </CNavLink>
-          </CNavItem>
-        </CHeaderNav>
+          </CNavItem>  */}
+          {
+            ptk != null &&
+            <h5>{ptk.nama}</h5>
+
+          }
+        </CHeaderNav> 
         <CHeaderNav className="ms-3">
           <AppHeaderDropdown />
         </CHeaderNav>

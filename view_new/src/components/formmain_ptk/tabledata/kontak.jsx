@@ -8,8 +8,8 @@ const KontakTableBody = (props) => {
     return(
         <>
             {
+                id != null ?
                 props.dataptk.map(item => 
-                    id != null ?
                     item.ptk_id == id &&
                     <tr>
                         <td>
@@ -36,9 +36,9 @@ const KontakTableBody = (props) => {
                             </CButton>
                         </td>
                     </tr>     
-                    :
-                    <h4>Data Kosong</h4>   
                 )
+                :
+                <h4>Data Kosong</h4>   
             }
         </>
     )

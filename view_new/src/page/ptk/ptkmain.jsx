@@ -19,7 +19,7 @@ const PtkMainPage = () => {
     }
 
     const findPtkName = ptk.filter(item => item.ptk_id === id)
-    const ptkName = findPtkName.length > 0 ? findPtkName[0].nama: null
+    const ptkName = findPtkName.length > 0 ? findPtkName[0].nama: "Pilih Ptk Terlebih Dahulu"
 
     useEffect(() => {
         console.log(ptkName)
@@ -29,7 +29,7 @@ const PtkMainPage = () => {
         <>
            
             <CardMain
-                title="Biodata Ptk"
+                title="Data Ptk"
                 body={
                     <>
                         <CButtonGroup   CButtonGroup  role="group" aria-label="Basic checkbox toggle button group" className="p-3" style={{borderColor:"black"}}>

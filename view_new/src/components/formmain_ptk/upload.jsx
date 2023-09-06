@@ -72,7 +72,12 @@ const PtkUpload = () => {
             }
 
             catch(e){
-                console.log(e)
+                Swal.fire({
+                    title:"Kesalahan",
+                    text:e.response.data.message,
+                    icon:"error",
+                    confirmButtonText:"Ok",
+                })
             }
         }
         sendData()
@@ -89,6 +94,7 @@ const PtkUpload = () => {
                         name="file"
                         onChange={handlefile}
                         required    
+                        accept='.xlsx'
                     />
                 </div>
                 <div className='mb-3'>

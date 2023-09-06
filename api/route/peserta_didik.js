@@ -323,8 +323,6 @@ router.route("/peserta_didik/upload")
 
                 const resultidrombel = getrombelid || [null]
             
-
-
                 let data_peserta_didik = {
                     peserta_didik_id:uuidv4(),
                     rombongan_belajar_id:uuidv4(),
@@ -398,9 +396,7 @@ router.route("/peserta_didik/upload")
                     jumlah_saudara_kandung:row.__EMPTY_63 || 0,
                     jarak_rumah_ke_sekolah:row.__EMPTY_64 || 0
                 }
-
             
-                 
                 for(const key in data_peserta_didik){
                     if(data_peserta_didik[key] === '   '){
                         data_peserta_didik[key] = null

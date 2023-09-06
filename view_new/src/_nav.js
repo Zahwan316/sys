@@ -22,7 +22,8 @@ import {
   cilPeople,
   cilMoney,
   cilBook,
-  cilCloudUpload
+  cilCloudUpload,
+  cilListRich,
 } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
@@ -146,7 +147,7 @@ const _nav = [
           {
             component:CNavItem,
             name:"Biodata",
-            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            icon:<CIcon icon={cilListRich} customClassName="nav-icon" />,
             to:"/datapesertadidik"
           },
         ]
@@ -165,7 +166,7 @@ const _nav = [
           {
             component:CNavItem,
             name:"Biodata",
-            icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
+            icon:<CIcon icon={cilListRich} customClassName="nav-icon" />,
             to:"/dataptk"
           },
         ]

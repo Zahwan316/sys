@@ -28,6 +28,7 @@ import CIcon from '@coreui/icons-react';
 import { cilEyedropper, cilListNumbered } from '@coreui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import usePtkStore from 'src/state/ptk';
 
 const TableMain = (props) => {
     //navigate
@@ -52,10 +53,10 @@ const TableMain = (props) => {
     const[dataTingkatPendidikan,setdatatingatpendiikan] = useState()
 
     //tugas page
-    const[dataTugas,setdatatugas] = useState([])
+    const[dataTugas,setdatatugas] = usePtkStore((state) => [state.ptk,state.setdataptk])
     const[dataMapel,setdatamapel] = useState([])
     const[dataTugasMengajar,setdatatugasmengajar] = useState([])
-    const[gurumapel,setgurumapel] = useState()
+    const[gurumapel,setgurumapel] = usePtkStore((state) => [state.ptk,state.setdataptk])
 
     //jadwal page
     const[dataJadwal,setdatajadwal] = useState([])
@@ -117,20 +118,28 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                 }
                 else if(props.page === "tugas"){
-                    response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    if(dataTugas.length === 0 || dataTugas === null){
+                        response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                        setdatatugas(response.data.data)
+                        console.log("catch ptk")
+                    }
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
                     let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
                 
-                    setdatatugas(response.data.data)
                     setdatamapel(responsemapel.data.data)
                     setdatatugasmengajar(responsetugasmengajar.data.data)
 
                 }
                 else if(props.page === "jadwalreguler" || props.page ==="jadwalindustri" ){
+                    let responseguru;
+                    if(gurumapel.length === 0 || gurumapel === []){
+                        responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                        setgurumapel(responseguru.data.data)
+
+                    }
                     response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
                     let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
                     let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
-                    let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                     let response_rombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let responsewaktukbm = await axios.get(`${process.env.REACT_APP_LINK}waktu_kbm`)
                     let responsehari = await axios.get(`${process.env.REACT_APP_LINK}hari`)
@@ -139,7 +148,6 @@ const TableMain = (props) => {
                     setdatajadwal(response.data.data)
                     setdatatugasmengajar(responsetugasmengajar.data.data)
                     setdatamapel(responsemapel.data.data)
-                    setgurumapel(responseguru.data.data)
                     setdatarombel(response_rombel.data.data)
                     setwaktukbm(responsewaktukbm.data.data)
                     sethari(responsehari.data.data)
@@ -402,7 +410,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-           console.log(dataRombel)
+           console.log(dataTugas)
     })
 
     //jika jurusan id ditemukan di page mapel industri

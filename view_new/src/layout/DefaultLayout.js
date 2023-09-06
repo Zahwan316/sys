@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { AppContent, AppSidebar, AppFooter, AppHeader } from '../components/index'
+import useRefStore from 'src/state/ref'
 
-const DefaultLayout = () => {
+
+const DefaultLayout = (props) => {
+  const token = localStorage.getItem("token")
+  const setmessagelogin = useRefStore((state) => state.setmessagelogin)
+
+  useEffect(() => {
+    if (!token && props.name == "Home") {
+      window.location.href = '.#/login'
+      setmessagelogin("Login Terlebih Dahulu !!")
+    }
+
+  },[])
   return (
     <div>
       <AppSidebar />

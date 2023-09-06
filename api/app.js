@@ -68,6 +68,9 @@ const Sumber_gaji_route = require("./route/sumber_gaji")
 const Lembaga_pengangkat_route = require("./route/lembaga_pengangkat")
 const Keahlian_laboratorium_route = require("./route/keahlian_laboratorium")
 
+//login
+const Login_route = require("./route/loginRegister")
+
 //library
 const multer = require("multer")
 
@@ -83,6 +86,10 @@ app.route("/",(req,res) => {
 })
 
 //route
+
+//login
+app.use(Login_route)
+
 //sekolah page
 app.use(identitas_sekolah_route)
 app.use(waktu_penyelenggaraan_route)
@@ -143,6 +150,8 @@ app.use(Pangkat_golongan_route)
 app.use(Sumber_gaji_route)
 app.use(Lembaga_pengangkat_route) 
 app.use(Keahlian_laboratorium_route)
+
+
 
 //end route
 

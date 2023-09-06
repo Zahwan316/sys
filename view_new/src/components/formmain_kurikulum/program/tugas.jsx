@@ -24,6 +24,7 @@ import axios from 'axios';
 import ModalProgramPage from './modal';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
+import usePtkStore from 'src/state/ptk';
 
 const TugasPage = () => {
     const[mapelid,setmapelid] = useState()
@@ -36,7 +37,7 @@ const TugasPage = () => {
     const[dataMapel,setdatamapel] = useState([])
     const[gurumapel,setgurumapel] = useState([])
     const[tugasmengajar,settugasmengajar] = useState([])
-    const[refguru,setrefguru] = useState([])
+    const[refguru,setrefguru] = usePtkStore((state) => [state.ptk,state.setdataptk])
     const[refsemester,setrefsemester] = useState([])
 
     const[typeform,settypeform] = useState()
@@ -54,12 +55,14 @@ const TugasPage = () => {
             try{
                 let response = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
                 let responsemengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
-                let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                 let responsesemester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
+                if(refguru.length === 0 || refguru === null){
+                    let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    setrefguru(responseguru.data.data)
+                }
 
                 setdatamapel(response.data.data)
                 settugasmengajar(responsemengajar.data.data)
-                setrefguru(responseguru.data.data)
                 setrefsemester(responsesemester.data.data)
             }
             catch(e){
@@ -70,10 +73,10 @@ const TugasPage = () => {
     },[])
 
     useEffect(() => {
-        console.log("Mapel sp id = "+mapelid)
+       /*  console.log("Mapel sp id = "+mapelid)
         console.log(refsemester)
         console.log("item id = " + itemid)
-        console.log(forminput)
+        console.log(forminput) */
     })
 
     useEffect(() => {

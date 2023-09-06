@@ -10,6 +10,16 @@ const Ptk_mapel = require("../models/ptk_mapel")
 const multer = require("multer")
 const xlsx = require("xlsx");
 const exceljs = require("exceljs");
+const ref_agama = require("../models/agama");
+const ref_jenis_ptk = require("../models/jenis_ptk");
+const ref_status_kepegawaian = require("../models/status_kepegawaian");
+const ref_lembaga_pengangkat = require("../models/lembaga_pengangkat")
+const ref_pangkat_golongan = require("../models/pangkat_golongan")
+const ref_keahlian_laboratorium = require("../models/keahlian_laboratorium")
+const ref_sumber_gaji = require("../models/sumber_gaji");
+const Status_kepegawaian = require("../models/status_kepegawaian");
+const ref_bank = require("../models/bank");
+const ref_status_perkawinan = require("../models/status_perkawinan")
 
 
 //multer config
@@ -452,24 +462,100 @@ router.route("/ptk/upload")
                         bujur: null,
                         nuks: null,
             }   
-    
+
+            const agama = await ref_agama.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const status_kepegawaian = await Status_kepegawaian.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const jenis_ptk = await ref_jenis_ptk.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const lembaga_pengangkatan = await ref_lembaga_pengangkat.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            });
+
+            const pangkat_golongan = await ref_pangkat_golongan.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const keahlian_laboratorium = await ref_keahlian_laboratorium.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+           
+            const sumber_gaji = await ref_sumber_gaji.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const bank = await ref_bank.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
+            const status_perkawinan = await ref_status_perkawinan.findAll({
+                attributes:{
+                    exclude:"id"
+                }
+            })
+
             data.forEach(item => {
                 if(index > 3){
+                    const Agama = agama.filter(items => items.nama === item.__EMPTY_8 )
+                    const getagamaid = Agama.length > 0 ?
+                        Agama.map(items => items.agama_id)
+                        :
+                        null
+                    const resultagama = getagamaid || [0]
+
+                    let getid = (models,items,nameid,nama) => {
+                        const model = models.filter(item => item[nama] == items)
+                        const getmodelid = model.length > 0 ?
+                            model.map(data => data[nameid])
+                            :
+                            null
+                        return getmodelid || [0]
+                        
+                    }
+
+                    const convertIyaTidak = (items) => {
+                        return items === "Iya" ? "1" : "0"
+                    }
+
+
                     const raw_ptk = {
                         nama:item.__EMPTY || null,
                         nuptk:item.__EMPTY_1 || null,       
                         jenis_kelamin:item.__EMPTY_2 || null,
                         tempat_lahir:item.__EMPTY_3 || null,
-                        tanggal_lahir:item.__EMPTY_4 || null,
+                        tanggal_lahir:item.__EMPTY_4 || null,   
                         nip:item.__EMPTY_5 || null,
-                        status_kepegawaian:item.__EMPTY_6 || null,
-                        jenis_ptk:item.__EMPTY_7 || null,
-                        agama:item.__EMPTY_8 || null,
+                        status_kepegawaian:getid(status_kepegawaian,item.__EMPTY_6,"status_kepegawaian_id","nama") || null,
+                        jenis_ptk:getid(jenis_ptk,item.__EMPTY_7,"jenis_ptk_id","jenis_ptk") || null,
+                        agama:resultagama|| null,
                         alamat_jalan:item.__EMPTY_9 || null,
                         rt:item.__EMPTY_10 || null,
                         rw:item.__EMPTY_11 || null,
                         nama_dusun:item.__EMPTY_12 || null,
-                        desa:item.__EMPTY_13 || null,
+                        desa:item.__EMPTY_13 || null,   
                         kecamatan:item.__EMPTY_14 || null,
                         kode_pos:item.__EMPTY_15 || null,
                         telepon_rumah:item.__EMPTY_16 || null,
@@ -480,23 +566,23 @@ router.route("/ptk/upload")
                         tanggal_cpns:item.__EMPTY_21 || null,
                         sk_pengangkatan:item.__EMPTY_22 || null,
                         tmt_pengangkatan:item.__EMPTY_23 || null,
-                        lembaga_pengangkatan:item.__EMPTY_24 || null,
-                        pangkat_golongan:item.__EMPTY_25 || null,
-                        sumber_gaji:item.__EMPTY_26 || null,
+                        lembaga_pengangkatan:getid(lembaga_pengangkatan,item.__EMPTY_24,"lembaga_pengangkat_id","nama")|| null,
+                        pangkat_golongan:getid(pangkat_golongan,item.__EMPTY_25,"pangkat_golongan_id","nama") || null,
+                        sumber_gaji:getid(sumber_gaji,item.__EMPTY_26,"sumber_gaji_id","nama") || null,    
                         nama_ibu_kandung:item.__EMPTY_27 || null,
-                        status_perkawinan:item.__EMPTY_28 || null,
+                        status_perkawinan:getid(status_perkawinan,item.__EMPTY_28,"status_perkawinan_id","status_perkawinan") || null,
                         nama_suami_istri:item.__EMPTY_29 || null,
                         nip_suami_istri:item.__EMPTY_30 || null,
                         pekerjaan_suami_istri:item.__EMPTY_31 || null,
                         tmt_pns:item.__EMPTY_32 ||null,
-                        sudah_lisensi_kepala_sekolah:item.__EMPTY_33 || null,
-                        pernah_diklat_kepengawasan:item.__EMPTY_34 || null,
-                        keahlian_braille:item.__EMPTY_35 || null,
-                        keahlian_bahasa_isyarat:item.__EMPTY_36 || null,
+                        sudah_lisensi_kepala_sekolah:convertIyaTidak(item.__EMPTY_33) || null,
+                        pernah_diklat_kepengawasan:convertIyaTidak(item.__EMPTY_34) || null,
+                        keahlian_braille:convertIyaTidak(item.__EMPTY_34) || null,
+                        keahlian_bahasa_isyarat:convertIyaTidak(item.__EMPTY_34) || null,
                         npwp:item.__EMPTY_37 || null,
                         nm_wp:item.__EMPTY_38 || null,
                         kewarganegaraan:item.__EMPTY_39 || null,
-                        bank:item.__EMPTY_40 || null,
+                        bank:getid(bank,item.__EMPTY_40,"id_bank","nm_bank") || null,
                         nomor_rekening:item.__EMPTY_41 || null,
                         rekening_atas_nama:item.__EMPTY_42 || null,
                         nik:item.__EMPTY_43 || null,
@@ -520,27 +606,14 @@ router.route("/ptk/upload")
                 index++
             }) 
 
-            await Ptk.bulkCreate(
+             await Ptk.bulkCreate(
                 ptk.map(item => ({
-                    ptk_id:uuidv4(),
-                    nama:item.nama,
-                    jenis_kelamin:item.jenis_kelamin,
-                    tempat_lahir:item.tempat_lahir,
-                    tanggal_lahir:item.tanggal_lahir,
-                    agama_id:item.agama,
-                    nik:item.nik,
-                    nip:item.nip,
-                    no_kk:item.no_kk,
-                    nuptk:item.nuptk,
-                    nuks:item.nuks,
-                    karpeg:item.karpeg,
-                    karpas:item.karpas,
-                    status_kepegawaian_id:item.status_kepegawaian,
-                    jenis_ptk_id:item.jenis_ptk
-
-
+                     ...item, 
+                    ptk_id:uuidv4(),             
+                    agama_id:item.agama,                  
                 }))
-            )
+            ) 
+
             res.status(200).json({
                 message:"Daat berhasil diupload",
                 data:ptk,

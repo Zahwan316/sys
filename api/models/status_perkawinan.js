@@ -1,6 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('status_perkawinan', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+
+const Status_perkawinan = Sequelize.define('status_perkawinan', {
     status_perkawinan_id: {
       type: DataTypes.DECIMAL,
       allowNull: false,
@@ -25,7 +26,7 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: 0
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'status_perkawinan',
     schema: 'ref',
     timestamps: false,
@@ -39,4 +40,5 @@ module.exports = function(sequelize, DataTypes) {
       },
     ]
   });
-};
+
+module.exports = Status_perkawinan
