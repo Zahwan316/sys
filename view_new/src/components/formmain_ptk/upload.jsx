@@ -18,7 +18,6 @@ const PtkUpload = () => {
                 if(semester === null || semester.length === 0){
                     let res = await axios.get(`${process.env.REACT_APP_LINK}semester`)
                     setsemester(res.data.data)
-                    console.log(res.data.data)
                 } 
             }
             catch(e){

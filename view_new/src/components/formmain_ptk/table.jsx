@@ -27,12 +27,15 @@ const TablePtk = (props) => {
         const getData = async() => {
             try{
                 if(props.page === "ptkbiodata"){
-                    let response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    if(Object.keys(ptk).length === 0){
+                        let response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                        setptk(response.data.data)
+
+                    }
                     let response_agama = await axios.get(`${process.env.REACT_APP_LINK}agama`)
                     let response_kewarganegaraan = await axios.get(`${process.env.REACT_APP_LINK}jenis_kewarganegaraan`)
                     
 
-                    setptk(response.data.data)
                     setagama(response_agama.data.data)
                     setkewarganegaraan(response_kewarganegaraan.data.data)
                 }
@@ -54,8 +57,10 @@ const TablePtk = (props) => {
     useEffect(() => {
         const refetch_data = async() => {
             try{
-                let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                setptk(res.data.data)
+                
+                    let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    setptk(res.data.data)
+                
             }
             catch(e){
 
@@ -67,8 +72,10 @@ const TablePtk = (props) => {
     useEffect(() => {
         const refetch_data = async() => {
             try{
+               
                 let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                 setptk(res.data.data)
+                
             }
             catch(e){
                 console.log(e)
@@ -91,7 +98,7 @@ const TablePtk = (props) => {
     },[id])
 
     useEffect(() => {
-        console.log(ptkselected)
+        console.log(props.updater)
     })
 
     const handledelete = async(url) => {

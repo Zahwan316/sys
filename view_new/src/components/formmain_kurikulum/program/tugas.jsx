@@ -59,6 +59,7 @@ const TugasPage = () => {
                 if(refguru.length === 0 || refguru === null){
                     let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                     setrefguru(responseguru.data.data)
+                    console.log("ftch data")
                 }
 
                 setdatamapel(response.data.data)

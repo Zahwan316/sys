@@ -118,7 +118,7 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                 }
                 else if(props.page === "tugas"){
-                    if(dataTugas.length === 0 || dataTugas === null){
+                    if(dataTugas.length === 0 || dataTugas === []){
                         response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setdatatugas(response.data.data)
                         console.log("catch ptk")
@@ -132,7 +132,7 @@ const TableMain = (props) => {
                 }
                 else if(props.page === "jadwalreguler" || props.page ==="jadwalindustri" ){
                     let responseguru;
-                    if(gurumapel.length === 0 || gurumapel === []){
+                    if(gurumapel.length == 0 || gurumapel === []){
                         responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setgurumapel(responseguru.data.data)
 
@@ -410,7 +410,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-           console.log(dataTugas)
+        //console.log(dataTugas)
     })
 
     //jika jurusan id ditemukan di page mapel industri

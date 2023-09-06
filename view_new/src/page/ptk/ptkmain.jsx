@@ -10,7 +10,7 @@ import usePtkStore from 'src/state/ptk';
 
 const PtkMainPage = () => {
     const[pageform,setpageform] = useState("identitas")
-    const ptk =  usePtkStore((state) => state.ptk)
+    const ptk = usePtkStore((state) => state.ptk)
     const{id} = useParams()
 
     const handlePageForm = (e) => {
