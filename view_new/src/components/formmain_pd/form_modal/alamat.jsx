@@ -1,9 +1,10 @@
 import { CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import React, { useState, useEffect } from 'react';
 import useStore from 'src/state/pesertadidik';
+import useRefStore from 'src/state/ref';
 
 const FormAlamat = (props) => {
-    const jenistinggal = useStore((state) => state.jenistinggal)
+    const jenistinggal = useRefStore((state) => state.jenis_tinggal)
 
     return(
         <>

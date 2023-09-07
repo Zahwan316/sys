@@ -34,6 +34,7 @@ const DataPesertaDidikAlamat = (props) => {
     const[check,setcheck] = useState(false)
     const {id} = useParams()
     const[updater,setupdater] = useState()
+    const[isload,setisload] = useState(false)
 
     const[forminput,setforminput] = useState({
         peserta_didik_id:id,
@@ -212,6 +213,10 @@ const DataPesertaDidikAlamat = (props) => {
                         text:"Terima kasih sudah mengedit data"
                     })
                     setupdater(uuidv4())
+                    setisload(true)
+                    setTimeout(() => {
+                        setisload(false)
+                    },500)
                 }
                
             }
@@ -232,6 +237,7 @@ const DataPesertaDidikAlamat = (props) => {
                 handlemodal = {handleModal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
 
             {

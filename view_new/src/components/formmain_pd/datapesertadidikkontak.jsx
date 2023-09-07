@@ -21,6 +21,7 @@ const PesertaDidikKontak = (props) => {
     const {id} = useParams()
     const[typeform,settypeform] = useState()
     const[editedid,seteditedid] = useState()
+    const[isload,setisload] = useState(false)
     const[forminput,setforminput] = useState({
         peserta_didik_id:id,
         nomor_telepon_rumah:null,
@@ -58,6 +59,10 @@ const PesertaDidikKontak = (props) => {
                 text:`Terima kasih sudah ${method === "post" ? "Mengisi" : "Mengedit"} data`
             })
             setupdater(uuidv4())    
+            setisload(true)
+            setTimeout(() => {
+                setisload(false)
+            }, 500);
         }
         catch(e){
             console.log(e)
@@ -124,6 +129,7 @@ const PesertaDidikKontak = (props) => {
                 handlemodal={handlemodal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
 
             {

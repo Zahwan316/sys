@@ -19,6 +19,7 @@ const PtkKontak = (props) => {
     const[updater,setupdater] = useState()
     const setdata = useFormPtkStore((state) => state.setform)
     const forminput = useFormPtkStore((state) => state)
+    const [isload,setisload] = useState(false)
     
     const handleModal = () => {
         setmodal(!modal)
@@ -56,6 +57,10 @@ const PtkKontak = (props) => {
                 text: 'Data berhasil diubah'
             })
             setupdater(uuidv4())
+            setisload(true)
+            setTimeout(() => {
+                setisload(false)
+            },500)
         }
         catch(e){
             console.log(e)
@@ -77,6 +82,7 @@ const PtkKontak = (props) => {
                 getTypeBtn={getTypeBtn}
                 handlemodal={handleModal}
                 updater={updater}
+                isload={isload}
             />
 
             {

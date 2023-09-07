@@ -95,7 +95,7 @@ router.route("/peserta_didik")
                 pendidikan_ayah_id:req.body.pendidikan_ayah_id,
                 pekerjaan_ayah_id:req.body.pekerjaan_ayah_id,
                 tanggal_lahir_ayah:req.body.tanggal_lahir_ayah,
-                nama_ibu_kandung:req.body.nama_ibu,
+                nama_ibu_kandung:req.body.nama_ibu_kandung,
                 pendidikan_ibu_id:req.body.pendidikan_ibu_id,
                 pekerjaan_ibu_id:req.body.pekerjaan_ibu_id,
                 tanggal_lahir_ibu:req.body.tanggal_lahir_ibu,
@@ -118,7 +118,8 @@ router.route("/peserta_didik")
                 nama_di_kip:req.body.nama_di_kip,
                 penerima_pip:req.body.penerima_pip,
                 npsn_jenjang_sebelumnya:req.body.npsn_jenjang_sebelumnya,
-                jenis_tinggal_id:req.body.jenis_tinggal
+                jenis_tinggal_id:req.body.jenis_tinggal,
+                tmt:req.body.tmt
             })
 
             res.status(200).json({
@@ -596,7 +597,7 @@ router.route("/peserta_didik/:id")
                     pendidikan_ayah_id:req.body.pendidikan_ayah_id,
                     pekerjaan_ayah_id:req.body.pekerjaan_ayah_id,
                     tanggal_lahir_ayah:req.body.tanggal_lahir_ayah,
-                    nama_ibu_kandung:req.body.nama_ibu,
+                    nama_ibu_kandung:req.body.nama_ibu_kandung,
                     pendidikan_ibu_id:req.body.pendidikan_ibu_id,
                     pekerjaan_ibu_id:req.body.pekerjaan_ibu_id,
                     tanggal_lahir_ibu:req.body.tanggal_lahir_ibu,
@@ -619,7 +620,8 @@ router.route("/peserta_didik/:id")
                     nama_di_kip:req.body.nama_di_kip,
                     npsn_jenjang_sebelumnya:req.body.npsn_jenjang_sebelumnya,
                     penerima_pip:req.body.penerima_pip,
-                    jenis_tinggal_id:req.body.jenis_tinggal
+                    jenis_tinggal_id:req.body.jenis_tinggal,
+                    tmt:req.body.tmt,
                 })
                 res.status(200).json({
                     messagge:"Data berhasil diedit",
@@ -672,11 +674,21 @@ router.route("/peserta_didik/:id")
 
 
             if(findData){
-                findDataAnggotaDataRombel.destroy()
-                findDataRekening.destroy()
-                findDataKesehatan.destroy()
-                findDataKontak.destroy()
-                findDataAlamat.destroy()
+                if(findDataAnggotaDataRombel){
+                    findDataAnggotaDataRombel.destroy()
+                }
+                if(findDataRekening){
+                    findDataRekening.destroy()
+                }
+                if(findDataKesehatan){
+                    findDataKesehatan.destroy()
+                }
+                if(findDataKontak){
+                    findDataKontak.destroy()
+                }
+                if(findDataAlamat){
+                    findDataAlamat.destroy()
+                }
                 findData.destroy()
 
                 res.status(200).json({
@@ -774,7 +786,7 @@ router.route("/peserta_didik/edit/keluarga/:id")
                     pendidikan_ayah_id:req.body.pendidikan_ayah_id,
                     pekerjaan_ayah_id:req.body.pekerjaan_ayah_id,
                     tanggal_lahir_ayah:req.body.tanggal_lahir_ayah,
-                    nama_ibu_kandung:req.body.nama_ibu,
+                    nama_ibu_kandung:req.body.nama_ibu_kandung,
                     pendidikan_ibu_id:req.body.pendidikan_ibu_id,
                     pekerjaan_ibu_id:req.body.pekerjaan_ibu_id,
                     tanggal_lahir_ibu:req.body.tanggal_lahir_ibu,
@@ -821,6 +833,7 @@ router.route("/peserta_didik/edit/bantuan/:id")
                     no_kip:req.body.no_kip,
                     nama_di_kip:req.body.nama_di_kip,
                     penerima_pip:req.body.penerima_pip,
+                    tmt:req.body.tmt
                 })
                 res.status(200).json({
                     messagge:"Data berhasil diedit",

@@ -6,6 +6,7 @@ import FormKesehatanPesertaDidik from './form_modal/kesehatan';
 import FormKontakPesertaDidik from './form_modal/kontak';
 import FormRekeningPesertaDidik from './form_modal/rekening';
 import FormPesertaDidik from './form_modal/pesertadidik';
+import PesertaDidikFormPage from './form_modal/pesertadidikformpage';
 
 const ModalPesertaDidik = (props) => {
     useEffect(() => {
@@ -21,7 +22,7 @@ const ModalPesertaDidik = (props) => {
                     </CModalHeader>
                     <CModalBody>
                       
-                            <FormPesertaDidik 
+                            {/* <FormPesertaDidik 
                                 dataagama={props.dataagama}
                                 datakewarganegaraan={props.datakewarganegaraan}
                                 datapekerjaan={props.datapekerjaan}
@@ -35,7 +36,15 @@ const ModalPesertaDidik = (props) => {
                                 typeform={props.typeform}
                                 page={props.page}
                                 forminput={props.forminput}
-                            />
+                            /> */}
+                            
+                                
+                                <FormPesertaDidik 
+                                    page={props.page}
+                                    typeform={props.typeform}
+                                />
+
+                            
                          
                         {
                             props.page === "pesertadidikalamat" &&

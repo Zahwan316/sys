@@ -5,6 +5,7 @@ import useStore from 'src/state/pesertadidik';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4}from "uuid"
+import useFormPesertaDidikStore from 'src/state/form/pesertadidik';
 
 const DataPesertaDidikBantuan = (props) => {
     const tablehead = [
@@ -17,24 +18,14 @@ const DataPesertaDidikBantuan = (props) => {
         "Nama Di KIP"
     ]
 
-    const[forminput,setforminput] = useState({
-        no_kks: null,
-        no_kps: null,
-        penerima_kps: null,
-        no_kip: null,
-        layak_pip: null,
-        alasan_layak_pip: null,
-        nama_di_kip: null,
-        penerima_kip:null,
-        
-
-    })
+    const[forminput,setforminput] = useFormPesertaDidikStore((state) => [state,state.setform])
     const[modal,setmodal] = useState(false)
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
     const pesertadidik = useStore((state)  => state.pesertadidik)
     const dataalasanlayakpip = useStore((state) => state.alasanlayakpip)
     const[updater,setupdater] = useState()
+    const[isload,setisload] = useState(false)
 
     const handleforminput = (e) => {
         setforminput({
@@ -65,6 +56,10 @@ const DataPesertaDidikBantuan = (props) => {
                 text:"Terima kasih sudah mengedit data"
             })      
             setupdater(uuidv4())
+            setisload(true)
+            setTimeout(() => {
+                setisload(false)
+            },500)
         }
         catch(e){
             console.log(e)
@@ -115,6 +110,7 @@ const DataPesertaDidikBantuan = (props) => {
                 getTypeBtn={getTypeBtn}
                 handlemodal={handlemodal}
                 updater={updater}
+                isload={isload}
             />
 
             {

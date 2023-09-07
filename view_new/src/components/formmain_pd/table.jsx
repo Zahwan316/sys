@@ -1,22 +1,16 @@
 import { CTable, CTableBody, CTableHead, CTableHeaderCell, CTableRow,CButton,CSpinner } from '@coreui/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2"
 import {v4 as uuidv4} from "uuid"
 import RowTable from '../table/row';
 import useStore from 'src/state/pesertadidik';
+import useRefStore from 'src/state/ref';
 import { useNavigate, useParams } from 'react-router-dom';
-/* import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css'; */
-import { MDBDataTable } from 'mdbreact';
-
 
 const TablePesertaDidik = (props) => {
-    //const[datapesertadidik,setdatapesertadidik] = useState([])
     const[datajenjangpendidikan,setdatajenjangpendidkan] = useState([])
-    //const[datapekerjaan,setdatapekerjaan] = useState([])
-    const[datalayakpip,setdatalayakpip] = useState([])
+    const[datalayakpip,setdatalayakpip] = useRefStore((state) => [state.alasanlayakpip,state.setalasanlayakpip])
     const[loading,setloading] = useState(true)
     const[updaterdelete,setupdaterdelete] = useState()
     const[dataalamat,setdataalamat] = useState([])
@@ -25,78 +19,100 @@ const TablePesertaDidik = (props) => {
     const[datakontak,setdatakontak] = useStore((state) => [state.pesertadidikkontak,state.setdatapesertadidikkkontak])
     const[datarekening,setdatarekening] = useStore((state) => [state.pesertadidikrekening,state.setdatapesertadidikrekening])
     const[databank,setdatabank] = useStore((state) => [state.namabank,state.setnamabank])
-
-    const setdatapesertadidik = useStore((state) => state.setdatapesertadidik)
-    const datapesertadidik = useStore((state) => state.pesertadidik)
-    const setdatapendidikan = useStore((state) => state.setdatapendidikan)
-    const datapendidikan = useStore((state) => state.pendidikan)
-    const datapekerjaan = useStore((state) => state.pekerjaan)
-    const setdatapekerjaan = useStore((state) => state.setdatapekerjaan)
-    const {id}= useParams()
+    const[datapesertadidik,setdatapesertadidik] = useStore((state) => [state.pesertadidik,state.setdatapesertadidik])
+    const[datapendidikan,setdatapendidikan] = useRefStore((state) => [state.pendidikan,state.setdatapendidikan])
+    const[datapekerjaan,setdatapekerjaan] = useRefStore((state) => [state.pekerjaan,state.setdatapekerjaan])
+    const[jenistinggal,setjenistinggal] = useRefStore((state) =>[state.jenis_tinggal,state.setjenistinggal])
+    const[datawilayah,setdatawilayah] = useRefStore((state) => [state.datawilayah,state.setdatawilayah])
     let setpesertadidikid = useStore((state) => state.setpesertadidikid)
-    let setdatawilayah = useStore((state) => state.setdatawilayah)
-    const setjenistinggal = useStore((state) => state.setjenistinggal)
+    const {id}= useParams()
+    const[isload,setisload] = useState(false)
 
     useEffect(() => {
         let getData = async() => {
             try{
                 setloading(true)
                 if(props.page === "pesertadidikbiodata"  ){
-                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
-                    let response_wilayah = await axios.get(`${process.env.REACT_APP_LINK}wilayah`)
-                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
-
-                    setdatapesertadidik(response.data.data)
-                    //set data wilayah
-                    const data_wilayah = response_wilayah.data.data
-                    const filtered_data_wilayah = data_wilayah.filter(item => {
-                        const jabar = item.id_wilayah.startsWith(32)
-                        if(item.id_wilayah.length > 2 && jabar){
-                            return item
-                        }
-                    })
-                    setdatawilayah(filtered_data_wilayah)
-
-                    //set jenis tinggal
-                    setjenistinggal(response_jenis_tinggal.data.data)
+                    if(Object.keys(datapesertadidik).length === 0){
+                        let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                        setdatapesertadidik(response.data.data)
+                    }
+                    if(Object.keys(jenistinggal).length === 0){
+                        let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
+                        setjenistinggal(response_jenis_tinggal.data.data)
+                    }
+                    if(Object.keys(datawilayah).length === 0)
+                    {
+                        let response_wilayah = await axios.get(`${process.env.REACT_APP_LINK}wilayah`)
+                        //set data wilayah
+                        const data_wilayah = response_wilayah.data.data
+                        const filtered_data_wilayah = data_wilayah.filter(item => {
+                            const jabar = item.id_wilayah.startsWith(32)
+                            if(item.id_wilayah.length > 2 && jabar){
+                                return item
+                            }
+                        })
+                        setdatawilayah(filtered_data_wilayah)
+                    }
+                    
                 }
                 else if(props.page === 'pesertadidikkeluarga'){
-                    let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
-                    let response_pekerjaan= await axios.get(`${process.env.REACT_APP_LINK}ref_pekerjaan`)
-
-                    setdatapendidikan(response_pendidikan.data.data)
-                    setdatapekerjaan(response_pekerjaan.data.data)
+                    if(Object.keys(datapendidikan).length === 0)
+                    {
+                        let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
+                        setdatapendidikan(response_pendidikan.data.data)
+                    }
+                    if(Object.keys(datapekerjaan).length === 0)
+                    {
+                        let response_pekerjaan= await axios.get(`${process.env.REACT_APP_LINK}ref_pekerjaan`)
+                        setdatapekerjaan(response_pekerjaan.data.data)
+                    }
                 }
                 else if(props.page === "pesertadidikbantuan"){ 
-                    let response_layak_pip = await axios.get(`${process.env.REACT_APP_LINK}alasan_layak_pip`)
-                    setdatalayakpip(response_layak_pip.data.data)
+                    if(Object.keys(datalayakpip).length === 0)
+                    {
+                        let response_layak_pip = await axios.get(`${process.env.REACT_APP_LINK}alasan_layak_pip`)
+                        setdatalayakpip(response_layak_pip.data.data)
+                    }
                 }
-                else if(props.page === 'pesertadidikalamat'){    
-                    let response_alamat = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat`)
-                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
-
-                    setdataalamat(response_alamat.data.data)
-                    setdatajenistinggal(response_jenis_tinggal.data.data)
+                else if(props.page === 'pesertadidikalamat'){ 
+                    if(Object.keys(dataalamat).length === 0)
+                    {
+                        let response_alamat = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat`)
+                        setdataalamat(response_alamat.data.data)
+                    }   
+                    if(Object.keys(datapesertadidik).length === 0)
+                    {
+                        let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
+                        setdatajenistinggal(response_jenis_tinggal.data.data)
+                    }
                 }   
                 else if(props.page === "pesertadidikkesehatan"){
-                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
-                    let response_kesehatan = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan`)
-                    
-
-                    setdatapesertadidik(response.data.data)
-                    setdatakesehatan(response_kesehatan.data.data)
+                    if(Object.keys(datapesertadidik).length === 0){
+                        let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
+                        setdatapesertadidik(response.data.data)
+                    }
+                    if(Object.keys(datakesehatan).length === 0)
+                    {
+                        let response_kesehatan = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kesehatan`)
+                        setdatakesehatan(response_kesehatan.data.data)
+                    }
                 }
                 else if(props.page === "pesertadidikkontak"){
-                    let response_kontak = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kontak`)
-       
-                    setdatakontak(response_kontak.data.data)
+                    if(Object.keys(datakontak).length === 0){
+                        let response_kontak = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_kontak`)
+                        setdatakontak(response_kontak.data.data)
+                    }
                 }
                 else if(props.page === "pesertadidikrekening"){
-                    let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
-                    let response_bank = await axios.get(`${process.env.REACT_APP_LINK}bank`)
-                    
-                    setdatarekening(response_rekening.data.data)
-                    setdatabank(response_bank.data.data)
+                    if(Object.keys(datarekening).length === 0){
+                        let response_rekening = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_rekening`)
+                        setdatarekening(response_rekening.data.data)
+                    }
+                    if(Object.keys(databank).length === 0){
+                        let response_bank = await axios.get(`${process.env.REACT_APP_LINK}bank`)
+                        setdatabank(response_bank.data.data)
+                    }
                 }
                 
             }
@@ -114,6 +130,9 @@ const TablePesertaDidik = (props) => {
         let getdata = async() => {
             try{
                 setloading(true)
+                if(props.isload){
+
+                
                 if(props.page === "pesertadidikbiodata"  ){
                     let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
                     let response_wilayah = await axios.get(`${process.env.REACT_APP_LINK}wilayah`)
@@ -174,7 +193,7 @@ const TablePesertaDidik = (props) => {
                     setdatarekening(response_rekening.data.data)
                     setdatabank(response_bank.data.data)
                 }
-                
+            }
             }
             catch(e){
                 console.log(e)
@@ -189,7 +208,8 @@ const TablePesertaDidik = (props) => {
     useEffect(() => {
         let getData = async() => {
             try{
-               
+               if(isload){
+
                 if(props.page === "pesertadidikbiodata"  ){
                     let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik`)
                     setdatapesertadidik(response.data.data)
@@ -235,7 +255,8 @@ const TablePesertaDidik = (props) => {
                     setdatarekening(response_rekening.data.data)
                     setdatabank(response_bank.data.data)
                 }
-                
+                setisload(false)
+            }             
             }
             catch(e){
                 console.log(e)
@@ -245,7 +266,7 @@ const TablePesertaDidik = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        console.log()
+        console.log(isload)
         
     })
 
@@ -264,6 +285,7 @@ const TablePesertaDidik = (props) => {
                     axios.delete(`${process.env.REACT_APP_LINK}${url}`)
                         .then(res => {
                             setupdaterdelete(uuidv4())
+                            setisload(true)
                             Swal.fire(
                                 "Data berhasil dihapus"
                                 )

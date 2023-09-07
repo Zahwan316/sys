@@ -14,10 +14,8 @@ const usePesertaDidikStore =create((set) => ({
     datakecamatan:[],
     datakota:[],
     datawilayah:[],
-    jenis_tinggal:[],
-    pendidikan:[],
-    pekerjaan:[],
-    alasanlayakpip:[],
+
+    
 
     
 
@@ -35,10 +33,6 @@ const usePesertaDidikStore =create((set) => ({
     setdatakecamatan:(item) => set(() => ({datakecamatan:item})),
     setdatakota:(item) => set(() => ({datakota:item})),
     setdatawilayah:(item) => set(() => ({datawilayah:item})),
-    setjenistinggal:(item) => set(() => ({jenistinggal:item})),
-    setdatapendidikan:(data) => set(() => ({pendidikan:data})),
-    setdatapekerjaan:(data) => set(() => ({pekerjaan:data})),
-    setalasanlayakpip:(data) => set(() => ({alasanlayakpip:data})),
 
     
 }))

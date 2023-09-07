@@ -25,7 +25,7 @@ const DataPersertaDidikKesehatan = (props) => {
     const[modal,setmodal] = useState(false)
     const[editedid,seteditedid] = useState()
     const[updater,setupdater] = useState()
-
+    const[isload,setisload] = useState(false)
 
     const[forminput,setforminput] = useState({
         peserta_didik_id:id,
@@ -76,6 +76,10 @@ const DataPersertaDidikKesehatan = (props) => {
                         text:"Terima kasih sudah mengisi data"
                     })
                     setupdater(uuidv4())
+                    setisload(true)
+                    setTimeout(() => {
+                        setisload(false)
+                    },500)
                 }
             }
             catch(e){
@@ -143,6 +147,7 @@ const DataPersertaDidikKesehatan = (props) => {
                 getTypeBtn={getTypeBtn}
                 handlemodal={handlemodal}
                 updater={updater}
+                isload={isload}
              />
 
             {

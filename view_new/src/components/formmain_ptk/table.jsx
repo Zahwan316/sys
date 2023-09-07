@@ -16,12 +16,13 @@ const TablePtk = (props) => {
     const[ptk,setptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
     const[ptkselected,setptkselected] = usePtkStore((state) => [state.ptkselected,state.setptkselected])
     const[agama,setagama] = useRefStore((state) => [state.agama,state.setagama])
-    const[jenisptk,setjenisptk] = useRefStore((state) => [state.jenisptk,state.setjenis_ptk])
+    const[jenisptk,setjenisptk] = useRefStore((state) => [state.jenis_ptk,state.setjenis_ptk])
     const[status_kepegawaian,setstatus_kepegawaian] = useRefStore((state) => [state.status_kepegawaian,state.setstatus_kepegawaian])
     const[kewarganegaraan,setkewarganegaraan] = useRefStore ((state) => [state.kewarganegaraan,state.setkewarganegaraan])
     const[updaterdelete,setupdaterdelete] = useState()
     const navigate = useNavigate()
     const{id} = useParams()
+    const [isload,setisload] = useState(false)
 
     useEffect(() => {
         const getData = async() => {
@@ -30,37 +31,44 @@ const TablePtk = (props) => {
                     if(Object.keys(ptk).length === 0){
                         let response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setptk(response.data.data)
-
                     }
-                    let response_agama = await axios.get(`${process.env.REACT_APP_LINK}agama`)
-                    let response_kewarganegaraan = await axios.get(`${process.env.REACT_APP_LINK}jenis_kewarganegaraan`)
+                    if(Object.keys(agama).length === 0){
+                        let response_agama = await axios.get(`${process.env.REACT_APP_LINK}agama`)
+                        setagama(response_agama.data.data)
+                    }
+                    if(Object.keys(kewarganegaraan).length === 0){
+                        let response_kewarganegaraan = await axios.get(`${process.env.REACT_APP_LINK}jenis_kewarganegaraan`)
+                        setkewarganegaraan(response_kewarganegaraan.data.data)
+                    }
                     
-
-                    setagama(response_agama.data.data)
-                    setkewarganegaraan(response_kewarganegaraan.data.data)
                 }
                 else if(props.page === "ptkkepegawaian"){
-                    let response_kepegawaian = await axios.get(`${process.env.REACT_APP_LINK}status_kepegawaian`)
-                    let response_jenis_ptk = await axios.get(`${process.env.REACT_APP_LINK}jenis_ptk`)
-
-                    setjenisptk(response_jenis_ptk.data.data)
-                    setstatus_kepegawaian(response_kepegawaian.data.data)
+                   
+                    if(Object.keys(jenisptk).length === 0){
+                        let response_jenis_ptk = await axios.get(`${process.env.REACT_APP_LINK}jenis_ptk`)
+                        setjenisptk(response_jenis_ptk.data.data)
+                    }
+                    if(Object.keys(status_kepegawaian).length === 0){
+                        let response_kepegawaian = await axios.get(`${process.env.REACT_APP_LINK}status_kepegawaian`)
+                        setstatus_kepegawaian(response_kepegawaian.data.data)
+                    }
                 }
             }
             catch(e){
                 console.log(e)
             }
+            
         }
         getData()
     },[])
 
     useEffect(() => {
         const refetch_data = async() => {
-            try{
-                
+            try{ 
+                if(props.isload){
                     let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                    setptk(res.data.data)
-                
+                    setptk(res.data.data)       
+                }
             }
             catch(e){
 
@@ -72,10 +80,10 @@ const TablePtk = (props) => {
     useEffect(() => {
         const refetch_data = async() => {
             try{
-               
-                let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                setptk(res.data.data)
-                
+                if(props.isload){
+                    let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    setptk(res.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -117,6 +125,10 @@ const TablePtk = (props) => {
                         .then(res => {
                             console.log(res.data)
                             setupdaterdelete(uuidv4())
+                            setisload(true)
+                            setTimeout(() => {
+                                setisload(false)
+                            }, 500);
                             Swal.fire(
                                 "Data berhasil dihapus"
                                 )

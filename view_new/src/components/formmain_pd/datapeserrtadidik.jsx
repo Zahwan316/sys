@@ -5,6 +5,8 @@ import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 import Swal from "sweetalert2"
 import useStore from 'src/state/pesertadidik';
+import useRefStore from 'src/state/ref';
+import useFormPesertaDidikStore from 'src/state/form/pesertadidik';
 
 const DataPesertaDidikMain = (props) => {
     const tablehead = [
@@ -22,78 +24,62 @@ const DataPesertaDidikMain = (props) => {
     const[modal,setmodal] = useState(false)
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
-    const[dataAgama,setdataagama] = useState([])
-    const[dataKewarganegaraan,setdatakewarganegaraan] = useState([])
-    const[datapekerjaan,setdatapekerjaan] = useState([])
-    const[datapendidikan,setdatapendidikan] = useState([])
-    const[dataalasanlyakpiip,setdataalasanlayakpip] = useStore((state) => [state.alasanlayakpip,state.setalasanlayakpip])
-    const[datajenistinggal,setdatajenistinggal] = useState([])
-    const[dataalattransportasi,setdataalattransportasi] = useState([])
+    const[dataAgama,setdataagama] = useRefStore((state) => [state.agama,state.setagama])
+    const[dataKewarganegaraan,setdatakewarganegaraan] = useRefStore((state) => [state.kewarganegaraan,state.setkewarganegaraan])
+    const[datapekerjaan,setdatapekerjaan] = useRefStore((state) => [state.pekerjaan,state.setdatapekerjaan])
+    const[datapendidikan,setdatapendidikan] = useRefStore((state) => [state.pendidikan,state.setdatapendidikan])
+    const[dataalasanlyakpiip,setdataalasanlayakpip] = useRefStore((state) => [state.alasanlayakpip,state.setalasanlayakpip])
+    const[datajenistinggal,setdatajenistinggal] = useRefStore((state) => [state.jenis_tinggal,state.setjenistinggal])
+    const[dataalattransportasi,setdataalattransportasi] = useRefStore((state) => [state.alat_transportasi,state.setalattransportasi])
     const[updater,setupdater] = useState()
     const datapesertadidik = useStore((state) => state.pesertadidik)
     const[namasiswa,setnamasiswa]= useState()
-    const[forminput,setforminput] = useState({
-        sekolah_id:localStorage.getItem("sekolah_id"),
-        nama:null,
-        jenis_kelamin:null,
-        tempat_lahir:null,
-        tanggal_lahir:null,
-        agama_id:null,
-        kewarganegaraan:null,
-        nisn:null,
-        nipd:null,
-        golongan_darah:null,
-        alat_transportasi_id:null,
-        anak_keberapa:null,
-        jumlah_saudara_kandung:null,
-        nama_ayah:null,
-        pendidikan_ayah_id:null,
-        pekerjaan_ayah_id:null,
-        tanggal_lahir_ayah:null,
-        nama_ibu:null,
-        pendidikan_ibu_id:null,
-        pekerjaan_ibu_id:null,
-        tanggal_lahir_ibu:null,
-        nama_wali:null,
-        pendidikan_wali_id:null,
-        pekerjaan_wali_id:null,
-        tanggal_lahir_wali:null,
-        nik:null,
-        no_kk:null,
-        reg_akta_lahir:null,
-        no_kks:null,
-        penerima_kps:null,
-        no_kps:null,
-        penerima_kip:null,
-        layak_pip:null,
-        alasan_layak_pip:null,
-        no_kip:null,
-        nama_di_kip:null,
-        npsn_jenjang_sebelumnya:null,
-        penerima_pip:null,
-        jenis_tinggal:null,
-        tmt:null,
-    })
-    
+    const[isload,setisload] = useState(false)
+    const[forminput,setforminput] = useFormPesertaDidikStore((state) => [state,state.setform])
+    const resetform = useFormPesertaDidikStore((state) => state.resetform)
     useEffect(() => {
         const getData = async() => {
             try{
-                let response_agama = await axios.get(`${process.env.REACT_APP_LINK}agama`)
-                let response_kewarganegaraan = await axios.get(`${process.env.REACT_APP_LINK}jenis_kewarganegaraan`)
-                let response_pekerjaan = await axios.get(`${process.env.REACT_APP_LINK}ref_pekerjaan`)
-                let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
-                let response_alasan_pip = await axios.get(`${process.env.REACT_APP_LINK}alasan_layak_pip`)
-                let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
-                let response_alat_transportasi = await axios.get(`${process.env.REACT_APP_LINK}alat_transportasi`)
+                if(Object.keys(dataAgama).length === 0)
+                {
+                    let response_agama = await axios.get(`${process.env.REACT_APP_LINK}agama`)
+                    setdataagama(response_agama.data.data)
+                }
 
+                if(Object.keys(dataKewarganegaraan).length === 0)
+                {
+                    let response_kewarganegaraan = await axios.get(`${process.env.REACT_APP_LINK}jenis_kewarganegaraan`)
+                    setdatakewarganegaraan(response_kewarganegaraan.data.data)
+                }
 
-                setdataagama(response_agama.data.data)
-                setdatakewarganegaraan(response_kewarganegaraan.data.data)
-                setdatapekerjaan(response_pekerjaan.data.data)
-                setdatapendidikan(response_pendidikan.data.data)
-                setdataalasanlayakpip(response_alasan_pip.data.data)
-                setdatajenistinggal(response_jenis_tinggal.data.data)
-                setdataalattransportasi(response_alat_transportasi.data.data)
+                if(Object.keys(datapekerjaan).length === 0)
+                {
+                    let response_pekerjaan = await axios.get(`${process.env.REACT_APP_LINK}ref_pekerjaan`)
+                    setdatapekerjaan(response_pekerjaan.data.data)
+                }
+
+                if(Object.keys(datapendidikan).length === 0)
+                {
+                    let response_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}jenjang_pendidikan`)
+                    setdatapendidikan(response_pendidikan.data.data)
+                }
+                if(Object.keys(dataalasanlyakpiip).length === 0)
+                {
+                    let response_alasan_pip = await axios.get(`${process.env.REACT_APP_LINK}alasan_layak_pip`)
+                    setdataalasanlayakpip(response_alasan_pip.data.data)
+                }
+
+                if(Object.keys(datajenistinggal).length === 0)
+                {
+                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
+                    setdatajenistinggal(response_jenis_tinggal.data.data)
+                }
+
+                if(Object.keys(dataalattransportasi).length === 0)
+                {
+                    let response_alat_transportasi = await axios.get(`${process.env.REACT_APP_LINK}alat_transportasi`)
+                    setdataalattransportasi(response_alat_transportasi.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -103,8 +89,7 @@ const DataPesertaDidikMain = (props) => {
     },[])
 
     useEffect(() => {
-        console.log(forminput)
-        console.log(dataalasanlyakpiip)
+      
     })
 
     useEffect(() => {
@@ -118,29 +103,13 @@ const DataPesertaDidikMain = (props) => {
                     const getTargetedPesertaDidik_object = datapesertadidik.filter(item => item.peserta_didik_id == editedid)
                     const getTargetedPesertaDidik = getTargetedPesertaDidik_object[0]
                     console.log(getTargetedPesertaDidik)
-                    setforminput({
-                        sekolah_id:localStorage.getItem("sekolah_id"),
-                        nama:getTargetedPesertaDidik.nama,
-                        jenis_kelamin:getTargetedPesertaDidik.jenis_kelamin,
-                        tempat_lahir:getTargetedPesertaDidik.tempat_lahir,
-                        tanggal_lahir:getTargetedPesertaDidik.tanggal_lahir,
-                        agama_id:getTargetedPesertaDidik.agama_id,
-                        kewarganegaraan:getTargetedPesertaDidik.kewarganegaraan,
-                        nisn:getTargetedPesertaDidik.nisn,
-                        nipd:getTargetedPesertaDidik.nipd,
-                    })
+                    for(const data in getTargetedPesertaDidik)
+                    {
+                        setforminput(data,getTargetedPesertaDidik[data])
+                    }
                 }
                 else if(typeform === 'tambah'){
-                    setforminput({...forminput,
-                        nama:"",
-                        jenis_kelamin:"",
-                        tempat_lahir:"",
-                        tanggal_lahir:"",
-                        agama_id:"",
-                        kewarganegaraan:"",
-                        nisn:"",
-                        nipd:"",
-                    })
+                   resetform()
                 }
                 
             }
@@ -153,10 +122,14 @@ const DataPesertaDidikMain = (props) => {
 
     const handleforminput = (e) => {
         setforminput({...forminput,[e.target.name]:e.target.value})
+        
     }
 
     const handlemodal = () => {
         setmodal(!modal)
+        if(typeform === 'edit'){
+            resetform()
+        }
     }
 
     const getTypeBtn = (typebtn,id) => {
@@ -237,6 +210,10 @@ const DataPesertaDidikMain = (props) => {
                     })
                 }
                 setupdater(uuidv4())
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                },500)
             }
             catch(e){
                 console.log(e)
@@ -259,6 +236,7 @@ const DataPesertaDidikMain = (props) => {
                 handlemodal={handlemodal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
             {
                 modal && 

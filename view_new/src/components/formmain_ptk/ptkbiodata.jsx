@@ -24,6 +24,7 @@ const PtkBiodata = (props) => {
     const resetform = useFormPtkStore((state) => state.resetform)
     const setform = useFormPtkStore((state) => state.setform)
     const[updater,setupdater] = useState()
+    const[isload,setisload] = useState(false)
 
     const handlemodal = () => {
         setmodal(!modal)
@@ -77,6 +78,10 @@ const PtkBiodata = (props) => {
             PostPutSubmit(`ptk/${editedid}`,"put")
 
         }
+        setisload(true)
+        setTimeout(() => {
+            setisload(false)
+        },500)
     }
 
     useEffect(() => {
@@ -119,6 +124,7 @@ const PtkBiodata = (props) => {
                 handlemodal={handlemodal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
 
             {

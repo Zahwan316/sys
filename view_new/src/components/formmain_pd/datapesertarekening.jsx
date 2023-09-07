@@ -18,6 +18,7 @@ const PesertaDidikRekening = (props) => {
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
     const[updater,setupdater] = useState()
+    const[isload,setisload] = useState(false)
     const[forminput,setforminput] = useState({
         peserta_didik_id:id,
         id_bank:null,
@@ -52,6 +53,10 @@ const PesertaDidikRekening = (props) => {
                 text:"Terima kasih sudah mengisi data"
             })
             setupdater(uuidv4())
+            setisload(true)
+            setTimeout(() => {
+                setisload(false)
+            }, 500);
         }
         catch(e){
             console.log(e)
