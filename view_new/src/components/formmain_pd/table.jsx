@@ -13,9 +13,9 @@ const TablePesertaDidik = (props) => {
     const[datalayakpip,setdatalayakpip] = useRefStore((state) => [state.alasanlayakpip,state.setalasanlayakpip])
     const[loading,setloading] = useState(true)
     const[updaterdelete,setupdaterdelete] = useState()
-    const[dataalamat,setdataalamat] = useState([])
+    const[dataalamat,setdataalamat] = useStore((state) => [state.pesertadidikalamat,state.setdatapesertadidikalamat])
     const[datajenistinggal,setdatajenistinggal] = useState([])
-    const[datakesehatan,setdatakesehatan] = useState([])
+    const[datakesehatan,setdatakesehatan] = useStore((state) => [state.pesertadidikkesehatan,state.setdatapesertadidikkesehatan])
     const[datakontak,setdatakontak] = useStore((state) => [state.pesertadidikkontak,state.setdatapesertadidikkkontak])
     const[datarekening,setdatarekening] = useStore((state) => [state.pesertadidikrekening,state.setdatapesertadidikrekening])
     const[databank,setdatabank] = useStore((state) => [state.namabank,state.setnamabank])
@@ -23,7 +23,7 @@ const TablePesertaDidik = (props) => {
     const[datapendidikan,setdatapendidikan] = useRefStore((state) => [state.pendidikan,state.setdatapendidikan])
     const[datapekerjaan,setdatapekerjaan] = useRefStore((state) => [state.pekerjaan,state.setdatapekerjaan])
     const[jenistinggal,setjenistinggal] = useRefStore((state) =>[state.jenis_tinggal,state.setjenistinggal])
-    const[datawilayah,setdatawilayah] = useRefStore((state) => [state.datawilayah,state.setdatawilayah])
+    const[datawilayah,setdatawilayah] = useStore((state) => [state.datawilayah,state.setdatawilayah])
     let setpesertadidikid = useStore((state) => state.setpesertadidikid)
     const {id}= useParams()
     const[isload,setisload] = useState(false)
@@ -81,7 +81,7 @@ const TablePesertaDidik = (props) => {
                         let response_alamat = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat`)
                         setdataalamat(response_alamat.data.data)
                     }   
-                    if(Object.keys(datapesertadidik).length === 0)
+                    if(Object.keys(jenistinggal).length === 0)
                     {
                         let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
                         setdatajenistinggal(response_jenis_tinggal.data.data)
@@ -266,7 +266,7 @@ const TablePesertaDidik = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        console.log(isload)
+        
         
     })
 

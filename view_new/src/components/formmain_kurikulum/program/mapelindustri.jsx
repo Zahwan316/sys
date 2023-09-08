@@ -6,10 +6,14 @@ import axios from 'axios';
 import ModalProgramPage from './modal';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
+import useRefStore from 'src/state/ref';
+import useKurikulumStore from 'src/state/kurikulum';
 
 const MapelIndustri = () => {
     const[dataJurusan,setdatajurusan] = useState([])
-    const[dataJurusanRef,setdatajurusanref] = useState([])
+    const[dataJurusanProgram,setdatajurusanProgram] = useKurikulumStore((state) => [state.kurikulum_program,state.setkurikulumprogram])
+    const[dataJurusanRef,setdatajurusanref] = useRefStore((state) => [state.jurusan,state.setjurusan])
+    const[kurikulum_sp,setkurikulumsp] = useKurikulumStore((state) => [state.kurikulum_sp,state.setkurikulumsp])
     const[jurusanid,setjurusanid] = useState()
     const[modal,setmodal] = useState(false)
     const[typeform,settypeform] = useState()
@@ -36,18 +40,22 @@ const MapelIndustri = () => {
     useEffect(() => {
         const getData = async() => {
             try{
+                if(Object.keys(kurikulum_sp).length === 0)
+                {
+                    let response_kurikulum = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
+                    setkurikulumsp(response_kurikulum.data.data)
+                }
+                
                 let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
                 let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
+                
                 let data = response.data.data
                 let data_program = response_program.data.data
 
                 let dataJurusanRaw = data.filter(item => item.kurikulum_id === 2)
                 let datajurusanid = data_program.map(item => item.jurusan_id)
 
-                /* let namaJurusanRaw = dataJurusanRaw.filter(item => {                 
-                    return datajurusanid.includes(item.jurusan_id )
-                }) */
-
+            
                 let filtered_data_jurusan = []
                 dataJurusanRaw.map(item => 
                         data_program.map(items => 
@@ -56,15 +64,11 @@ const MapelIndustri = () => {
                                 filtered_data_jurusan.push(item)
                             )
                     )
-
-                //console.log(jurusan_test)
-
                 setdatajurusan(filtered_data_jurusan)
-                
-
-                let response_kurikulum = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
-                let data_kurikulum = response_kurikulum.data.data
-                let kurikulum_id_raw = data_kurikulum.filter(item => item.keaktifan == 1)
+    
+               
+                //let data_kurikulum = response_kurikulum.data.data
+                let kurikulum_id_raw = kurikulum_sp.filter(item => item.keaktifan == 1)
                 let kurikulum_code = kurikulum_id_raw[0].kurikulum_kode
                 setforminput({...forminput,kurikulum_id:kurikulum_code})
             }
@@ -80,7 +84,7 @@ const MapelIndustri = () => {
 
     useEffect(() => {
     /*     console.log(editedid) */
-       // console.log(forminput)
+        console.log(forminput)
        /*  console.log(selectedDataMapel)  */
     })
 

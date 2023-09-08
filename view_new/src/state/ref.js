@@ -48,7 +48,19 @@ const useRefStore = create((set) => ({
 
    alat_transportasi:[],
    setalattransportasi:(data) => set(() => ({alat_transportasi:data})),
-   
+
+   kurikulum:[],
+   setkurikulum:(data) => set(() => ({kurikulum:data})),
+
+   jurusan:[],
+   setjurusan:(data) => set(() => ({jurusan:data})),
+
+   merdeka_mapel:[],
+   setmerdekamapel:(data) => set(() => ({merdeka_mapel:data})),
+
+   kbm_mapel_sp:[],
+   setkbmmapelsp:(data) => set(() => ({kbm_mapel_sp:data})),
+
 }))
 
 export default useRefStore

@@ -4,7 +4,7 @@ const usePesertaDidikStore =create((set) => ({
     //state peserta didik
     pesertadidik:[],
     pesertadidikid:[],
-    pesertaddikalamat:[],
+    pesertadidikalamat:[],
     pesertadidikkesehatan:[],
     pesertadidikkontak:[],
     pesertadidikrekening:[],

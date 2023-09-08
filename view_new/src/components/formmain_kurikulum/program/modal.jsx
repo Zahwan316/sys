@@ -100,7 +100,7 @@ const ModalProgramPage = (props) => {
                                             item.kurikulum_sp_id == props.kurikulum_sp_id_code && item.keaktifan === 1 ?
                                             props.kurikulum.map((data,index) => 
                                                 data.kurikulum_kode == item.kurikulum_kode &&
-                                                <option value={item.kurikulum_sp_id}>{data.deskripsi}</option>
+                                                <option key={index} value={item.kurikulum_sp_id}>{data.deskripsi}</option>
                                             )
                                             :
                                             ""
@@ -163,6 +163,7 @@ const ModalProgramPage = (props) => {
                                 onClick={props.handlecheck}
                                 value={props.forminput.keaktifan}
                                 checked={props.forminput.keaktifan === 1}
+                                defaultChecked={props.forminput.keaktifan === 1}
                                 />
                             <CFormLabel className='mx-2'>Masih Aktif ?</CFormLabel>
                         </div>

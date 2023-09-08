@@ -68,6 +68,9 @@ const Sumber_gaji_route = require("./route/sumber_gaji")
 const Lembaga_pengangkat_route = require("./route/lembaga_pengangkat")
 const Keahlian_laboratorium_route = require("./route/keahlian_laboratorium")
 
+const Pos_route = require("./route/pos");
+const Kebijakan_pos_route = require("./route/kebijakan_pos");
+
 //login
 const Login_route = require("./route/loginRegister")
 
@@ -81,9 +84,10 @@ app.use(express.urlencoded({extended:true}))
 //app.use(multer().single('file'))
 
 
-app.route("/",(req,res) => {
-    res.send("index");
-})
+app.route("/")
+    .get(async(req,res) => {
+        res.status(200).send("index")
+    })
 
 //route
 
@@ -151,7 +155,8 @@ app.use(Sumber_gaji_route)
 app.use(Lembaga_pengangkat_route) 
 app.use(Keahlian_laboratorium_route)
 
-
+app.use(Pos_route)
+app.use(Kebijakan_pos_route)
 
 //end route
 

@@ -76,11 +76,11 @@ const DataPersertaDidikKesehatan = (props) => {
                         text:"Terima kasih sudah mengisi data"
                     })
                     setupdater(uuidv4())
-                    setisload(true)
-                    setTimeout(() => {
-                        setisload(false)
-                    },500)
                 }
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                },500)
             }
             catch(e){
                 console.log(e)

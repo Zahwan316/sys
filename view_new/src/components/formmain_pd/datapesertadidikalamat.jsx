@@ -24,7 +24,7 @@ const DataPesertaDidikAlamat = (props) => {
     const[modal,setmodal] = useState(false)
     const[typeform,settypeform] = useState()
     const[editedid,seteditedid] = useState()
-    const datawilayah = useStore((state) => state.datawilayah)
+    const [datawilayah,setdatawilayah] = useStore((state) => [state.datawilayah,state.setdatawilayah])
     const [kodekota,setkodekota] = useState()
     const [kodekecamatan,setkodekecamatan] = useState()
     const [kodedesa,setkodedesa] = useState()
@@ -110,6 +110,22 @@ const DataPesertaDidikAlamat = (props) => {
         
         setforminput({...forminput,keaktifan:value})
     }
+
+    useEffect(() => {
+        const fetchData = async() => {
+            try{
+                if(Object.keys(datawilayah).length === 0)
+                {
+                    let res = await axios.get(`${process.env.REACT_APP_LINK}wilayah`)
+                    setdatawilayah(res.data.data)
+                }
+            }
+            catch(e){
+
+            }
+        }
+       // fetchData()
+    },[])
 
     useEffect(() => {
         const getDataWilayah = async () => {
@@ -213,11 +229,11 @@ const DataPesertaDidikAlamat = (props) => {
                         text:"Terima kasih sudah mengedit data"
                     })
                     setupdater(uuidv4())
-                    setisload(true)
-                    setTimeout(() => {
-                        setisload(false)
-                    },500)
                 }
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                },500)
                
             }
             catch(e){

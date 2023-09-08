@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
     CButton,
@@ -23,14 +23,16 @@ import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 import Swal from 'sweetalert2';
 import DataForm from 'src/components/formmain/dataform/dataform';
+import useRefStore from 'src/state/ref';
 
 const JenisPage = () => {
     const[typeform,settypeform] = useState()
     const[id,setid] = useState()
     const[modalClicked,setmodalclicked] = useState(false)
-    const[dataKurikulum,setdatakurikulum] = useState([])
+    const[dataKurikulum,setdatakurikulum] = useRefStore((state) => [state.kurikulum,state.setkurikulum])
     const[isCheckedCheckbox,setischeckedbox] = useState(false)
     const[updater,setupdater] = useState()
+    const[isload,setisload] = useState(false)
     const[formInput,setforminput] = useState({
         sekolah_id:localStorage.getItem("sekolah_id"),
         kurikulum_sp_id:uuidv4(),
@@ -70,9 +72,7 @@ const JenisPage = () => {
                 ...formInput,
                 kurikulum_sp_id:uuidv4()
             }
-        )
-        
-        
+        )      
         console.log(formInput)
         const sendData = async() => {
             try{
@@ -116,7 +116,10 @@ const JenisPage = () => {
                 })
             }
         }
-
+        setisload(true)
+        setTimeout(() => {
+            setisload(false)
+        }, 500);
         sendData()
         
     }
@@ -128,8 +131,8 @@ const JenisPage = () => {
     }
 
     useEffect(() => {
-        console.log(formInput)
-        console.log(id)
+       /*  console.log(formInput)
+        console.log(id) */
        
     })
 
@@ -137,15 +140,18 @@ const JenisPage = () => {
     useEffect(() => {
         const getData = async() => {
             try{
-                let response = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
-                setdatakurikulum(response.data.data)
+                if(Object.keys(dataKurikulum).length === 0)
+                {
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
+                    setdatakurikulum(response.data.data)
+                }
                 
             }
             catch(e){
                 console.log(e)
             }
         }
-        getData()
+        //getData()
     },[])
 
     //memanggil data update
@@ -194,6 +200,7 @@ const JenisPage = () => {
                 addbtn={handleTambahButton}
                 kurikulum={dataKurikulum}
                 updater={updater}
+                isload={isload}
                 />
             {
                 modalClicked &&

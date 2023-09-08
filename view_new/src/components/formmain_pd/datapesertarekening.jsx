@@ -120,6 +120,7 @@ const PesertaDidikRekening = (props) => {
                 handlemodal={handleModal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
 
             {

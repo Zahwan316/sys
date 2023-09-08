@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import {
     CButton,
@@ -22,6 +22,8 @@ import axios from 'axios';
 import ModalProgramPage from './modal';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
+import useRefStore from 'src/state/ref';
+import useKurikulumStore from 'src/state/kurikulum';
 
 const ProgramForm = () => {
     const[kurikulum_sp_id_code,setkurikulumspid] = useState(localStorage.getItem("kurikulum_sp_id"))
@@ -41,14 +43,15 @@ const ProgramForm = () => {
     const[id,setid] = useState()
     const[typeform,settypeform] = useState()
     //data
-    const[dataRefKurikulum,setdatarefkurikulum] = useState()
-    const[dataKurikulumSp,setdatakurikulumsp] = useState([])
-    const[dataJurusan,setdatajurusan] = useState([])
+    const[dataRefKurikulum,setdatarefkurikulum] = useRefStore((state) => [state.kurikulum,state.setkurikulum])
+    const[dataKurikulumSp,setdatakurikulumsp] = useKurikulumStore((state) => [state.kurikulum_sp,state.setkurikulumsp])
+    const[dataJurusan,setdatajurusan] = useRefStore((state) => [state.jurusan,state.setjurusan])
     const[checkbox,setcheckbox] = useState(false)
     //logic
     const[inputcheckbox,setinputcheckbox] = useState()
     const[bidangjurusan,setbidangjurusan] = useState()
     const[jurusanid,setjurusanid] = useState()
+    const[isload,setisload] = useState(false)
 
 
     const tablehead = [
@@ -112,6 +115,10 @@ const ProgramForm = () => {
                     }) 
                 }
                 setupdater(uuidv4())
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                }, 500);
             }
             catch(e){
                 console.log(e)
@@ -161,27 +168,41 @@ const ProgramForm = () => {
     }
 
     useEffect(() => {
-       console.log(forminput)
-      // console.log(id)
+      // console.log(forminput)
+      // console.log(kodemain)
     })
 
     useEffect(() => {
         const getData = async() => {
             try{
-                let response_jurusan = await axios.get(process.env.REACT_APP_LINK + "jurusan")
-                let response_kurikulum = await axios.get(process.env.REACT_APP_LINK + "ref_kurikulum")
-                let response_kurikulum_sp = await axios.get(process.env.REACT_APP_LINK + "kurikulum_sp")
+                //let response_jurusan = await axios.get(process.env.REACT_APP_LINK + "jurusan")
+                //let kode_main;
 
-                //setdatajurusan(response_jurusan.data.data)
-                setdatarefkurikulum(response_kurikulum.data.data)
-                setdatakurikulumsp(response_kurikulum_sp.data.data)
+                if(Object.keys(dataRefKurikulum).length === 0)
+                {
+                    let response_kurikulum = await axios.get(process.env.REACT_APP_LINK + "ref_kurikulum")
+                    setdatarefkurikulum(response_kurikulum.data.data)
+                }
 
-                let kurikulum_item_sp = response_kurikulum_sp.data.data
-                let kode_main_raw = kurikulum_item_sp.map(item => item.kurikulum_sp_id == forminput.kurikulum_sp && item)
-                let kode_main = kode_main_raw[0].kurikulum_kode
-                let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan/${kode_main}`)
+                if(Object.keys(dataKurikulumSp).length === 0)
+                {
+                    let response_kurikulum_sp = await axios.get(process.env.REACT_APP_LINK + "kurikulum_sp")
+                    setdatakurikulumsp(response_kurikulum_sp.data.data)
+                    let kurikulum_item_sp = response_kurikulum_sp.data.data
+                    
+                }
+                
+                if(Object.keys(dataJurusan).length === 0)
+                {
+                    let kode_main_raw = dataKurikulumSp.filter(item => item.kurikulum_sp_id == kurikulum_sp_id_code )
+                    let kode_main = kode_main_raw[0].kurikulum_kode
                
-                setdatajurusan(response.data.data)
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan/${kode_main}`)
+                    setdatajurusan(response.data.data)
+
+                }
+                
+                
             }
             catch(e){
                 console.log(e)
@@ -241,6 +262,7 @@ const ProgramForm = () => {
                 getTypeBtn={getTypeBtn}
                 handleModal={handleModal}
                 updater={updater}
+                isload={isload}
             />
 
             {

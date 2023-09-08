@@ -69,12 +69,6 @@ const DataPesertaDidikMain = (props) => {
                     setdataalasanlayakpip(response_alasan_pip.data.data)
                 }
 
-                if(Object.keys(datajenistinggal).length === 0)
-                {
-                    let response_jenis_tinggal = await axios.get(`${process.env.REACT_APP_LINK}jenis_tinggal`)
-                    setdatajenistinggal(response_jenis_tinggal.data.data)
-                }
-
                 if(Object.keys(dataalattransportasi).length === 0)
                 {
                     let response_alat_transportasi = await axios.get(`${process.env.REACT_APP_LINK}alat_transportasi`)

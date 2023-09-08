@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _kurikulum_rombongan_belajar = require("./kurikulum_rombongan_belajar");
+var _kebijakan_pos = require("./kebijakan_pos");
 
 function initModels(sequelize) {
-  var kurikulum_rombongan_belajar = _kurikulum_rombongan_belajar(sequelize, DataTypes);
+  var kebijakan_pos = _kebijakan_pos(sequelize, DataTypes);
 
 
   return {
-    kurikulum_rombongan_belajar,
+    kebijakan_pos,
   };
 }
 module.exports = initModels;

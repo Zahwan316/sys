@@ -4,6 +4,7 @@ import ModalProgramPage from './modal';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
+import useRefStore from 'src/state/ref';
 
 const MapelForm = () => {
     const[modal,setmodal] = useState(false)
@@ -18,9 +19,9 @@ const MapelForm = () => {
         urutan:"",
         is_industri:0
     })
-    const[refmapel,setrefmapel] = useState([])
+    const[refmapel,setrefmapel] = useRefStore((state) => [state.merdeka_mapel,state.setmerdekamapel])
     const[updater,setupdater] = useState()
-
+    const[isload,setisload] = useState(false)
 
     const tablehead = [
         "Kelompok",
@@ -31,10 +32,10 @@ const MapelForm = () => {
     useEffect(() => {
         let getdata = async() => {
             try{
-                let response_refmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
-                
-                setrefmapel(response_refmapel.data.data)
-
+                if(Object.keys(refmapel).length === 0){
+                    let response_refmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                    setrefmapel(response_refmapel.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -50,8 +51,8 @@ const MapelForm = () => {
     useEffect(() => {
         const handlekelompok = async() => {
             try{
-                let response_refmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
-                let data = response_refmapel.data.data
+                //let response_refmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                let data = refmapel
                 let kelompok_raw = data.filter(item => item.mapel_kode === forminput.mapel_kode && item)
                 let kelompok_kode = kelompok_raw[0].kelompok
                 let kurikulum_id_kode = kelompok_raw[0].kurikulum_id
@@ -99,8 +100,6 @@ const MapelForm = () => {
         getdata()
     },[editedid])
 
-    
-
     const handlemodal = () => {
         setmodal(!modal)
     }
@@ -140,6 +139,10 @@ const MapelForm = () => {
                     })
                 }
                 setupdater(uuidv4())
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                },500)
             }
             catch(e){
                 console.log(e)
@@ -163,6 +166,7 @@ const MapelForm = () => {
                 handleModal={handlemodal}
                 getTypeBtn={getTypeBtn}
                 updater={updater}
+                isload={isload}
             />
             {
                 modal &&

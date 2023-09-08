@@ -29,6 +29,8 @@ import { cilEyedropper, cilListNumbered } from '@coreui/icons';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import usePtkStore from 'src/state/ptk';
+import useRefStore from 'src/state/ref';
+import useKurikulumStore from 'src/state/kurikulum';
 
 const TableMain = (props) => {
     //navigate
@@ -39,12 +41,12 @@ const TableMain = (props) => {
     const[itemid,setitemid] = useState()
 
     //jenis page
-    const[dataJenis,setdatajenis] = useState([])
-    const[jenisKurikulum,setjeniskurikulum] = useState()
+    const[dataJenis,setdatajenis] = useKurikulumStore((state) => [state.kurikulum_sp,state.setkurikulumsp])
+    const[jenisKurikulum,setjeniskurikulum] = useRefStore((state) => [state.kurikulum,state.setkurikulum])
 
     //program page
-    const[dataProgram,setdataprogram] = useState([])
-    const[jurusan,setjurusan] = useState()
+    const[dataProgram,setdataprogram] = useKurikulumStore((state) => [state.kurikulum_program,state.setkurikulumprogram])
+    const[jurusan,setjurusan] = useRefStore((state) => [state.jurusan,state.setjurusan])
 
     //rombel page
     const[dataRombel,setdatarombel] = useState([])
@@ -54,7 +56,7 @@ const TableMain = (props) => {
 
     //tugas page
     const[dataTugas,setdatatugas] = usePtkStore((state) => [state.ptk,state.setdataptk])
-    const[dataMapel,setdatamapel] = useState([])
+    const[dataMapel,setdatamapel] = useRefStore((state) => [state.kbm_mapel_sp,state.setkbmmapelsp])
     const[dataTugasMengajar,setdatatugasmengajar] = useState([])
     const[gurumapel,setgurumapel] = usePtkStore((state) => [state.ptk,state.setdataptk])
 
@@ -67,11 +69,12 @@ const TableMain = (props) => {
     //mapel page
     //|
     //---mapel nasional
-    const[refmapel,setrefmapel] = useState([])
+    const[refmapel,setrefmapel] = useRefStore((state) => [state.merdeka_mapel,state.setmerdekamapel])
     //|
     //---mapel industri
     const[datamapelindustri,setdatamapelindustri] = useState([])
 
+    const[isload,setisload] = useState(false)
 
     //loading
     const[loading,setloading] = useState(true)
@@ -86,21 +89,39 @@ const TableMain = (props) => {
                 let response;
                 
                 if(props.page === "jenis"){
-                    response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
-                    let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
-                    setjeniskurikulum(response_ref.data.data)
-                    setdatajenis(response.data.data)
+                    if(Object.keys(jenisKurikulum).length === 0)
+                    {
+                        let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
+                        setjeniskurikulum(response_ref.data.data)
+                    }
+                    if(Object.keys(dataJenis).length === 0)
+                    {
+                        response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
+                        setdatajenis(response.data.data)
+                    }
                 }
                 else if(props.page === "program"){
-                    response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
-                    let response_jenis = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
-                    let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
-                    let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                    if(Object.keys(dataProgram).length === 0)
+                    {
+                        response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
+                        setdataprogram(response.data.data)
+                    }
+                    if(Object.keys(dataJenis).length === 0)
+                    {
+                        let response_jenis = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
+                        setdatajenis(response_jenis.data.data)
+                    }
+                    if(Object.keys(jenisKurikulum).length === 0)
+                    {
+                        let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
+                        setjeniskurikulum(response_ref.data.data)
+                    }
+                    if(Object.keys(jurusan).length === 0)
+                    {
+                        let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                        setjurusan(response_jurusan.data.data)
+                    }
                     
-                    setjeniskurikulum(response_ref.data.data)
-                    setdataprogram(response.data.data)
-                    setjurusan(response_jurusan.data.data)
-                    setdatajenis(response_jenis.data.data)
                 }
                 else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
@@ -167,11 +188,17 @@ const TableMain = (props) => {
                     }
                 }
                 else if(props.page === "mapelnasional"){
-                    let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
-                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
-                   
-                    setrefmapel(responserefmapel.data.data)
-                    setdatamapel(responsemapel.data.data)
+                    if(Object.keys(refmapel).length === 0)
+                    {
+                        // let responserefmapel = await axios.get(`${process.env.REACT_APP_LINK}merdeka_mapel`)
+                        // setrefmapel(responserefmapel.data.data)
+
+                    }
+                    if(Object.keys(dataMapel).length === 0)
+                    {
+                        let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                        setdatamapel(responsemapel.data.data)
+                    }
                 }
 
             }
@@ -206,6 +233,10 @@ const TableMain = (props) => {
         const getAlldata = async() => {
             try{
                 let response;
+                if(props.isload)
+                {
+
+                
                 if(props.page === "jenis"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
                     let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
@@ -296,6 +327,7 @@ const TableMain = (props) => {
                     setdatamapelindustri(mapelIndustri)
                     props.handleDataMapel(mapelIndustri)
                 }
+            }
 
             }
             catch(e){
@@ -310,6 +342,10 @@ const TableMain = (props) => {
         const getAlldata = async() => {
             try{
                 let response;
+                if(isload)
+                {
+
+                
                 if(props.page === "jenis"){
                    
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
@@ -318,15 +354,15 @@ const TableMain = (props) => {
                     setdatajenis(response.data.data)
                 }
                 else if(props.page === "program"){
-                    response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
-                    let response_jenis = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
-                    let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
-                    let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
                     
-                    setjeniskurikulum(response_ref.data.data)
+                    response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
                     setdataprogram(response.data.data)
-                    setjurusan(response_jurusan.data.data)
+                    let response_jenis = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_sp`)
                     setdatajenis(response_jenis.data.data)
+                    let response_ref = await axios.get(`${process.env.REACT_APP_LINK}ref_kurikulum`)
+                    setjeniskurikulum(response_ref.data.data)
+                    let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                    setjurusan(response_jurusan.data.data)
                 }
                 else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
@@ -400,7 +436,8 @@ const TableMain = (props) => {
                     setdatamapelindustri(mapelIndustri)
                     props.handleDataMapel(mapelIndustri)
                 }
-
+                setisload(false)
+            }
             }
             catch(e){
                 console.log(e)
@@ -489,6 +526,8 @@ const TableMain = (props) => {
                 .then(result => {
                     if(result.isConfirmed){
                         axios.delete(`${process.env.REACT_APP_LINK}${url}`)
+                        setupdaterdelete(uuidv4())
+                        setisload(true)
                         Swal.fire(
                             "Data Berhasil Dihapus"
                         )
@@ -524,122 +563,27 @@ const TableMain = (props) => {
 
             //jika page program
             else if(props.page === "program"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}kurikulum_program/${id}`)
-                            .then(res => {
-                                Swal.fire(
-                                    "Data Berhasil Dihapus"
-                                )
-                                setupdaterdelete(uuidv4())
-                            })
-                            .catch(e => console.log(e))
-                    }
-                })
+                deleteItem(`kurikulum_program/${id}`)
             }
 
             //jika page rombel
             else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar/${id}`)
-                            .then(res => {
-                                Swal.fire(
-                                    "Data Berhasil Dihapus"
-                                )
-                                setupdaterdelete(uuidv4())
-                            })
-                            .catch(e => console.log(e))
-                    }
-                })
+                deleteItem(`kurikulum_rombongan_belajar/${id}`)
             }
 
             //jika page tugas
             else if(props.page === "tugas"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar/${id}`)
-                            .then(res => {
-                                Swal.fire(
-                                    "Data Berhasil Dihapus"
-                                )
-                                setupdaterdelete(uuidv4())
-                            })
-                            .catch(e => console.log(e))
-                    }
-                })
+                deleteItem(`ptk_tugas_mengajar/${id}`)
             }
 
             //jika page jadwal
             else if(props.page === "jadwalreguler"|| props.page === "jadwalindustri" || props.page === "jadwalspesifik"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}jadwal_kbm/${id}`)
-                            .then(res => {
-                                Swal.fire(
-                                    "Data Berhasil Dihapus"
-                                )
-                                setupdaterdelete(uuidv4())
-                            })
-                            .catch(e => console.log(e))
-                    }
-                })
+               deleteItem(`jadwal_kbm/${id}`)
             }
 
             //jika page mael
             else if(props.page === "mapelnasional" || props.page === "mapelindustri"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}kbm_mapel_sp/${id}`)
-                            .then(res => {
-                                Swal.fire(
-                                    "Data Berhasil Dihapus"
-                                )
-                                setupdaterdelete(uuidv4())
-                            })
-                            .catch(e => console.log(e))
-                    }
-                })
+                deleteItem(`kbm_mapel_sp/${id}`)
             }
 
         }
