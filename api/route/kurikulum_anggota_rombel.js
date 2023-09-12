@@ -31,9 +31,8 @@ router.route('/kurikulum_anggota_rombel')
             let id_rombellama = req.body.rombellama
             let id_rombelbaru = req.body.rombelbaru
             let log = []
-            let perempuan;
-            let laki;
-
+            let datajeniskelaminkelas = []
+           
             Kurikulum_anggota_rombel.update({
                 rombongan_belajar_id:id_rombelbaru
             },{
@@ -41,7 +40,7 @@ router.route('/kurikulum_anggota_rombel')
                     peserta_didik_id:{
                         [Op.in]:id
                     }
-                }
+                } 
             })
 
             //buat log
@@ -53,6 +52,33 @@ router.route('/kurikulum_anggota_rombel')
                     log.push(item.jenis_kelamin)
                 )
             )
+            let peserta_didik_kelas = await Kurikulum_anggota_rombel.findAll({
+                where:{
+                    rombongan_belajar_id:req.body.rombellama
+                }
+            })
+
+            peserta_didik_data.map((item) =>
+                peserta_didik_kelas.map((items) => 
+                    items.peserta_didik_id === item.peserta_didik_id &&
+                    datajeniskelaminkelas.push(item.jenis_kelamin)
+                )
+            )
+
+            let countjeniskelamin = {
+                L:0,
+                P:0
+            }
+
+            datajeniskelaminkelas.forEach((item) => {
+                if(item === 'L')[
+                    countjeniskelamin.L += 1
+                ]
+                else if(item === 'P')[
+                    countjeniskelamin.P += 1 
+                ]
+            })
+
             let kelas = kurikulum_rombongan_belajar.filter(item => item.rombongan_belajar_id == id_rombellama && item.nama)
             let kelasnama = kelas[0].nama
 
@@ -67,8 +93,8 @@ router.route('/kurikulum_anggota_rombel')
             let datarekap_raw = {
                 namakelas:kelasnama,
                 jumlahsiswa:log,
-                p:hitung_jenis_kelamin.P,
-                l:hitung_jenis_kelamin.L
+                p:countjeniskelamin.P,
+                l:countjeniskelamin.L
             }
 
             convert_datarekap.push(datarekap_raw)
@@ -81,6 +107,7 @@ router.route('/kurikulum_anggota_rombel')
                 message:"Data berhasil diedit",
                 method:req.method,
                 data:hitung_jenis_kelamin,
+                datajeniskelamin:countjeniskelamin
             })
         }
         catch(e){
@@ -98,7 +125,8 @@ router.route("/kurikulum_anggota_rombel/:id")
             let findData = await Kurikulum_anggota_rombel.findAll({
                 where:{
                     rombongan_belajar_id:id
-                }
+                },
+                //order:[['']]
             })
             if(findData){
                 res.status(200).json({

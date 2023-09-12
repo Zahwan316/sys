@@ -1,9 +1,10 @@
 import { CButton, CForm, CTable, CTableBody, CTableHead } from '@coreui/react';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { CFormLabel,CFormSelect } from '@coreui/react';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
+import IdentitasForm from '../formmain/identitas';
 
 const MainDropdownSiswa = (props) => {
     //data from api
@@ -25,6 +26,7 @@ const MainDropdownSiswa = (props) => {
     const[selectAll,setselectall] = useState(false)
 
     const[datarekap,setdatarekap] = useState([])
+    const checkboxref = useRef()
 
 
     const[forminput,setforminput] = useState({
@@ -104,7 +106,7 @@ const MainDropdownSiswa = (props) => {
                 if(props.page === "siswareguler"){
                     let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let datarombel = responseRombel.data.data
-                    let datarombelnew = datarombel.filter(item => item.semester_id == idsemester && item)
+                    let datarombelnew = datarombel.filter(item => item.semester_id == idsemester && item.is_industri == 0)
                     setdatarombelnew(datarombelnew)
                 }
                 else if(props.page === "siswaindustri"){
@@ -125,10 +127,18 @@ const MainDropdownSiswa = (props) => {
     useEffect(() => {
         const getData = async() => {
             try{
+                if(props.page === 'siswareguler'){
                     let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
                     let responserombel = responseRombel.data.data
-                    let datarombelold = responserombel.filter(item => item.semester_id == idsemesterold)
+                    let datarombelold = responserombel.filter(item => item.semester_id == idsemesterold && item.is_industri == 0)
                     setdatarombel(datarombelold)
+                }
+                if(props.page === 'siswaindustri'){
+                    let responseRombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                    let responserombel = responseRombel.data.data
+                    let datarombelold = responserombel.filter(item => item.semester_id == idsemesterold && item.is_industri == 1)
+                    setdatarombel(datarombelold)
+                }
             }
             catch(e){
                 console.log(e)
@@ -165,7 +175,7 @@ const MainDropdownSiswa = (props) => {
        console.log(forminput)
        console.log(selectAll)  */
        console.log(idsemester) 
-        console.log(dataRombel)
+        console.log(forminput)
     })
 
     const handleOptionRombelLama = (e) => {
@@ -205,7 +215,6 @@ const MainDropdownSiswa = (props) => {
         else{
             setsiswaterpilih(pre => pre.filter(id => id !== e.target.value))
         }
-      // setsiswaterpilih({...siswaterpilih,[e.target.id]:e.target.checked})
     }
 
     const handleForm = (e) => {
@@ -232,9 +241,12 @@ const MainDropdownSiswa = (props) => {
                                     setupdater(uuidv4())
                                     let responselog = await axios.get(`${process.env.REACT_APP_LINK}datarekap`)
                                     setdatarekap(responselog.data.data)
+                                    console.log(responselog)
+                                    checkboxref.current.checked = false
+                                    setsiswaterpilih([])
                                     setforminput({
-                                        rombellama:"",
-                                        rombelbaru:"",
+                                        rombellama:idrombel,
+                                        rombelbaru:idrombelnew,
                                         idsiswa:[]
                                 })
                                 
@@ -329,6 +341,8 @@ const MainDropdownSiswa = (props) => {
                                             checked={siswaterpilih[item.peserta_didik_id]}
                                             id={item.peserta_didik_id}
                                             value={item.peserta_didik_id}
+                                            ref={checkboxref}
+                                            defaultChecked={false}
                                         />
                                     </td>
                                     <td>
