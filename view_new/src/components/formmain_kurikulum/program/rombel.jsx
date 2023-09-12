@@ -30,6 +30,8 @@ import { get } from 'lodash';
 import {v4 as uuidv4} from "uuid"
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import useSekolahStore from 'src/state/sekolah';
+import useRefStore from 'src/state/ref';
 
 const RombelPage = (props) => {
     const[dataSemester,setdatasemester] = useState()
@@ -38,6 +40,8 @@ const RombelPage = (props) => {
     const[dataTingkat,setdatatingkat] = useState()
     const[dataJenisRombel,setdatajenisrombel] = useState()
     const[dataRombel,setdatarombel] = useState()
+    const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
+    const[tingkatpendidikan,settingkatpendidikan] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
 
     const[typeform,settypeform] = useState()
     const[idedited,setidedited] = useState()
@@ -66,10 +70,21 @@ const RombelPage = (props) => {
     useEffect(() => {
         const getData = async() => {
             try{
+                if(Object.keys(dataSekolah).length === 0){
+                    let res = await axios.get(`${process.env.REACT_APP_LINK}sekolah_identitas`)
+                    setdatasekolah(res.data.data)
+
+                }
+                if(Object.keys(tingkatpendidikan).length === 0){
+
+                    let res_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
+                    settingkatpendidikan(res_tingkat_pendidikan.data.data)
+                }
                 let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
                 let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
                 let response_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
                 let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
+                
                 let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
 
                 setdatajenisrombel(response_jenis_rombel.data.data)

@@ -206,7 +206,6 @@ router.route("/kurikulum_rombongan_belajar/mutasi/:semesterid")
     })
     .post(async(req,res) => {
         let semesterid = req.params.id
-        console.log(semesterid) 
         const dataprev = await Kurikulum_rombongan_belajar.findAll({
             where:{
                 semester_id:semesterid - 1

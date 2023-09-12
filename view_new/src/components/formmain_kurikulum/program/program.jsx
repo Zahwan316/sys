@@ -167,16 +167,14 @@ const ProgramForm = () => {
         setjurusanid(e.target.value)
     }
 
+
     useEffect(() => {
-      // console.log(forminput)
-      // console.log(kodemain)
+      
     })
 
     useEffect(() => {
         const getData = async() => {
             try{
-                //let response_jurusan = await axios.get(process.env.REACT_APP_LINK + "jurusan")
-                //let kode_main;
 
                 if(Object.keys(dataRefKurikulum).length === 0)
                 {
@@ -194,12 +192,9 @@ const ProgramForm = () => {
                 
                 if(Object.keys(dataJurusan).length === 0)
                 {
-                    let kode_main_raw = dataKurikulumSp.filter(item => item.kurikulum_sp_id == kurikulum_sp_id_code )
-                    let kode_main = kode_main_raw[0].kurikulum_kode
-               
-                    let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan/${kode_main}`)
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
                     setdatajurusan(response.data.data)
-
+                    console.log(response.data.data)
                 }
                 
                 
@@ -251,9 +246,10 @@ const ProgramForm = () => {
         }
         getData()
     },[id])
-
-
-
+  
+    let kode_main_raw = dataKurikulumSp.filter(item => item.kurikulum_sp_id === kurikulum_sp_id_code ) 
+    let kode_main = kode_main_raw[0].kurikulum_kode || null
+       
     return(
         <div>
             <TableMain
@@ -281,7 +277,7 @@ const ProgramForm = () => {
                     forminput={forminput}
                     handlebidangjurusan={handleBidangJurusan}
                     handlejurusanid={handleJurusanId}
-
+                    kodemain={kode_main}
                     kurikulum_sp_id_code={kurikulum_sp_id_code}
                     kurikulumspdata={dataKurikulumSp}
                    

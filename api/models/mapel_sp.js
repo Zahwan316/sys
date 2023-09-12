@@ -71,10 +71,7 @@ const Kbm_mapel_sp = Sequelize.define('mapel_sp', {
       allowNull: true,
       defaultValue: 0
     },
-    tanggal: {
-      type: DataTypes.DATEONLY,
-      allowNull: true
-    }
+  
   }, {
     Sequelize,
     tableName: 'mapel_sp',

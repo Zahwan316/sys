@@ -208,11 +208,6 @@ const MainDropdownSiswa = (props) => {
       // setsiswaterpilih({...siswaterpilih,[e.target.id]:e.target.checked})
     }
 
-    const handleDataRekap = (e) => {
-
-    }
-
-
     const handleForm = (e) => {
         e.preventDefault()
 

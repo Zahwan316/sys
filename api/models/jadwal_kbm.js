@@ -16,10 +16,7 @@ const Jadwal_kbm = Sequelize.define('jadwal_kbm', {
         key: 'ptk_penugasan_id'
       }
     },
-    ptk_id: {
-      type: DataTypes.UUID,
-      allowNull: true
-    },
+   
     rombongan_belajar_id: {
       type: DataTypes.UUID,
       allowNull: true,

@@ -25,8 +25,56 @@ import {
     
   } from '@coreui/react'
 import Select from "react-select"
+import useSekolahStore from 'src/state/sekolah';
+import axios from 'axios';
+import useItemStore from 'src/state/item';
+import useRefStore from 'src/state/ref';
+
 
 const ModalProgramPage = (props) => {
+    const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
+    const[tingkatpendidikanid,settingkatpendidikanid] = useItemStore((state) => [state.bentuk_pendidikan_id,state.setbentukpendidikanid])
+    const[tingkatpendidikan,settingkatpendidikan] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
+    const selectedtingkatpendidikan = tingkatpendidikan.filter(item => {
+        switch(tingkatpendidikanid){
+            case 15:
+                return item.smk === 1
+                break;
+            case 5:
+                return item.sd === 1
+                break;
+            case 6:
+                return item.smp === 1
+                break;
+            case 15:
+                return item.sma === 1
+                break;
+        } 
+      
+    })
+
+
+    useEffect(() => {      
+        if( props.page === "rombelreguler" || props.page === 'rombelindustri')
+        {
+            const getpendidikanid = () => {
+                const dataSekolahRaw = dataSekolah[0]   
+                settingkatpendidikanid(dataSekolahRaw.bentuk_pendidikan_id)         
+            }
+            
+            getpendidikanid()
+        }
+    
+        
+    },[])
+
+    useEffect(() => {
+        //console.log(selectedsekolah)
+    })
+
+
+
+
     return(
         <CModal visible={true} size='lg' onClose={props.handleModal}>
             <form onSubmit={props.handlesubmit}>
@@ -126,9 +174,9 @@ const ModalProgramPage = (props) => {
                                     
                                 {
                                     props.jurusan.map((item,index) => 
+                                    item.kurikulum_id === props.kodemain &&
                                     <option value={item.jurusan_id}>
-                                        {
-                                            
+                                        {  
                                             item.nama_jurusan
                                         }
                                     </option>
@@ -191,6 +239,21 @@ const ModalProgramPage = (props) => {
 
                         </div>
                         <div className='mb-3'>
+                            <CFormLabel>Tingkat</CFormLabel>
+                            <CFormSelect
+                                name="tingkat_pendidikan_id"
+                                onChange={props.handleforminput}
+                                value={props.forminput.tingkat_pendidikan_id}
+                            >
+                                <option>Pilih Tingkat</option>
+                                {
+                                    selectedtingkatpendidikan.map((item,index) => 
+                                        <option value={item.tingkat_pendidikan_id}>{item.nama}</option>
+                                    )
+                                }
+                            </CFormSelect>
+                        </div>
+                        <div className='mb-3'>
                             <CFormLabel>Program</CFormLabel>
                             <CFormSelect
                                 name="kurikulum_program_id"
@@ -201,26 +264,21 @@ const ModalProgramPage = (props) => {
                                 {
                                     props.dataProgram.map((item,index) => 
                                         props.dataJurusan.map((items,index) => 
-                                            items.jurusan_id === item.jurusan_id && item.keaktifan > 0 ?
-                                            <option value={item.kurikulum_program_id}>{items.nama_jurusan}</option>
+                                            items.jurusan_id === item.jurusan_id.trim() && item.keaktifan > 0 ?
+                                            (
+                                                items.jurusan_id.length === 5 && props.forminput.tingkat_pendidikan_id == 10 ?
+                                                <option value={item.kurikulum_program_id}>{items.nama_jurusan}</option>
+                                                :
+                                                (
+                                                    items.jurusan_id.length > 5 && props.forminput.tingkat_pendidikan_id != 10 ?
+                                                    <option value={item.kurikulum_program_id}>{items.nama_jurusan}</option>
+                                                    :
+                                                    ""
+                                                )
+                                            )
                                             :
                                             ""
                                         )
-                                    )
-                                }
-                            </CFormSelect>
-                        </div>
-                        <div className='mb-3'>
-                            <CFormLabel>Tingkat</CFormLabel>
-                            <CFormSelect
-                                name="tingkat_pendidikan_id"
-                                onChange={props.handleforminput}
-                                value={props.forminput.tingkat_pendidikan_id}
-                            >
-                                <option>Pilih Tingkat</option>
-                                {
-                                    props.dataTingkat.map((item,index) => 
-                                        <option value={item.tingkat_pendidikan_id}>{item.nama}</option>
                                     )
                                 }
                             </CFormSelect>
@@ -335,6 +393,7 @@ const ModalProgramPage = (props) => {
                                 <option >Pilih Guru</option>
                                 {
                                     props.dataTugasMengajar.map((item,index) => 
+                                        item.semester_id == localStorage.getItem('semester_id') &&
                                         props.dataGuru.map((items,index) => 
                                             item.mapel_sp_id === props.mapelid &&
                                             items.ptk_id === item.ptk_id &&

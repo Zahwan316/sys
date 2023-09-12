@@ -17,10 +17,11 @@ import {v4 as uuidv4} from "uuid"
 import Swal from 'sweetalert2';
 import validator from 'validator';
 import DataForm from './dataform/dataform';
+import useRefStore from 'src/state/ref';
 
 const IdentitasForm = (props) => {
     const[dataKbm,setdatakbm] = useState([]);
-    const[dataPendidikan,setdatapendidikan] = useState([]);
+    const[dataPendidikan,setdatapendidikan] = useRefStore((state) => [state.bentuk_pendidikan,state.bentuk_pendidikan])
     const[dataStatusSekolah,setdatastatus] = useState([])
     const[dataIdentitas,setdataidentitas] = useState([])
     const[editedData,setediteddata] = useState([])
@@ -82,11 +83,13 @@ const IdentitasForm = (props) => {
       //mengambil data  dari api
       const getdatakbm = async() => {
         try{
-            const response_kbm = await axios.get(process.env.REACT_APP_LINK +"waktu_penyelenggaraan");
+          const response_kbm = await axios.get(process.env.REACT_APP_LINK +"waktu_penyelenggaraan");
+          if(Object.keys(dataPendidikan).length === 0){
             const response_pendidikan = await axios.get(process.env.REACT_APP_LINK +"bentuk_pendidikan");
+            setdatapendidikan(response_pendidikan.data.data)
+          }
             const response_status = await axios.get(process.env.REACT_APP_LINK + "status_sekolah")
             const resposne_data_identitas = await axios.get(process.env.REACT_APP_LINK + "sekolah_identitas")
-            setdatapendidikan(response_pendidikan.data.data)
             setdatakbm(response_kbm.data.data)
             setdatastatus(response_status.data.data)
             setdataidentitas(resposne_data_identitas.data.data)

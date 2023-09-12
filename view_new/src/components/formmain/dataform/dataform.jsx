@@ -26,15 +26,18 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 import ButtonActionKelembagaan from 'src/components/btngroup/btnactionkelembagaan';
+import useItemStore from 'src/state/item';
+import useSekolahStore from 'src/state/sekolah';
 
 
 const DataForm = (props) => {
-    const[dataSekolah,setdatasekolah] = useState([])
+    const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
     const[dataAlamat,setdataalamat] = useState([]);
     const[dataAkreditasi,setdataakreditasi] = useState([])
     const[dataIso,setdataiso] = useState([])
     const[dataRekening,setdatarekening] = useState([])
     const[dataKepemilikan,setdatakepemilikan] = useState([])
+    const[bentukpendidikanid,setpendidikanid] = useItemStore((state) => [state.bentuk_pendidikan_id,state.setbentukpendidikanid])
 
     //for identitas page
     const[dataKbm,setdatakbm] = useState([]);
@@ -62,7 +65,14 @@ const DataForm = (props) => {
         const getData = async() => {
             
             //identitas page
-            const response_sekolah = await axios.get(process.env.REACT_APP_LINK + "sekolah_identitas")
+            if(props.page === "identitas"){
+                if(Object.keys(dataSekolah).length === 0){
+                   const response_sekolah = await axios.get(process.env.REACT_APP_LINK + "sekolah_identitas")
+                   setdatasekolah(response_sekolah.data.data)
+                   const data = response_sekolah.data.data
+                   setpendidikanid(data.bentuk_pendidikan_id) 
+               }
+            }
             const response_kbm = await axios.get(process.env.REACT_APP_LINK +"waktu_penyelenggaraan");
             const response_pendidikan = await axios.get(process.env.REACT_APP_LINK +"bentuk_pendidikan");
             const response_status = await axios.get(process.env.REACT_APP_LINK + "status_sekolah")
@@ -109,7 +119,7 @@ const DataForm = (props) => {
             }
             
 
-            setdatasekolah(response_sekolah.data.data)
+           
             setdataalamat(response_alamat.data.data)
             
             //identitas page
@@ -118,13 +128,14 @@ const DataForm = (props) => {
             setdatastatus(response_status.data.data)
             
             
-            
-           
-            
-            
+                    
             
         }
+
+       
+        
         getData()
+     
     },[])
 
     //update data ketika data ditambahkan
@@ -267,6 +278,10 @@ const DataForm = (props) => {
         getData()
     },[updatedelete])
 
+
+    useEffect(() => {
+        console.log(bentukpendidikanid)   
+    })
     
     const handleUpdateDelete = () => {
         setupdatedelete(uuidv4())

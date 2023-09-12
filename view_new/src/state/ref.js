@@ -61,6 +61,12 @@ const useRefStore = create((set) => ({
    kbm_mapel_sp:[],
    setkbmmapelsp:(data) => set(() => ({kbm_mapel_sp:data})),
 
+   bentuk_pendidikan:[],
+   setbentukpendidikan:(data) => set(() => ({pendidikan:data})),
+
+   tingkat_pendidikan:[],
+   settingkat_pendidikan:(data) => set(() => ({tingkat_pendidikan:data})),
+
 }))
 
 export default useRefStore

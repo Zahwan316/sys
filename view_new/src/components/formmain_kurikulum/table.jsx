@@ -40,6 +40,8 @@ const TableMain = (props) => {
     //main state
     const[itemid,setitemid] = useState()
 
+    const semesterid = localStorage.getItem('semester_id')
+
     //jenis page
     const[dataJenis,setdatajenis] = useKurikulumStore((state) => [state.kurikulum_sp,state.setkurikulumsp])
     const[jenisKurikulum,setjeniskurikulum] = useRefStore((state) => [state.kurikulum,state.setkurikulum])
@@ -57,7 +59,7 @@ const TableMain = (props) => {
     //tugas page
     const[dataTugas,setdatatugas] = usePtkStore((state) => [state.ptk,state.setdataptk])
     const[dataMapel,setdatamapel] = useRefStore((state) => [state.kbm_mapel_sp,state.setkbmmapelsp])
-    const[dataTugasMengajar,setdatatugasmengajar] = useState([])
+    const[dataTugasMengajar,setdatatugasmengajar] = usePtkStore((state) => [state.ptk_tugas_mengajar,state.setptktugasmengajar])
     const[gurumapel,setgurumapel] = usePtkStore((state) => [state.ptk,state.setdataptk])
 
     //jadwal page
@@ -139,23 +141,35 @@ const TableMain = (props) => {
                     setjurusan(response_jurusan.data.data)
                 }
                 else if(props.page === "tugas"){
-                    if(dataTugas.length === 0 || dataTugas === []){
+                    if(dataTugas.length === 0 || dataTugas === [])
+                    {
                         response = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setdatatugas(response.data.data)
                         console.log("catch ptk")
                     }
-                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
-                    let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
+
+                    if(Object.keys(dataMapel).length === 0)
+                    {
+                        let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                        setdatamapel(responsemapel.data.data)
+                    }
+
+                    if(Object.keys(dataTugasMengajar).length === 0)
+                    {
+                        let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
+                        setdatatugasmengajar(responsetugasmengajar.data.data)
+                    }
+
                 
-                    setdatamapel(responsemapel.data.data)
-                    setdatatugasmengajar(responsetugasmengajar.data.data)
 
                 }
                 else if(props.page === "jadwalreguler" || props.page ==="jadwalindustri" ){
                     let responseguru;
+                    let dataguru = []
                     if(gurumapel.length == 0 || gurumapel === []){
                         responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setgurumapel(responseguru.data.data)
+                        dataguru.push(responseguru.data.data)
 
                     }
                     response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
@@ -180,7 +194,7 @@ const TableMain = (props) => {
                         responsehari.data.data,
                         responsewaktukbm.data.data,
                         responsetugasmengajar.data.data,
-                        responseguru.data.data
+                        dataguru,
                         )
 
                     if(id){
@@ -447,7 +461,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        //console.log(dataTugas)
+        console.log(semesterid)
     })
 
     //jika jurusan id ditemukan di page mapel industri
@@ -702,7 +716,7 @@ const TableMain = (props) => {
                                     <td>
                                         {
                                             jurusan.map((items,index) => 
-                                                items.jurusan_id == item.jurusan_id &&
+                                                items.jurusan_id === item.jurusan_id.trim() &&
                                                 items.nama_jurusan
                                             )
                                         }
@@ -744,7 +758,7 @@ const TableMain = (props) => {
                        {
                             props.page === "rombelreguler" ?
                             dataRombel.map((item,index) => 
-                                item.is_industri == 0 &&
+                                item.is_industri === 0 &&
                                 <tr key={index} style={{verticalAlign:"middle"}}>
                                     <td>
                                         {
@@ -760,7 +774,7 @@ const TableMain = (props) => {
                                             dataProgram.map((items,index) => 
                                                 items.kurikulum_program_id == item.kurikulum_program_id &&
                                                     jurusan.map((data,index) => 
-                                                        data.jurusan_id == items.jurusan_id &&
+                                                        data.jurusan_id === items.jurusan_id.trim() &&
                                                         data.nama_jurusan
                                                     )
                                             )
@@ -869,6 +883,7 @@ const TableMain = (props) => {
                        {
                             props.page === "tugas" &&
                             props.gurumapel.map((item,index) => 
+                                item.semester_id == semesterid &&
                                 <>
                                     <tr key={index} style={{verticalAlign:"middle"}}>
                                         <td>

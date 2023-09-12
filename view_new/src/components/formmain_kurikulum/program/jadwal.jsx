@@ -5,6 +5,7 @@ import axios from 'axios';
 import {v4 as uuidv4} from "uuid"
 import Swal from 'sweetalert2';
 import { CFormLabel, CFormSelect } from '@coreui/react';
+import usePtkStore from 'src/state/ptk';
 
 const JadwalPage = (props) => {
     const[dataJadwal,setdatajadwal] = useState([])
@@ -14,7 +15,7 @@ const JadwalPage = (props) => {
     const[dataHari,setdatahari] = useState()
     const[dataWaktuKbm,setdatawaktukbm] = useState()
     const[dataTugasMengajar,setdatatugasmengajar] = useState()
-    const[dataGuru,setdataguru] = useState()
+    const[dataGuru,setdataguru] = usePtkStore((state) => [state.ptk,state.setptk])
     const[selectedTugasMengajar,setselectedtugasmengajar] = useState()
 
     const[typeform,settypeform] = useState()
@@ -123,6 +124,22 @@ const JadwalPage = (props) => {
         }
         getData()
     },[forminput.ptk_penugasan_id])
+
+    useEffect(() => {
+        const fetchdata = async() => {
+            try{
+                if(Object.keys(dataGuru).length === 0)
+                {
+                    let res = await axios.get(`${process.env.REACT_APP_link}ptk`)
+                    setdataguru(res.data.data)
+                }
+            }
+            catch(e){
+
+            }
+        }
+        fetchdata()
+    },[])
 
     //ketika mata pelajaran terpilih
     useEffect(() => {
