@@ -8,9 +8,10 @@ const usePtkStore = create((set) => ({
     setptkselected:(data) => set(() => ({ptkselected:data})),
 
     ptk_tugas_mengajar:[],
-    setptktugasmengajar:(data) => set(() => ({ptk_tugas_mengajar:data}))
+    setptktugasmengajar:(data) => set(() => ({ptk_tugas_mengajar:data})),
 
-    
+    ptk_alamat:[],
+    setptkalamat:(data) => set(() => ({ptk_alamat:data})),
 }))
 
 export default usePtkStore

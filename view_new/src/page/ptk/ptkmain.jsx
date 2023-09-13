@@ -7,6 +7,7 @@ import PtkKontak from 'src/components/formmain_ptk/kontak';
 import PtkKompetensi from 'src/components/formmain_ptk/kopentensi';
 import { useParams } from 'react-router-dom';
 import usePtkStore from 'src/state/ptk';
+import PtkAlamatPage from 'src/components/formmain_ptk/alamat';
 
 const PtkMainPage = () => {
     const[pageform,setpageform] = useState("identitas")
@@ -77,6 +78,17 @@ const PtkMainPage = () => {
                                 defaultChecked={pageform == "kompetensi"}
                                 onClick={handlePageForm}
                             />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio5   "
+                                autoComplete="off"
+                                label="Alamat"
+                                code="alamat"
+                                defaultChecked={pageform == "alamat"}
+                                onClick={handlePageForm}
+                            />
                                
                         </CButtonGroup>
 
@@ -101,6 +113,12 @@ const PtkMainPage = () => {
                         {
                             pageform == "kompetensi" &&
                             <PtkKompetensi 
+                                namaptk={ptkName}
+                            />
+                        }
+                        {
+                            pageform === "alamat" &&
+                            <PtkAlamatPage 
                                 namaptk={ptkName}
                             />
                         }

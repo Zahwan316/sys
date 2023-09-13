@@ -58,6 +58,8 @@ const ModalPesertaDidik = (props) => {
                                 handleforminput={props.handleforminput}
                                 forminput={props.forminput}
                                 handlecheck={props.handlecheck}
+                                kodekecamatan={props.kodekecamatan}
+                                kodekota={props.kodekota}
                             />
                         }
                         {

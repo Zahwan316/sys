@@ -26,7 +26,7 @@ router.route("/peserta_didik_alamat")
                 rt:req.body.rt,
                 rw:req.body.rw,
                 nama_dusun:req.body.nama_dusun,
-                kode_wilayah:req.body.kdoe_wilayah,
+                kode_wilayah:req.body.kode_wilayah,
                 kode_pos:req.body.kode_pos,
                 lintang:req.body.lintang,
                 bujur:req.body.bujur,

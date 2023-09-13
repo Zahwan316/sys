@@ -52,6 +52,7 @@ const FormAlamat = (props) => {
                     <CFormLabel>Kota</CFormLabel>
                     <CFormSelect
                         onChange={props.handlekodekota}
+                        value={props.kodekota}
                     >
                         <option>Pilih Kota</option>
                         {
@@ -65,6 +66,7 @@ const FormAlamat = (props) => {
                     <CFormLabel>Kecamatan</CFormLabel>
                     <CFormSelect
                         onChange={props.handlekodekecamatan}
+                        value={props.kodekecamatan}
                     >
                         <option>Pilih Kecamatan</option>
                         {
@@ -80,6 +82,7 @@ const FormAlamat = (props) => {
                     <CFormSelect
                         onChange={props.handlekodedesa}
                         name="kode_wilayah"
+                        value={props.forminput.kode_wilayah}
                     >
                         <option>Pilih Data Desa</option>
                         {

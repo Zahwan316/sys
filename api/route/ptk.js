@@ -19,7 +19,8 @@ const ref_keahlian_laboratorium = require("../models/keahlian_laboratorium")
 const ref_sumber_gaji = require("../models/sumber_gaji");
 const Status_kepegawaian = require("../models/status_kepegawaian");
 const ref_bank = require("../models/bank");
-const ref_status_perkawinan = require("../models/status_perkawinan")
+const ref_status_perkawinan = require("../models/status_perkawinan");
+const Ptk_alamat = require("../models/ptk_alamat");
 
 
 //multer config
@@ -540,8 +541,13 @@ router.route("/ptk/upload")
                         return items === "Iya" ? "1" : "0"
                     }
 
+                    const generateuuid = () => {
+                        return uuidv4()
+                    }
+
 
                     const raw_ptk = {
+                        ptk_id:generateuuid(),  
                         nama:item.__EMPTY || null,
                         nuptk:item.__EMPTY_1 || null,       
                         jenis_kelamin:item.__EMPTY_2 || null,
@@ -606,13 +612,30 @@ router.route("/ptk/upload")
                 index++
             }) 
 
-             await Ptk.bulkCreate(
+            await Ptk.bulkCreate(
                 ptk.map(item => ({
                      ...item, 
-                    ptk_id:uuidv4(),             
+                    ptk_id,             
                     agama_id:item.agama,                  
                 }))
             ) 
+
+            await Ptk_alamat.bulkCreate(
+                ptk.map(item => ({
+                    ...item,
+                    ptk_alamat_id:uuidv4(), 
+                   /*  ptk_id:item.ptk_id,
+                    alamat_jalan,
+                    rt,
+                    rw,
+                    nama_dusun,
+                    desa,
+                    kode_pos,
+                    lintang,
+                    bujur, */
+                    
+                }))
+            )
 
             res.status(200).json({
                 message:"Daat berhasil diupload",

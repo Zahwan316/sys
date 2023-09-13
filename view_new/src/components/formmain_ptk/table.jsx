@@ -11,6 +11,7 @@ import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+import PtkAlamatTableData from './tabledata/alamat';
 
 const TablePtk = (props) => {
     const[ptk,setptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
@@ -23,6 +24,8 @@ const TablePtk = (props) => {
     const navigate = useNavigate()
     const{id} = useParams()
     const [isload,setisload] = useState(false)
+    const[ptkalamatn,setptkalamat] = usePtkStore((state) => [state.ptk_alamat,state.setptkalamat])
+
 
     useEffect(() => {
         const getData = async() => {
@@ -53,6 +56,10 @@ const TablePtk = (props) => {
                         setstatus_kepegawaian(response_kepegawaian.data.data)
                     }
                 }
+
+                if(props.page === "ptkalamat"){
+                    
+                }
             }
             catch(e){
                 console.log(e)
@@ -67,7 +74,10 @@ const TablePtk = (props) => {
             try{ 
                 if(props.isload){
                     let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                    setptk(res.data.data)       
+                    setptk(res.data.data)  
+
+                    let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
+                    setptkalamat(res_alamat.data.data)       
                 }
             }
             catch(e){
@@ -80,9 +90,12 @@ const TablePtk = (props) => {
     useEffect(() => {
         const refetch_data = async() => {
             try{
-                if(props.isload){
+                if(isload){
                     let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                     setptk(res.data.data)
+
+                    let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
+                    setptkalamat(res_alamat.data.data)  
                 }
             }
             catch(e){
@@ -160,6 +173,9 @@ const TablePtk = (props) => {
             if(props.page === "ptkbiodata"){
                 handledelete(`ptk/${id}`)
             }
+            if(props.page === "ptkalamat"){
+                handledelete(`ptk_alamat/${id}`)
+            }
         }
     }
 
@@ -180,7 +196,7 @@ const TablePtk = (props) => {
                             )
                         }
                         {
-                            props.page === "ptkkepegawaian" || props.page === "ptkalamat" || props.page === "ptkkontak" || props.page === "ptkkompetensi" ?
+                            props.page === "ptkkepegawaian"  || props.page === "ptkkontak" || props.page === "ptkkompetensi" ?
                             <th>
 
                             </th>
@@ -223,6 +239,13 @@ const TablePtk = (props) => {
                         props.page === "ptkkompetensi" &&
                         <KompetensiTableData
                             dataptk={ptk}
+                            handleclickbutton={handleclickbutton}
+                        />
+                    }
+
+                    {
+                        props.page === "ptkalamat" &&
+                        <PtkAlamatTableData 
                             handleclickbutton={handleclickbutton}
                         />
                     }

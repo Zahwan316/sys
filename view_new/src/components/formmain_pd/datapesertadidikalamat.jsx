@@ -48,9 +48,27 @@ const DataPesertaDidikAlamat = (props) => {
         bujur:null,
         jenis_tinggal_id:null,
         jarak_ke_sekolah:null,
-        keaktifan:null,
+        keaktifan:0,
         tmt:null
     })
+
+    const resetallform = () => {
+        setforminput({ peserta_didik_id:id,
+            alamat_jalan:null,
+            rt:null,
+            rw:null,
+            nama_dusun:null,
+            kode_wilayah:null,
+            kode_pos:null,
+            lintang:null,
+            bujur:null,
+            jenis_tinggal_id:null,
+            jarak_ke_sekolah:null,
+            keaktifan:0,
+            tmt:null})
+        setkodekota(null)
+        setkodekecamatan(null)
+    }
 
     const handleFormInput = (e) => {
         setforminput({...forminput,[e.target.name]:e.target.value})
@@ -102,6 +120,10 @@ const DataPesertaDidikAlamat = (props) => {
     const getTypeBtn = (typebtn,id) => {
         settypeform(typebtn)
         seteditedid(id)
+
+        if(typebtn === "tambah"){
+            resetallform()
+        }
     }
 
     const handleCheck = (e) => {
@@ -110,6 +132,10 @@ const DataPesertaDidikAlamat = (props) => {
         
         setforminput({...forminput,keaktifan:value})
     }
+
+    useEffect(() => {
+        console.log(forminput)
+    })
 
     useEffect(() => {
         const fetchData = async() => {
@@ -163,24 +189,27 @@ const DataPesertaDidikAlamat = (props) => {
         const getdata = async() => {
             try{
                 if(typeform === "edit"){
-                let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat/${editedid}`)
-                let data = response.data.data
+                    let response = await axios.get(`${process.env.REACT_APP_LINK}peserta_didik_alamat/${editedid}`)
+                    let data = response.data.data
                     setforminput({
-                        peserta_didik_id:data.peserta_didik_id,
-                        alamat_jalan:data.alamat_jalan,
-                        rt:data.rt,
-                        rw:data.rw,
-                        nama_dusun:data.nama_dusun,
-                        kode_wilayah:data.kode_wilayah,
-                        kode_pos:data.kode_pos,
-                        lintang:data.lintang,
-                        bujur:data.bujur,
-                        jenis_tinggal_id:data.jenis_tinggal_id,
-                        jarak_ke_sekolah:data.jarak_ke_sekolah,
-                        keaktifan:data.keaktifan,
-                        tmt:data.tmt
-                })
-                }
+                            peserta_didik_id:data.peserta_didik_id,
+                            alamat_jalan:data.alamat_jalan,
+                            rt:data.rt,
+                            rw:data.rw,
+                            nama_dusun:data.nama_dusun,
+                            kode_wilayah:data.kode_wilayah,
+                            kode_pos:data.kode_pos,
+                            lintang:data.lintang,
+                            bujur:data.bujur,
+                            jenis_tinggal_id:data.jenis_tinggal_id,
+                            jarak_ke_sekolah:data.jarak_ke_sekolah,
+                            keaktifan:data.keaktifan,
+                            tmt:data.tmt
+                    })
+                    const k_wilayah = data.kode_wilayah
+                    setkodekota(data.kode_wilayah.substring(0,4))
+                    setkodekecamatan(data.kode_wilayah.substring(0,6))
+                    }
                 else if(typeform === "tambah"){
                     setforminput({
                         peserta_didik_id:id,
@@ -194,7 +223,7 @@ const DataPesertaDidikAlamat = (props) => {
                         bujur:"",
                         jenis_tinggal_id:"",
                         jarak_ke_sekolah:"",
-                        keaktifan:"",
+                        keaktifan:0,
                         tmt:""
                     })
                 }
@@ -234,7 +263,9 @@ const DataPesertaDidikAlamat = (props) => {
                 setTimeout(() => {
                     setisload(false)
                 },500)
-               
+
+               resetallform()
+
             }
             catch(e){
                 console.log(e)
@@ -272,6 +303,8 @@ const DataPesertaDidikAlamat = (props) => {
                     forminput={forminput}
                     handlecheck={handleCheck}
                     handlesubmit={handlesubmit}
+                    kodekota={kodekota}
+                    kodekecamatan={kodekecamatan}
                 />
             }
         </>

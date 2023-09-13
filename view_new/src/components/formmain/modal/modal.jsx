@@ -24,6 +24,7 @@ import {
     CModalFooter
     
   } from '@coreui/react'
+import AlamatFormModal from './modalform/alamat';
 
 const ModalComponent = (props) => {
     return(
@@ -35,7 +36,19 @@ const ModalComponent = (props) => {
                     <CModalTitle>{props.title}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
-
+                    {
+                        props.page === "alamat" &&
+                        <AlamatFormModal 
+                         datakota={props.datakota}
+                         handlekodekota={props.handlekodekota}
+                         datakecamatan={props.datakecamatan}
+                         handlekodekecamatan={props.handlekodekecamatan}
+                         datadesa={props.datadesa}
+                         handlekodedesa={props.handlekodedesa}
+                         kodekota={props.kodekota}
+                         kodekecamatan={props.kodekecamatan}
+                        />
+                    }
                    {
                         props.page === "akreditasi" && 
                         <div>

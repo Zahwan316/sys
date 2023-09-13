@@ -4,6 +4,8 @@ import FormBiodata from './form/biodata';
 import KepegawaianForm from './form/biodata_form/kepegawaian';
 import KontakForm from './form/biodata_form/kontak';
 import KompetensiForm from './form/biodata_form/kompetensi';
+import AlamatForm from '../formmain/alamat';
+import PtkAlamatForm from './form/biodata_form/alamat';
 
 const ModalPtk = (props) => {
     return(
@@ -32,6 +34,20 @@ const ModalPtk = (props) => {
                         {
                             props.page === "ptkkompetensi" &&
                             <KompetensiForm />
+                        }
+
+                        {
+                            props.page === "ptkalamat" &&
+                            <PtkAlamatForm
+                                datakota={props.datakota}
+                                handlekodekota={props.handlekodekota}
+                                datakecamatan={props.datakecamatan}
+                                handlekodekecamatan={props.handlekodekecamatan}
+                                handlekodedesa={props.handlekodedesa}
+                                datadesa={props.datadesa}
+                                kodekecamatan={props.kodekecamatan}
+                                kodekota={props.kodekota}
+                            />
                         }
                     </CModalBody>
                     <CModalFooter>

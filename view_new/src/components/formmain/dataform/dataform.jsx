@@ -290,23 +290,19 @@ const DataForm = (props) => {
     const handleClickOption = (e) => {
         const idBtn = e.target.getAttribute("id")
         const typeBtn = e.target.getAttribute("typebtn")
-        
-       
-      
+   
         {
             props.page === "identitas" && typeBtn === "edit" && 
                 props.handleopenmodal()
               
         }
-
         {
-            props.page === "alamat" && typeBtn == "edit" &&
-                props.handleopenmodal()
+            props.page === "alamat" &&
+             props.handleModal()
         }
 
         if(props.getTypeBtn){
             props.getTypeBtn(typeBtn,idBtn)
-
         }
        
         //identitas page
@@ -500,10 +496,18 @@ const DataForm = (props) => {
                     <CTableRow> 
                         {
                             tablehead.map((item,index) => 
-                            <CTableHeaderCell key={index}>
-                                    {item}
-                            </CTableHeaderCell>
+                                <>
+                                <CTableHeaderCell key={index}>
+                                        {item}
+                                </CTableHeaderCell>
+                                </>
                            )
+                        }
+                        {
+                            props.page === "alamat" &&
+                            <th> 
+                                <img onClick={handleClickOption}  typebtn="tambah" style={{cursor:"pointer"}} src="./img/icon/add bw.png" width="30" height="30" />   
+                            </th>
                         }
                     
                     </CTableRow>
@@ -621,6 +625,11 @@ const DataForm = (props) => {
                                 <td>
                                     {
                                         item.bujur
+                                    }
+                                </td>
+                                <td>
+                                    {
+                                        item.keaktifan
                                     }
                                 </td>
                                 <td>

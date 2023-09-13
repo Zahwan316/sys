@@ -67,6 +67,7 @@ const Pangkat_golongan_route = require("./route/pangkat_golongan")
 const Sumber_gaji_route = require("./route/sumber_gaji")
 const Lembaga_pengangkat_route = require("./route/lembaga_pengangkat")
 const Keahlian_laboratorium_route = require("./route/keahlian_laboratorium")
+const Ptk_alamat_route = require("./route/ptk_alamat")
 
 const Pos_route = require("./route/pos");
 const Kebijakan_pos_route = require("./route/kebijakan_pos");
@@ -154,6 +155,7 @@ app.use(Pangkat_golongan_route)
 app.use(Sumber_gaji_route)
 app.use(Lembaga_pengangkat_route) 
 app.use(Keahlian_laboratorium_route)
+app.use(Ptk_alamat_route)
 
 app.use(Pos_route)
 app.use(Kebijakan_pos_route)
