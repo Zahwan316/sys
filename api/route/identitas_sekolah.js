@@ -24,7 +24,8 @@ router.route("/sekolah_identitas")
             });
             res.status(200).json({
                 message:"Data berhasil diambil",
-                data:allData
+                data:allData,
+                method:req.method
             })
         }
         catch(e){
@@ -34,26 +35,7 @@ router.route("/sekolah_identitas")
     .post(async(req,res) => {
         try{
             const createData = await Sekolah_identitas.create({
-                sekolah_id:req.body.sekolahid,
-                nama:req.body.nama,
-                npsn:req.body.npsn,
-                bentuk_pendidikan_id:req.body.bentuk_pendidikan,
-                status_sekolah:req.body.status_sekolah,
-                waktu_pbm_id:req.body.waktu_kbm,
-                sk_pendirian_sekolah:req.body.sk_pendirian,
-                status_sekolah:req.body.status_sekolah,
-                tanggal_sk_pendirian:req.body.tanggal_sk,
-                mbs_kode:req.body.mbskode,
-                npwp:req.body.npwp,
-                nm_wp:req.body.nmwp,
-                nomor_telepon:req.body.no_telpon,
-                email:req.body.email,
-                instagram:req.body.instagram,
-                facebook:req.body.facebook,
-                website:req.body.web,
-                
-                tmt:req.body.tmt,
-                createDate:Date.now()
+             ...req.body,
             })
 
             res.status(200).json(
@@ -82,23 +64,7 @@ router.route("/sekolah_identitas/:uuid")
             if(editItem){
                 editItem.update(
                     {
-                        nama:req.body.nama,
-                        npsn:req.body.npsn,
-                        bentuk_pendidikan_id:req.body.bentuk_pendidikan,
-                        status_sekolah:req.body.status_sekolah,
-                        waktu_pbm_id:req.body.waktu_kbm,
-                        sk_pendirian_sekolah:req.body.sk_pendirian,
-                        status_sekolah:req.body.status_sekolah,
-                        tanggal_sk_pendirian:req.body.tanggal_sk,
-                        mbs_kode:req.body.mbskode,
-                        npwp:req.body.npwp,
-                        nm_wp:req.body.nmwp,
-                        nomor_telepon:req.body.no_telpon,
-                        email:req.body.email,
-                        instagram:req.body.instagram,
-                        facebook:req.body.facebook,
-                        website:req.body.web,
-                        tmt:req.body.tmt,
+                        ...req.body
                     }
                 )
                 res.status(200).json({

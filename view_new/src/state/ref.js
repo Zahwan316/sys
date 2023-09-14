@@ -62,10 +62,16 @@ const useRefStore = create((set) => ({
    setkbmmapelsp:(data) => set(() => ({kbm_mapel_sp:data})),
 
    bentuk_pendidikan:[],
-   setbentukpendidikan:(data) => set(() => ({pendidikan:data})),
+   setbentukpendidikan:(data) => set(() => ({bentuk_pendidikan:data})),
 
    tingkat_pendidikan:[],
    settingkat_pendidikan:(data) => set(() => ({tingkat_pendidikan:data})),
+
+   status_sekolah:[],
+   setstatussekolah:(data) => set(() => ({status_sekolah:data})),
+
+   waktu_penyelenggaraan:[],
+   setwaktupenyelenggaraan:(data) => set(() => ({waktu_penyelenggaraan:data}))
 
 }))
 

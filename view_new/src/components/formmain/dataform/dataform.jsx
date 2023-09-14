@@ -280,7 +280,7 @@ const DataForm = (props) => {
 
 
     useEffect(() => {
-        console.log(bentukpendidikanid)   
+        console.log()   
     })
     
     const handleUpdateDelete = () => {
@@ -290,21 +290,13 @@ const DataForm = (props) => {
     const handleClickOption = (e) => {
         const idBtn = e.target.getAttribute("id")
         const typeBtn = e.target.getAttribute("typebtn")
-   
         {
-            props.page === "identitas" && typeBtn === "edit" && 
-                props.handleopenmodal()
+           typeBtn != "delete" &&
+             props.handlemodal()
+        }
+      
+        props.getTypeBtn(typeBtn,idBtn)
               
-        }
-        {
-            props.page === "alamat" &&
-             props.handleModal()
-        }
-
-        if(props.getTypeBtn){
-            props.getTypeBtn(typeBtn,idBtn)
-        }
-       
         //identitas page
         if(props.page === "identitas"){
             if(typeBtn == "delete"){
@@ -491,7 +483,7 @@ const DataForm = (props) => {
     return(
         <div>
             <h2 className='mb-4'>{props.title}</h2>
-            <CTable className='table-responsive'>
+            <CTable className='table-responsive' style={{verticalAlign:"middle"}}>
                 <CTableHead className='table-dark'>
                     <CTableRow> 
                         {
@@ -504,10 +496,12 @@ const DataForm = (props) => {
                            )
                         }
                         {
-                            props.page === "alamat" &&
+                            props.page === "alamat" || props.page === "identitas" ?
                             <th> 
                                 <img onClick={handleClickOption}  typebtn="tambah" style={{cursor:"pointer"}} src="./img/icon/add bw.png" width="30" height="30" />   
                             </th>
+                            :
+                            ""
                         }
                     
                     </CTableRow>
@@ -536,23 +530,18 @@ const DataForm = (props) => {
                                         )
                                     }
                                     </td>
-                                    {/* <td>{item.sk_pendirian_sekolah}</td>
-                                    <td>{item.tanggal_sk_pendirian}</td> */}
+                                    
                                     <td>
                                         {
                                         dataStatusSekolah.map((items,index) => 
-                                            items.status_sekolah == item.status_sekolah &&
+                                            items.status_sekolah_id == item.status_sekolah_id &&
                                             items.deskripsi
                                         )
                                         }
                                     </td>
-                                    <td>{item.mbs_kode}</td>
-                                    <td>{item.npwp}</td>
-                                    <td>{item.nm_wp}</td>
-                                    <td>{item.nomor_telepon}</td>
-                                    <td>{item.email}</td>
-                                    <td>{item.instagram}</td>
+                                   
                                     
+                                    <td>{item.nomor_telepon}</td>
                                     <td>{item.website}</td>
                                     <td>
                                         <CButton color="link"typebtn="delete" id={item.sekolah_id} onClick={handleClickOption} >
@@ -581,17 +570,10 @@ const DataForm = (props) => {
                                 <tr key={index}>
                                     <td>
                                     {
-                                        dataSekolah.map((items,index) => 
-                                            items.sekolah_id == item.sekolah_id &&
-                                            items.nama
-                                        )
+                                       item.alamat_jalan
                                     }
                                 </td>
-                                <td>
-                                    {
-                                        item.alamat_jalan
-                                    }
-                                </td>
+
                                 <td>
                                     {
                                         item.rt
@@ -628,13 +610,14 @@ const DataForm = (props) => {
                                     }
                                 </td>
                                 <td>
-                                    {
-                                        item.keaktifan
-                                    }
+                                    <CFormCheck 
+                                     checked={item.keaktifan === 1}
+                                     readOnly
+                                    />
                                 </td>
                                 <td>
                                         <CButton color="link"typebtn="delete" id={item.sekolah_alamat_id} onClick={handleClickOption} >
-                                            <img src="./img/icon/delete bw.jpg" width="20" height="20"typebtn="delete" onClick={handleClickOption} id={item.sekolah_alamat_id} ></img>
+                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickOption} id={item.sekolah_alamat_id} ></img>
                                         </CButton>
                                         <CButton color="link" typebtn="edit" id={item.sekolah_alamat_id} onClick={handleClickOption} >
                                             <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickOption} id={item.sekolah_alamat_id} ></img>

@@ -1,4 +1,6 @@
-import React from 'react'
+//import React from 'react'
+import React, { useState, useEffect } from 'react';
+
 
 import {
   CAvatar,
@@ -53,9 +55,13 @@ import avatar6 from 'src/assets/images/avatars/6.jpg'
 
 import WidgetsBrand from '../widgets/WidgetsBrand'
 import WidgetsDropdown from '../widgets/WidgetsDropdown'
+import useSekolahStore from 'src/state/sekolah';
+import axios from 'axios';
+import useItemStore from 'src/state/item';
 
 const Dashboard = () => {
   const random = (min, max) => Math.floor(Math.random() * (max - min + 1) + min)
+  
 
   const progressExample = [
     { title: 'Visits', value: '29.703 Users', percent: 40, color: 'success' },
@@ -178,9 +184,12 @@ const Dashboard = () => {
     },
   ]
 
+ 
+
+
   return (
     <>
-      <WidgetsDropdown />
+     {/*  <WidgetsDropdown />
       <CCard className="mb-4">
         <CCardBody>
           <CRow>
@@ -306,11 +315,11 @@ const Dashboard = () => {
             ))}
           </CRow>
         </CCardFooter>
-      </CCard>
+      </CCard> */}
 
-      <WidgetsBrand withCharts />
+     {/*  <WidgetsBrand withCharts /> */}
 
-      <CRow>
+      {/* <CRow>
         <CCol xs>
           <CCard className="mb-4">
             <CCardHeader>Traffic {' & '} Sales</CCardHeader>
@@ -453,7 +462,7 @@ const Dashboard = () => {
             </CCardBody>
           </CCard>
         </CCol>
-      </CRow>
+      </CRow> */}
     </>
   )
 }

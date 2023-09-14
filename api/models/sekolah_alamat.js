@@ -32,7 +32,7 @@ const Sekolah_alamat = Sequelize.define('sekolah_alamat', {
       allowNull: true
     },
     kode_pos: {
-      type: DataTypes.SMALLINT,
+      type: DataTypes.DECIMAL,
       allowNull: true
     },
     lintang: {

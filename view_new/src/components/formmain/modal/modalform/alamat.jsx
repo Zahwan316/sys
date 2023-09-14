@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import useSekolahAlamatFormStore from 'src/state/form/sekolahalamat';
 
 const AlamatFormModal = (props) => {
-    const[forminput,setforminput] = useSekolahAlamatFormStore((state) => [state,state.setform])
+    const[forminput,setforminput] = useSekolahAlamatFormStore((state) => [state.form,state.setform])
     const[check,setcheck] = useState(false)
     const handleforminput = (e) => {
      const{name,value} = e.target
@@ -12,7 +12,7 @@ const AlamatFormModal = (props) => {
 
     const handlecheck = () => {
      setcheck(!check)
-     const value = check ? 1: 0
+     const value = check ? 0: 1
      setforminput("keaktifan",value)
     }
 
@@ -78,7 +78,7 @@ const AlamatFormModal = (props) => {
               </CFormLabel>
               <CFormSelect
                onChange={props.handlekodekota}
-               value={forminput.kodekota}
+               value={props.kodekota}
               >
                 <option>Pilih Kota</option>
                 {
@@ -94,7 +94,7 @@ const AlamatFormModal = (props) => {
               </CFormLabel>
               <CFormSelect
                onChange={props.handlekodekecamatan}
-               value={forminput.kodekecamatan}
+               value={props.kodekecamatan}
               >
                 <option>Pilih Kecamatan</option>
                 {
@@ -111,6 +111,7 @@ const AlamatFormModal = (props) => {
               <CFormSelect
                 name="kode_wilayah"
                 onChange={props.handlekodedesa}
+                value={forminput.kode_wilayah}
               >
                 <option>Pilih Desa</option>
                 {
@@ -172,7 +173,9 @@ const AlamatFormModal = (props) => {
             <div className='mb-3 d-flex'>
              <CFormCheck 
                onClick={handlecheck}
-               defaultChecked={forminput.keaktifan}
+               onChange={handlecheck}
+               defaultChecked={forminput.keaktifan == 1}
+               checked={forminput.keaktifan == 1}
              />
              <p className='mx-2'>Masih Aktif?</p>
             </div>

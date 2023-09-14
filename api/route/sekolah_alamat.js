@@ -26,18 +26,8 @@ router.route("/sekolah_alamat")
     .post(async(req,res) => {
         try{
             const createData = await Sekolah_alamat.create({
+                ...req.body,
                 sekolah_alamat_id:uuidv4(),
-                sekolah_id:req.body.sekolah_id,
-                alamat_jalan:req.body.alamatjalan,
-                rt:req.body.rt,
-                rw:req.body.rw,
-                nama_dusun:req.body.namadusun,
-                kode_wilayah:req.body.kodewilayah,
-                kode_pos:req.body.kodepos,
-                lintang:req.body.lintang,
-                bujur:req.body.bujur,
-                tmt:req.body.tmt,
-                
             })
 
             res.status(200).json({
@@ -63,8 +53,8 @@ router.route("/sekolah_alamat/:uuid")
             if(editItem){
                 editItem.update(
                     {
-                    
-                        alamat_jalan:req.body.alamatjalan,
+                        ...req.body,
+                       /*  alamat_jalan:req.body.alamatjalan,
                         rt:req.body.rt,
                         rw:req.body.rw,
                         nama_dusun:req.body.namadusun,
@@ -72,7 +62,7 @@ router.route("/sekolah_alamat/:uuid")
                         kode_pos:req.body.kodepos,
                         lintang:req.body.lintang,
                         bujur:req.body.bujur,
-                        tmt:req.body.tmt,
+                        tmt:req.body.tmt, */
                     }
                     )
                     res.status(200).json({

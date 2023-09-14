@@ -25,6 +25,7 @@ import {
     
   } from '@coreui/react'
 import AlamatFormModal from './modalform/alamat';
+import IdentitasModalForm from './modalform/identitas';
 
 const ModalComponent = (props) => {
     return(
@@ -36,6 +37,13 @@ const ModalComponent = (props) => {
                     <CModalTitle>{props.title}</CModalTitle>
                 </CModalHeader>
                 <CModalBody>
+                    {
+                        props.page === "identitas" &&
+                         <IdentitasModalForm 
+                         
+                         />
+                    }
+
                     {
                         props.page === "alamat" &&
                         <AlamatFormModal 
@@ -289,7 +297,7 @@ const ModalComponent = (props) => {
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="secondary" onClick={props.handleisclicked}>Close</CButton>
-                    <CButton color="primary" type="submit" >Tambah Data</CButton>
+                    <CButton color="primary" type="submit" >Simpan</CButton>
                 </CModalFooter>
                 </form>
             </CModal>
