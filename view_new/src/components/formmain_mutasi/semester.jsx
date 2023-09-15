@@ -4,6 +4,7 @@ import { CButton, CFormSelect } from '@coreui/react';
 import axios from 'axios';
 import ModalMutasi from './modal';
 import Swal from 'sweetalert2';
+import useItemStore from 'src/state/item';
 
 const MutasiSemesterForm = () => {
     const tablehead = [
@@ -17,6 +18,7 @@ const MutasiSemesterForm = () => {
     const[editedid,seteditedid] = useState()
     const[idsemester,setidsemester] = useState()
     const[checked,setchecked] = useState(true)
+    const setsemesterid = useItemStore((state) => state.setsemesterid)
     const[forminput,setforminput] = useState({
         semester_id:"",
         tahun_ajaran_id:"",
@@ -105,7 +107,7 @@ const MutasiSemesterForm = () => {
         })
         .then((result) => {
             if(result.isConfirmed){
-                localStorage.setItem("semester_id",idsemester)
+                setsemesterid(idsemester)
                 editData(`semester/generate/${idsemester}`) 
                     .then(res => {
                         Swal.fire(

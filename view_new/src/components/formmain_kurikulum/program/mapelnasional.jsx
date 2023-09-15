@@ -5,13 +5,15 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 import useRefStore from 'src/state/ref';
+import useItemStore from 'src/state/item';
 
 const MapelForm = () => {
     const[modal,setmodal] = useState(false)
     const[typeform,settypeform] = useState()
     const[editedid,seteditedid] = useState()
+    const sekolahid = useItemStore((state) => state.sekolah_id)
     const[forminput,setforminput] = useState({
-        sekolah_id:localStorage.getItem("sekolah_id"),
+        sekolah_id:sekolahid,
         kelompok:"",
         mapel_kode:"",
         nama:"",

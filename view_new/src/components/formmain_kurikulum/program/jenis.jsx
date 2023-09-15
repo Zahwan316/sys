@@ -24,6 +24,7 @@ import {v4 as uuidv4} from "uuid"
 import Swal from 'sweetalert2';
 import DataForm from 'src/components/formmain/dataform/dataform';
 import useRefStore from 'src/state/ref';
+import useItemStore from 'src/state/item';
 
 const JenisPage = () => {
     const[typeform,settypeform] = useState()
@@ -33,8 +34,9 @@ const JenisPage = () => {
     const[isCheckedCheckbox,setischeckedbox] = useState(false)
     const[updater,setupdater] = useState()
     const[isload,setisload] = useState(false)
+    const[sekolahid,setsekolahid] = useItemStore((state) => [state.sekolah_id,state.setsekolahid])
     const[formInput,setforminput] = useState({
-        sekolah_id:localStorage.getItem("sekolah_id"),
+        sekolah_id:sekolahid,
         kurikulum_sp_id:uuidv4(),
         kurikulum_kode:"",
         keaktifan:0,

@@ -24,12 +24,9 @@ router.route("/sekolah_bank")
     .post(async(req,res) => {
         try{
             const createData = await Sekolah_bank.create({
+                    ...req.body,
                     sekolah_bank_id:uuidv4(),
-                    sekolah_id:req.body.sekolahid,
-                    id_bank:req.body.idbank,
-                    cabang_kcp_unit:req.body.cabangkcp,
-                    no_rekening:req.body.norek,
-                    rekening_atas_nama:req.body.rekeningnama
+                    
 
             })
             res.status(200).json({
@@ -54,10 +51,7 @@ router.route("/sekolah_bank/:uuid")
             if(editItem){
                 editItem.update(
                     {
-                        id_bank:req.body.idbank,
-                        cabang_kcp_unit:req.body.cabangkcp,
-                        no_rekening:req.body.norek,
-                        rekening_atas_nama:req.body.rekeningnama
+                        ...req.body,
                     }
                 )
                 res.status(200).json({

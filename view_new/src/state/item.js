@@ -11,10 +11,11 @@ const useItemStore = create((set) => ({
     setkurikulum_sp_id:(data) => set(() => ({kurikulum_sp_id:data})),
 
     semester_id:null,
-    setsemester_id:(data) => set(() => ({semester_id:data})),
+    setsemesterid:(data) => set(() => ({semester_id:data})),
 
     bentuk_pendidikan_id:null,
     setbentukpendidikanid:(data) => set(() => ({bentuk_pendidikan_id:data})),
+
 }))
 
 export default useItemStore

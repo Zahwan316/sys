@@ -24,13 +24,14 @@ import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 import useRefStore from 'src/state/ref';
 import useKurikulumStore from 'src/state/kurikulum';
+import useItemStore from 'src/state/item';
 
 const ProgramForm = () => {
     const[kurikulum_sp_id_code,setkurikulumspid] = useState(localStorage.getItem("kurikulum_sp_id"))
-    const[programData,setprogramdata] = useState()
+    const kurikulumspid = useItemStore((state) => state.kurikulum_sp_id)
     const[forminput,setforminput] = useState(
         {
-            kurikulum_sp:kurikulum_sp_id_code,
+            kurikulum_sp:kurikulumspid,
             jurusan_id:"",
             no_sk_izin:"",
             tanggal_sk_izin:"",

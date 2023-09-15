@@ -128,15 +128,35 @@ router.route("/sekolah_identitas/:uuid")
                 }
             )
 
+            if(findAlamat)
+            {
+                findAlamat.destroy()
+            }
+            if(findAkreditasi)
+            {
+                findAkreditasi.destroy()
+            }
+            if(findIso)
+            {
+                findIso.destroy()
+            }
+
+            if(findBank)
+            {
+                findBank.destroy()
+            }
+            if(findKepemilikan)
+            {
+                findKepemilikan.destroy()
+            }
+            if(findKurikulumSP)
+            {
+                findKurikulumSP.destroy()
+            }
 
             if(deleteItem){
+                
                 deleteItem.destroy()
-                findAlamat.destroy()
-                findAkreditasi.destroy()
-                findIso.destroy()
-                findBank.destroy()
-                findKepemilikan.destroy()
-                findKurikulumSP.destroy()
 
                 res.status(200).json(
                     {

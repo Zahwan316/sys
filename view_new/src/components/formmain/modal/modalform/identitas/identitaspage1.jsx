@@ -52,13 +52,13 @@ const IdentitasFormPage1 = () => {
         <div className="mb-3">
            <CFormLabel htmlFor="exampleFormControlInput1">Npsn</CFormLabel>
            <CFormInput
-             type="number"
+             type="text"
              id="exampleFormControlInput1"
-             placeholder="234232"
+             placeholder="20...."
              name="npsn"
              onChange={handleForm}
              required
-             
+             value={forminput.npsn}
            />
          </div>
          {/* End Npsn */}
@@ -72,7 +72,7 @@ const IdentitasFormPage1 = () => {
              name="nama"
              onChange={handleForm}
              required
-           
+             value={forminput.nama}
            />
          </div>
          {/* End nama */}
@@ -83,6 +83,7 @@ const IdentitasFormPage1 = () => {
              name="bentuk_pendidikan_id"
              required
              onChange={handleForm} 
+             value={forminput.bentuk_pendidikan_id}
            >
              <option>Pilih Bentuk Pendidikan</option> 
                {
@@ -100,6 +101,7 @@ const IdentitasFormPage1 = () => {
              name="status_sekolah"
              onChange={handleForm} 
              required
+             value={forminput.status_sekolah}
            >
            <option>Pilih Status Sekolah</option> 
              {
@@ -117,6 +119,7 @@ const IdentitasFormPage1 = () => {
              name="waktu_pbm_id"
              onChange={handleForm} 
              required
+             value={forminput.waktu_pbm_id}
            >
            <option>Pilih Waktu Kbm</option> 
              {
@@ -137,6 +140,7 @@ const IdentitasFormPage1 = () => {
              name="sk_pendirian_sekolah"
              onChange={handleForm} 
              required
+             value={forminput.sk_pendirian_sekolah}
            />
          </div>
          {/* End */}
@@ -150,6 +154,7 @@ const IdentitasFormPage1 = () => {
              name="tanggal_sk_pendirian"
              onChange={handleForm} 
              required
+             value={forminput.tanggal_sk_pendirian}
            />
          </div>
          {/* end */}
@@ -162,7 +167,7 @@ const IdentitasFormPage1 = () => {
                placeholder="987"
                name="mbs_kode"
                onChange={handleForm} 
-               required
+               value={forminput.mbs_kode}
              />
            </div>
          {/* end */}
@@ -177,6 +182,7 @@ const IdentitasFormPage1 = () => {
               name="npwp"
               onChange={handleForm} 
               required
+              value={forminput.npwp}
             />
           </div>
           {/* End NPWP */}
@@ -190,6 +196,7 @@ const IdentitasFormPage1 = () => {
               name="nm_wp"
               onChange={handleForm} 
               required
+              value={forminput.nm_wp}
             />
           </div>
           {/* End */}

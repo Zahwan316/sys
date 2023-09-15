@@ -21,17 +21,15 @@ import {
 import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
+import useItemStore from 'src/state/item';
+import useFormStore from 'src/state/form/formmain';
 
 const RekeningForm = (props) => {
-    const[sekolahidcode,setsekolahid] = useState(localStorage.getItem("sekolah_id"))
-    const[forminput,setforminput] = useState({
-        sekolahid:sekolahidcode,
-        idbank:"",
-        cabangkcp:"",
-        norek:"",
-        rekeningnama:""
-    })
+    const sekolahid = useItemStore((state) => state.sekolah_id)
+    const[forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
+    const resetform = useFormStore((state) => state.resetform)
     const[databank,setdatabank] = useState([])
+    const[check,setcheck] = useState(false)
     const[updater,setupdater] = useState()
     const tablehead = [
         "Nama Sekolah",
@@ -39,6 +37,7 @@ const RekeningForm = (props) => {
         "Cabang Kcp Unit",
         "Nomor Rekening",
         "Rekening Atas Nama",
+        "Keaktifan",
         "Action"
     ]
     const[isClicked,setisclicked] = useState(false)
@@ -46,6 +45,8 @@ const RekeningForm = (props) => {
     const[typeform,settypeform] = useState()
 
     useEffect(() => {
+        setforminput("sekolah_id",sekolahid)
+        setforminput("keaktifan",0)
         const getDataBank = async() => {
             let response = await axios.get(process.env.REACT_APP_LINK + "bank")
             setdatabank(response.data.data)
@@ -71,7 +72,7 @@ const RekeningForm = (props) => {
                 }
                 else{
                     setforminput({
-                        sekolahid:sekolahidcode,
+                        sekolahid:sekolahid,
                         idbank:"",
                         cabangkcp:"",
                         norek:"",
@@ -87,10 +88,9 @@ const RekeningForm = (props) => {
     },[editedid])
 
     const handleFormInput = (e) => {
-        setforminput({...forminput,[e.target.name]:e.target.value})
+        const{name,value} = e.target
+        setforminput(name,value)
     }
-
-    
 
     const handleSubmitForm = (e) => {
         e.preventDefault();
@@ -117,6 +117,7 @@ const RekeningForm = (props) => {
                     })
                 }
                 setupdater(uuidv4())
+                resetform()
             }
             catch(e){
                 console.log(e)
@@ -149,6 +150,12 @@ const RekeningForm = (props) => {
         settypeform(typebtn)
         handleisclicked()
     }
+    
+    const handlecheck = (e) => {
+     setcheck(!check)
+     const value = check ? 0 : 1
+     setforminput("keaktifa",value)
+    }
 
     useEffect(() => {
         console.log(typeform)
@@ -156,83 +163,7 @@ const RekeningForm = (props) => {
 
     return(
         <>
-            {/* <form onSubmit={handleSubmitForm}>
-            <div>
-
-       
-            <CTable bordered responsive  >
-                <thead>
-                    <tr>
-                        <th>
-                            ID Bank
-                        </th>
-                        <th>
-                            Cabang Kcp Unit
-                        </th>
-                        <th>
-                            No Rekening
-                        </th>
-                        <th>
-                            Rekening Atas Nama
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <CFormSelect
-                                name="idbank"
-                                onChange={handleFormInput}
-                                required
-                            >
-                                {
-                                    databank.map((item,index) => 
-                                        <option key={index} value={item.id_bank}>{item.nm_bank}</option>
-                                    
-                                    )
-                                }
-                            </CFormSelect>
-                            
-                        </td>
-                        <td>
-                            <CFormInput 
-                            type="text"
-                            name="cabangkcp"
-                            onChange={handleFormInput}
-                            required
-                            />
-                        </td>
-                        <td>
-                            <CFormInput 
-                            type="number" 
-                            name="norek"
-                            onChange={handleFormInput}
-                            required
-                            />
-                        </td>
-                        <td>
-                            <CFormInput 
-                            type="text"
-                            name="rekeningnama"
-                            onChange={handleFormInput}
-                            required
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={4}>
-                            <CButton 
-                                type="submit"
-                            >
-                                Kirim
-                            </CButton>
-                        </td>
-                    </tr>
-                </tbody>
-            </CTable>
-            </div>
-            </form> */}
-            
+           
             <div>
                 <DataForm 
                 title="Data Rekening" 
@@ -255,6 +186,7 @@ const RekeningForm = (props) => {
                     page="rekening"
                     databank={databank}
                     dataform={forminput}
+                    handlecheck={handlecheck}
                 />
 
 

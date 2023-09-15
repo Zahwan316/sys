@@ -21,11 +21,12 @@ import Swal from 'sweetalert2';
 import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
+import useItemStore from 'src/state/item';
 
 const IsoForm = (props) => {
-    const[sekolahidcode,setsekolahid] = useState(localStorage.getItem("sekolah_id"))
+    const sekolahid = useItemStore((state) => state.sekolah_id)
     const[forminput,setforminput] = useState({
-        sekolahid:sekolahidcode,
+        sekolahid:sekolahid,
         iso_id:"",
         nosertifikasi:"",
         tanggalsertifikasi:""
@@ -121,7 +122,7 @@ const IsoForm = (props) => {
                 }
                 else{
                     setforminput({
-                        sekolahid:sekolahidcode,
+                        sekolahid:sekolahid,
                         iso_id:"",
                         nosertifikasi:"",
                         tanggalsertifikasi:""

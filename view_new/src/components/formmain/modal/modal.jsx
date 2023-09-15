@@ -170,7 +170,7 @@ const ModalComponent = (props) => {
                             <div className='mb-3'>
                                 <CFormLabel>Nama Bank</CFormLabel>
                                 <CFormSelect
-                                    name="idbank"
+                                    name="id_bank"
                                     onChange={props.handleforminput}
                                     required
                                     value={props.dataform.idbank}
@@ -189,7 +189,7 @@ const ModalComponent = (props) => {
                                 <CFormLabel>Cabang KCP</CFormLabel>
                                 <CFormInput 
                                 type="text"
-                                name="cabangkcp"
+                                name="cabang_kcp_unit"
                                 onChange={props.handleforminput}
                                 required
                                 value={props.dataform.cabangkcp}
@@ -200,7 +200,7 @@ const ModalComponent = (props) => {
                                 <CFormLabel>Nomor Rekening</CFormLabel>
                                 <CFormInput 
                                 type="number" 
-                                name="norek"
+                                name="no_rekening"
                                 onChange={props.handleforminput}
                                 required
                                 value={props.dataform.norek}
@@ -211,11 +211,18 @@ const ModalComponent = (props) => {
                                 <CFormLabel>Rekening Atas Nama</CFormLabel>
                                 <CFormInput 
                                 type="text"
-                                name="rekeningnama"
+                                name="rekening_atas_nama"
                                 onChange={props.handleforminput}
                                 required
                                 value={props.dataform.rekeningnama}
                                 />
+                            </div>
+                            <div className='mb-3 d-flex'>
+                             <CFormCheck 
+                              onClick={props.handlecheck}
+                              name="keaktifan"
+                             />
+                             <p>Masih Aktif?</p>
                             </div>
                             
                         
@@ -297,7 +304,10 @@ const ModalComponent = (props) => {
                 </CModalBody>
                 <CModalFooter>
                     <CButton color="secondary" onClick={props.handleisclicked}>Close</CButton>
-                    <CButton color="primary" type="submit" >Simpan</CButton>
+                    {
+                        props.typeform != 'detail' &&
+                        <CButton color="primary" type="submit" >Simpan</CButton>
+                    }
                 </CModalFooter>
                 </form>
             </CModal>

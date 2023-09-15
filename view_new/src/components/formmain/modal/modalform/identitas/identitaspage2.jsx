@@ -18,7 +18,10 @@ const handlecheck = () => {
 }
 
 useEffect(() => {
- setforminput("keaktifan",0)
+ if(forminput.keaktifan == null)
+ {
+   setforminput("keaktifan",0)
+ }
 },[])
 
 useEffect(() => {
@@ -38,6 +41,7 @@ useEffect(() => {
              name="nomor_telepon"
              onChange={handleForm} 
              required
+             value={forminput.nomor_telepon}
            />
          </div>
            {/* End */}
@@ -51,6 +55,7 @@ useEffect(() => {
              name="email"
              onChange={handleForm} 
              required
+             value={forminput.email}
            />
          </div>
          {/* End */}
@@ -63,6 +68,7 @@ useEffect(() => {
              placeholder="user..."
              name="instagram"
              onChange={handleForm} 
+             value={forminput.instagram}
            />
          </div>
          {/* End */}
@@ -75,6 +81,7 @@ useEffect(() => {
              placeholder="user..."
              name="facebook"
              onChange={handleForm} 
+             value={forminput.facebook}
            />
          </div>
          {/* End */}
@@ -87,6 +94,7 @@ useEffect(() => {
              placeholder="xyz.com"
              name="website"
              onChange={handleForm} 
+             value={forminput.website}
            />
          </div>
          {/* End */}
@@ -100,6 +108,7 @@ useEffect(() => {
              placeholder="name@example.com"
              name="tmt"
              onChange={handleForm} 
+             value={forminput.tmt}
            />
          </div>
          {/* end */}
@@ -108,7 +117,8 @@ useEffect(() => {
           <CFormCheck 
            onClick={handlecheck}
            onChange={handlecheck}
-           checked={forminput.keaktifan === 1}
+           checked={forminput.keaktifan == 1}
+           defaultChecked={forminput.keaktifan == 1}
           />
           <p className='mx-2'>Sekolah masih aktif?</p>
          </div>

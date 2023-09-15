@@ -20,6 +20,8 @@ import DataForm from './dataform/dataform';
 import useRefStore from 'src/state/ref';
 import ModalComponent from './modal/modal';
 import useFormStore from 'src/state/form/formmain';
+import useItemStore from 'src/state/item';
+
 
 const IdentitasForm = (props) => {
  const tablehead = [
@@ -30,6 +32,7 @@ const IdentitasForm = (props) => {
   "NPWP",
   "No Telepon",
   "Email",
+  "Keaktifan",  
  ]
  const[typeform,settypeform] = useState()
  const[modal,setmodal] = useState(false)
@@ -37,6 +40,8 @@ const IdentitasForm = (props) => {
  const[updater,setupdater] = useState()
  const[isload,setisload] = useState()
  const[forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
+ const resetforminput = useFormStore((state) => state.resetform)
+ const setsekolahid = useItemStore((state) => state.setsekolahid)
 
  const handlemodal = () => {
   setmodal(!modal)
@@ -46,6 +51,32 @@ const IdentitasForm = (props) => {
   settypeform(typebtn)
   seteditedid(id)
  }
+
+ useEffect(() => {
+  setforminput('sekolah_id',uuidv4())
+ },[])
+
+ useEffect(() => {
+  const fetchdata = async() => {
+   try
+   {
+    let res = await axios.get(`${process.env.REACT_APP_LINK}sekolah_identitas/${editedid}`)
+    const data = res.data.data
+    for(const key in data)
+    {
+      setforminput(key,data[key])
+    }
+   }
+   catch(e)
+   {
+
+   }
+  }
+  if(editedid != null)
+  {
+    fetchdata()
+  }
+ },[editedid])
 
  useEffect(() => {
   console.log(modal)
@@ -67,15 +98,29 @@ const IdentitasForm = (props) => {
       title:"Data terkirim",
       text:`Terima kasih sudah ${method === "post" ? "menambah" : "mengedit"} data`
    })
+   setsekolahid(forminput.sekolah_id)
+   resetforminput()
+   setupdater(uuidv4())
+   setisload(true)
+   setTimeout(() => {
+    setisload(false)
+   },500)
   }
   catch(e){
-
+   console.log(e)
   }
  }
 
  const handlesubmit = (e) => {
-  e.preventdefault()
-
+  e.preventDefault()
+  if(typeform === "tambah")
+  {
+    PostPutSubmit(`sekolah_identitas`,"post")
+  }
+  else if(typeform === "edit")
+  {
+    PostPutSubmit(`sekolah_identitas/${editedid}`,"put")
+  }
  }
 
   return(
@@ -87,6 +132,7 @@ const IdentitasForm = (props) => {
               updater={updater} 
               getTypeBtn={getTypeBtn} 
               handlemodal={handlemodal}
+              isload={isload}
             />
 
            {
@@ -96,6 +142,8 @@ const IdentitasForm = (props) => {
               title={typeform === "tambah" ? "Tambah Identiitas" : (typeform === "edit" ? "Edit Identitas" : "Detail Identitas")}
               isclicked={modal}
               handleisclicked={handlemodal}
+              submit={handlesubmit}
+              typeform={typeform}
             />
            }
           

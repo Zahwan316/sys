@@ -21,12 +21,13 @@ import {
 import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
+import useItemStore from 'src/state/item';
 
 const KepemilikanForm = (props) => {
-    const[sekolahidcode,setsekolahid] = useState(localStorage.getItem("sekolah_id"))
+    const sekolahid = useItemStore((state) => state.sekolah_id)
     const[statuskepemilikan,setstatuskepemilikan] = useState([]);
     const[forminput,setforminput] = useState({
-        sekolahid:sekolahidcode,
+        sekolahid:sekolahid,
         kepemilikan:"",
         namayayasan:"",
         namanotaris:"",
@@ -71,7 +72,7 @@ const KepemilikanForm = (props) => {
                 }
                 else{
                     setforminput({
-                        sekolahid:sekolahidcode,
+                        sekolahid:sekolahid,
                         kepemilikan:"",
                         namayayasan:"",
                         namanotaris:"",

@@ -64,7 +64,7 @@ const AlamatForm = (props) => {
     const[kodedesa,setkodedesa] = useState()
     const[namadesa,settnamadesa] = useState()
     const[forminput,setforminput] = useSekolahAlamatFormStore((state) => [state.form,state.setform])
-    const[item_sekolahid,setitemsekolahid] = useItemStore((state) => [state.sekolah_id,state.setitemsekolahids])
+    const[item_sekolahid,setitemsekolahid] = useItemStore((state) => [state.sekolah_id,state.setitemsekolahid])
     const[updater,setupdater] = useState()
     const[isload,setisload] = useState(false)
     const resetform = useSekolahAlamatFormStore((state) => state.resetform)

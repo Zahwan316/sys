@@ -28,21 +28,22 @@ import {v4 as uuidv4} from "uuid"
 import ButtonActionKelembagaan from 'src/components/btngroup/btnactionkelembagaan';
 import useItemStore from 'src/state/item';
 import useSekolahStore from 'src/state/sekolah';
+import useRefStore from 'src/state/ref';
 
 
 const DataForm = (props) => {
     const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
-    const[dataAlamat,setdataalamat] = useState([]);
+    const[dataAlamat,setdataalamat] = useSekolahStore((state) => [state.sekolah_alamat,state.setsekolahalamat]);
     const[dataAkreditasi,setdataakreditasi] = useState([])
     const[dataIso,setdataiso] = useState([])
     const[dataRekening,setdatarekening] = useState([])
     const[dataKepemilikan,setdatakepemilikan] = useState([])
     const[bentukpendidikanid,setpendidikanid] = useItemStore((state) => [state.bentuk_pendidikan_id,state.setbentukpendidikanid])
-
+    const[sekolahid,setsekolahid] = useItemStore((state) => [state.sekolah_id,state.setsekolahid])
     //for identitas page
-    const[dataKbm,setdatakbm] = useState([]);
-    const[dataPendidikan,setdatapendidikan] = useState([]);
-    const[dataStatusSekolah,setdatastatus] = useState([])
+    const[dataKbm,setdatakbm] = useRefStore((state) => [state.waktu_penyelenggaraan,state.setwaktupenyelenggaraan]);
+    const[dataPendidikan,setdatapendidikan] = useRefStore((state) => [state.bentuk_pendidikan,state.setbentukpendidikan])
+    const[dataStatusSekolah,setdatastatus] = useRefStore((state) => [state.status_sekolah,state.setstatussekolah])
 
     //for akreditasi page
     const[optionAkreditasi,setoptionakreditasi] = useState(props.data)
@@ -73,12 +74,32 @@ const DataForm = (props) => {
                    setpendidikanid(data.bentuk_pendidikan_id) 
                }
             }
-            const response_kbm = await axios.get(process.env.REACT_APP_LINK +"waktu_penyelenggaraan");
-            const response_pendidikan = await axios.get(process.env.REACT_APP_LINK +"bentuk_pendidikan");
-            const response_status = await axios.get(process.env.REACT_APP_LINK + "status_sekolah")
+
+            if(Object.keys(dataKbm).length === 0)
+            {
+             const response_kbm = await axios.get(process.env.REACT_APP_LINK +"waktu_penyelenggaraan");
+             setdatakbm(response_kbm.data.data)
+            }
+            if(Object.keys(dataPendidikan).length === 0)
+            {
+             const response_pendidikan = await axios.get(process.env.REACT_APP_LINK +"bentuk_pendidikan");
+             setdatapendidikan(response_pendidikan.data.data)
+            }
+            if(Object.keys(dataStatusSekolah).length === 0)
+            {
+             const response_status = await axios.get(process.env.REACT_APP_LINK + "status_sekolah")
+             setdatastatus(response_status.data.data)
+            }
             
             //alamat page
-            const response_alamat = await axios.get(process.env.REACT_APP_LINK + "sekolah_alamat")
+            if(props.page === "alamat")
+            {
+             if(Object.keys(dataAlamat).length === 0)
+             {
+               const response_alamat = await axios.get(process.env.REACT_APP_LINK + "sekolah_alamat")
+               setdataalamat(response_alamat.data.data)
+             }
+            }
             
             //akreditasi page
             if(props.page == "akreditasi"){
@@ -120,12 +141,11 @@ const DataForm = (props) => {
             
 
            
-            setdataalamat(response_alamat.data.data)
+          
             
             //identitas page
-            setdatapendidikan(response_pendidikan.data.data)
-            setdatakbm(response_kbm.data.data)
-            setdatastatus(response_status.data.data)
+            
+           
             
             
                     
@@ -314,7 +334,8 @@ const DataForm = (props) => {
                             .then(res =>{ 
                                 console.log(res)
                                 handleUpdateDelete()
-                                localStorage.clear()
+                                //localStorage.clear()
+                                setsekolahid(null)
                             })
                             .catch(e => console.log(e))
 
@@ -522,36 +543,39 @@ const DataForm = (props) => {
                                             items.nama
                                         )
                                     }
-                                    </td>
-                                    <td>{
-                                        dataKbm.map((items,index) => 
-                                        items.waktu_penyelenggaraan_id == item.waktu_pbm_id &&
-                                        items.nama
-                                        )
-                                    }
-                                    </td>
+                                    </td>                                 
                                     
                                     <td>
                                         {
                                         dataStatusSekolah.map((items,index) => 
-                                            items.status_sekolah_id == item.status_sekolah_id &&
+                                            items.status_sekolah == item.status_sekolah &&
                                             items.deskripsi
                                         )
                                         }
                                     </td>
                                    
                                     
+                                    <td>{item.npwp}</td>
                                     <td>{item.nomor_telepon}</td>
-                                    <td>{item.website}</td>
+                                    <td>{item.email}</td>
                                     <td>
+                                        <CFormCheck 
+                                         defaultChecked={item.keaktifan == 1}
+
+                                         readOnly
+                                        />
+                                    </td>
+                                    <td>
+                                        <CButton color="link" typebtn="detail" id={item.sekolah_id} onClick={handleClickOption} >
+                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickOption} id={item.sekolah_id} ></img>
+                                        </CButton>
                                         <CButton color="link"typebtn="delete" id={item.sekolah_id} onClick={handleClickOption} >
                                             <img src="./img/icon/delete bw.jpg" width="20" height="20"typebtn="delete" onClick={handleClickOption} id={item.sekolah_id} ></img>
                                         </CButton>
                                         <CButton color="link" typebtn="edit" id={item.sekolah_id} onClick={handleClickOption} >
                                             <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickOption} id={item.sekolah_id} ></img>
                                         </CButton>
-                                        {/* <CButton className='text-white' color="danger" onClick={handleClickOption} typebtn="delete" id={item.sekolah_id}>Hapus</CButton>
-                                        <CButton className='text-white' color="primary" onClick={handleClickOption} typebtn="edit" id={item.sekolah_id}>Edit</CButton> */}
+                            
                                         
                                     </td>
                         
@@ -765,6 +789,11 @@ const DataForm = (props) => {
                                     {
                                         item.rekening_atas_nama
                                     }
+                                </td>
+                                <td>
+                                    <CFormCheck
+                                     defaultChecked={item.keaktifan == 1}
+                                    />
                                 </td>
                                 <td>
                                         <ButtonActionKelembagaan 

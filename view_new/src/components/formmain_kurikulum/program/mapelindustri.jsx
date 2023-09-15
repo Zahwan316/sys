@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 import useRefStore from 'src/state/ref';
 import useKurikulumStore from 'src/state/kurikulum';
+import useItemStore from 'src/state/item';
 
 const MapelIndustri = () => {
     const[dataJurusan,setdatajurusan] = useState([])
@@ -18,8 +19,9 @@ const MapelIndustri = () => {
     const[modal,setmodal] = useState(false)
     const[typeform,settypeform] = useState()
     const[editedid,seteditedid] = useState()
+    const sekolahid = useItemStore((state) => state.sekolah_id)
     const[forminput,setforminput] = useState({
-        sekolah_id:localStorage.getItem("sekolah_id"),
+        sekolah_id:sekolahid,
         kelompok:"B",
         mapel_kode:"",
         nama:"",
