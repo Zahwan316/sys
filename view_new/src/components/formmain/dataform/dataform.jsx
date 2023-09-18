@@ -34,10 +34,10 @@ import useRefStore from 'src/state/ref';
 const DataForm = (props) => {
     const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
     const[dataAlamat,setdataalamat] = useSekolahStore((state) => [state.sekolah_alamat,state.setsekolahalamat]);
-    const[dataAkreditasi,setdataakreditasi] = useState([])
-    const[dataIso,setdataiso] = useState([])
-    const[dataRekening,setdatarekening] = useState([])
-    const[dataKepemilikan,setdatakepemilikan] = useState([])
+    const[dataAkreditasi,setdataakreditasi] = useSekolahStore((state) => [state.sekolah_akreditasi,state.setsekolahakreditasi])
+    const[dataIso,setdataiso] = useSekolahStore((state) => [state.sekolah_iso,state.setsekolahiso])
+    const[dataRekening,setdatarekening] = useSekolahStore((state) => [state.sekolah_rekening,state.setsekolahrekening])
+    const[dataKepemilikan,setdatakepemilikan] = useSekolahStore((state) => [state.sekolah_kepemilikan,state.setsekolahkepemilikan])
     const[bentukpendidikanid,setpendidikanid] = useItemStore((state) => [state.bentuk_pendidikan_id,state.setbentukpendidikanid])
     const[sekolahid,setsekolahid] = useItemStore((state) => [state.sekolah_id,state.setsekolahid])
     //for identitas page
@@ -49,18 +49,19 @@ const DataForm = (props) => {
     const[optionAkreditasi,setoptionakreditasi] = useState(props.data)
 
     //for iso page
-    const[optionIso,setoptioniso] = useState([])
+    const[optionIso,setoptioniso] = useRefStore((state) => [state.sertifikasi_iso,state.setsertifikasiiso])
 
     //for bank page
-    const[databank,setdatabank] = useState([])
+    const[databank,setdatabank] = useRefStore((state) => [state.bank,state.setbank])
 
     //for kepemilikan page
-    const[optionKepemilikan,setoptionkepemilikan] = useState([])
+    const[optionKepemilikan,setoptionkepemilikan] = useRefStore((state) => [state.status_kepemilikan,state.setstatuskepemilikan])
 
     //variabel untuk memperbarui kode delete
     const[updatedelete,setupdatedelete] = useState([])
 
     const tablehead = props.tablehead
+    const[isload,setisload] = useState(false)
 
     useEffect(() => {
         const getData = async() => {
@@ -103,57 +104,58 @@ const DataForm = (props) => {
             
             //akreditasi page
             if(props.page == "akreditasi"){
-                const response_akreditasi = await axios.get(process.env.REACT_APP_LINK + "sekolah_akreditasi")
-                const response_option_akreditasi = await axios.get(process.env.REACT_APP_LINK + "akreditasi")
-                //akreditasi page
-                setdataakreditasi(response_akreditasi.data.data)
-                setoptionakreditasi(response_option_akreditasi.data.data)
+             if(Object.keys(dataAkreditasi).length === 0)
+             {
+               const response_akreditasi = await axios.get(process.env.REACT_APP_LINK + "sekolah_akreditasi")
+               setdataakreditasi(response_akreditasi.data.data)
+             }      
             }
             
             //iso page 
             if(props.page === "iso"){
-                const response_iso = await axios.get(process.env.REACT_APP_LINK + "sekolah_iso")
-                const response_iso_sertifikat = await axios.get(process.env.REACT_APP_LINK + "sertifikasi_iso")
-                 //iso page
-                setoptioniso(response_iso_sertifikat.data.data)
-                setdataiso(response_iso.data.data)
+                if(Object.keys(dataIso).length === 0)
+                {
+                 const response_iso = await axios.get(process.env.REACT_APP_LINK + "sekolah_iso")
+                 setdataiso(response_iso.data.data)
+                }
+                if(Object.keys(optionIso).length === 0)
+                {
+                 const response_iso_sertifikat = await axios.get(process.env.REACT_APP_LINK + "sertifikasi_iso")
+                 setoptioniso(response_iso_sertifikat.data.data)
+                }
+                
             }
                 
             //rekening page
             if(props.page === "rekening"){
-                const response_rekening = await axios.get(process.env.REACT_APP_LINK + "sekolah_bank")
-                const response_rekening_bank = await axios.get(process.env.REACT_APP_LINK + "bank")
+             if(Object.keys(dataRekening).length === 0)
+             {
+              const response_rekening = await axios.get(process.env.REACT_APP_LINK + "sekolah_bank")
+              setdatarekening(response_rekening.data.data)
+             }
+             if(Object.keys(databank).length === 0)
+             {
+              const response_rekening_bank = await axios.get(process.env.REACT_APP_LINK + "bank")
+              setdatabank(response_rekening_bank.data.data)
+             }           
+            }  
 
-                //bank page
-                setdatarekening(response_rekening.data.data)
-                setdatabank(response_rekening_bank.data.data)
-            }
-            
             //kepemilikan page
             if(props.page === "kepemilikan"){
-                const response_kepemilikan = await axios.get(process.env.REACT_APP_LINK + "sekolah_kepemilikan")
-                const response_option_kepemilikan = await axios.get(process.env.REACT_APP_LINK + "status_kepemilikan")
+             if(Object.keys(dataKepemilikan).length === 0)
+             {
+              const response_kepemilikan = await axios.get(process.env.REACT_APP_LINK + "sekolah_kepemilikan")
+              setdatakepemilikan(response_kepemilikan.data.data)
+             }
+             if(Object.keys(optionKepemilikan).length === 0)
+             {
+              const response_option_kepemilikan = await axios.get(process.env.REACT_APP_LINK + "status_kepemilikan")
+              setoptionkepemilikan(response_option_kepemilikan.data.data)
+             }
 
-                //kepemilikan page
-                setdatakepemilikan(response_kepemilikan.data.data)
-                setoptionkepemilikan(response_option_kepemilikan.data.data)
-            }
-            
 
-           
-          
-            
-            //identitas page
-            
-           
-            
-            
-                    
-            
-        }
-
-       
-        
+            }    
+        }     
         getData()
      
     },[])
@@ -161,6 +163,9 @@ const DataForm = (props) => {
     //update data ketika data ditambahkan
     useEffect(() => {
         const getData = async() => {
+            if(props.isload)
+            {
+
             
             //identitas page
             const response_sekolah = await axios.get(process.env.REACT_APP_LINK + "sekolah_identitas")
@@ -216,14 +221,8 @@ const DataForm = (props) => {
             //identitas page
             setdatapendidikan(response_pendidikan.data.data)
             setdatakbm(response_kbm.data.data)
-            setdatastatus(response_status.data.data)
-            
-            
-            
-           
-            
-            
-            
+            setdatastatus(response_status.data.data)           
+        }                                        
         }
         getData()
     },[props.updater])
@@ -231,6 +230,9 @@ const DataForm = (props) => {
     //update data ketika data dihapus
     useEffect(() => {
         const getData = async() => {
+            if(isload)
+            {
+
             
             //identitas page
             const response_sekolah = await axios.get(process.env.REACT_APP_LINK + "sekolah_identitas")
@@ -287,13 +289,7 @@ const DataForm = (props) => {
             setdatapendidikan(response_pendidikan.data.data)
             setdatakbm(response_kbm.data.data)
             setdatastatus(response_status.data.data)
-            
-            
-            
-           
-            
-            
-            
+        }                                 
         }
         getData()
     },[updatedelete])
@@ -305,6 +301,43 @@ const DataForm = (props) => {
     
     const handleUpdateDelete = () => {
         setupdatedelete(uuidv4())
+    }
+
+    const handleDelete = async(url) => {
+     try{
+      Swal.fire({
+        title:"Apakah Anda Yakin ?",
+        text:"Item yang sudah terhapus tidak dapat dikembalikan",
+        icon:"warning",
+        showCancelButton:true,
+        confirmButtonText:"Ya,Hapus",
+        cancelButtonText:"Batal"
+    })
+    .then((result) => {
+        if(result.isConfirmed){
+            axios.delete(`${process.env.REACT_APP_LINK}${url}`)
+                .then(res =>{ 
+                    console.log(res)
+                    handleUpdateDelete()
+                    setisload(true)
+                    setTimeout(() => {
+                     setisload(false)
+                    }, 500);
+                })
+                .catch(e => console.log(e))
+
+            Swal.fire(
+                "Data Berhasil Dihapus"
+            )
+        }
+
+    })
+
+     }
+     catch(e)
+     {
+
+     }
     }
 
     const handleClickOption = (e) => {
@@ -320,184 +353,38 @@ const DataForm = (props) => {
         //identitas page
         if(props.page === "identitas"){
             if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_identitas/${idBtn}`)
-                            .then(res =>{ 
-                                console.log(res)
-                                handleUpdateDelete()
-                                //localStorage.clear()
-                                setsekolahid(null)
-                            })
-                            .catch(e => console.log(e))
-
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
+                setsekolahid(null)
+                handleDelete(`sekolah_identitas/${idBtn}`)
             }
         }
         else if(props.page === "alamat"){
             if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_alamat/${idBtn}`)
-                        .then(res => {
-                            console.log(res)
-                            handleUpdateDelete()
-                        })
-                        .catch(e => console.log(e))
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
-
-                
+             handleDelete(`sekolah_alamat/${idBtn}`)            
             }
         }
         else if(props.page === "akreditasi"){
             if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_akreditasi/${idBtn}`)
-                        .then(res => {
-                            console.log(res)
-                            handleUpdateDelete()
-                        })
-                        .catch(e => console.log(e))
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
-
-               
+             handleDelete(`sekolah_akreditasi/${idBtn}`)       
             }
-            else if(typeBtn === "edit"){
-                props.handleopenmodal()
-            }
+            
         }
         else if(props.page === "iso"){
             if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_iso/${idBtn}`)
-                        .then(res => {
-                            console.log(res)
-                            handleUpdateDelete()
-                        })
-                        .catch(e => console.log(e))
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
-
-               
-            }
-            else if(typeBtn == "edit"){
-                props.handleopenmodal()
-            }
+             handleDelete(`sekolah_iso/${idBtn}`)
+            }      
         }
+        
         else if(props.page === "rekening"){
-            if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_bank/${idBtn}`)
-                        .then(res => {
-                            console.log(res)
-                            handleUpdateDelete()
-                        })
-                            .catch(e => console.log(e))
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
-
-               
-            }
-            else if(typeBtn === "edit"){
-                props.handleopenmodal()
-            }
+         if(typeBtn == "delete")
+         {
+          handleDelete(`sekolah_bank/${idBtn}`)
+         }
         }
         else if(props.page === "kepemilikan"){
-            if(typeBtn == "delete"){
-                Swal.fire({
-                    title:"Apakah Anda Yakin ?",
-                    text:"Item yang sudah terhapus tidak dapat dikembalikan",
-                    icon:"warning",
-                    showCancelButton:true,
-                    confirmButtonText:"Ya,Hapus",
-                    cancelButtonText:"Batal"
-                })
-                .then((result) => {
-                    if(result.isConfirmed){
-                        axios.delete(`${process.env.REACT_APP_LINK}sekolah_kepemilikan/${idBtn}`)
-                        .then(res => {
-                            console.log(res)
-                            handleUpdateDelete()
-                        })
-                        .catch(e => console.log(e))
-                        Swal.fire(
-                            "Data Berhasil Dihapus"
-                        )
-                    }
-                    
-                })
-
-                
-            }
-            else if(typeBtn === "edit"){
-                props.handleopenmodal()
-            }
+         if(typeBtn == "delete")
+         {
+          handleDelete(`sekolah_kepemilikan/${idBtn}`)
+         }
         }
     }
 
@@ -851,6 +738,11 @@ const DataForm = (props) => {
                                     {
                                         item.tanggal_akte_notaris
                                     }
+                                </td>
+                                <td>
+                                   <CFormCheck
+                                    defaultChecked={item.keaktifan == 1}
+                                   />
                                 </td>
                                 <td>
                                         <ButtonActionKelembagaan 

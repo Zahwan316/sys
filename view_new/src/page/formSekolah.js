@@ -55,12 +55,13 @@ const FormSekolahPage = () => {
             name="btnradio"
             id="btnradio1"
             autoComplete="off"
-            label={
+           /*  label={
               <div className='d-flex justify-content-center align-items-center w-100 h-100'>
               <img src="./img/identitassiswa1.png" width="30" height="20" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> Identitas</p>
               </div>
-            }
+            } */
+            label={"Identitas"}
             code="identitas"
             onClick={handleMenuForm}
             defaultChecked={code == "identitas"}
@@ -76,12 +77,13 @@ const FormSekolahPage = () => {
             code="alamat"
             onClick={handleMenuForm}
             defaultChecked={code == "alamat"}
-            label={
+           /*  label={
               <div className='d-flex justify-content-center align-items-center w-100 h-100'>
               <img src="./img/alamat.png" width="23" height="25" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> Alamat</p>
               </div>
-            }
+            } */
+            label={"Alamat"}
           />
           <CFormCheck
             type="radio"
@@ -89,15 +91,16 @@ const FormSekolahPage = () => {
             name="btnradio"
             id="btnradio3"
             autoComplete="off"
-            label={
+           /*  label={
               <div className='d-flex justify-content-center align-items-center'>
               <img src="./img/logoakreditasiBIRU.png" width="26" height="30" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> Akreditasi</p>
               </div>
-            }
+            } */
             code="akreditasi"
             onClick={handleMenuForm}
             defaultChecked={code == "akreditasi"}
+            label={"Akreditasi"}
           />
           <CFormCheck
             type="radio"
@@ -105,15 +108,16 @@ const FormSekolahPage = () => {
             name="btnradio"
             id="btnradio4"
             autoComplete="off"
-            label={
+            /* label={
               <div className='d-flex justify-content-center align-items-center'>
               <img src="./img/logoisoBIRU.png" width="26" height="30" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> ISO</p>
               </div>
-            }
+            } */
             code="iso"
             onClick={handleMenuForm}
             defaultChecked={code == "iso"}
+            label={"Iso"}
           />
           <CFormCheck
             type="radio"
@@ -121,15 +125,16 @@ const FormSekolahPage = () => {
             name="btnradio"
             id="btnradio5"
             autoComplete="off"
-            label={
+           /*  label={
               <div className='d-flex justify-content-center align-items-center'>
               <img src="./img/logorekeningBIRU.png" width="26" height="30" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> Rekening</p>
               </div>
-            }
+            } */
             code="rekening"
             onClick={handleMenuForm}
             defaultChecked={code == "rekening"}
+            label={"Rekening"}
           />
           <CFormCheck
             type="radio"
@@ -137,15 +142,16 @@ const FormSekolahPage = () => {
             name="btnradio"
             id="btnradio6"
             autoComplete="off"
-            label={
+            /* label={
               <div className='d-flex justify-content-center align-items-center'>
               <img src="./img/kepemilikan.png" width="26" height="30" style={{marginRight:"6px"}}></img>
               <p style={{marginBottom:0}}> Kepemilikan</p>
               </div>
-            }
+            } */
             code="kepemilikan"
             onClick={handleMenuForm}
             defaultChecked={code == "kepemilikan"}
+            label={"Kepemilikan"}
           />
         </CButtonGroup>
         <CCardBody>

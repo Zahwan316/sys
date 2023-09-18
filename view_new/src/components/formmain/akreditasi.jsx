@@ -24,10 +24,11 @@ import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
 import useItemStore from 'src/state/item';
+import useRefStore from 'src/state/ref';
 
 const AkreditasiForm = (props) => {
     const sekolahid = useItemStore((state) => state.sekolah_id)
-    const[optionAkreditasi,setoptionakreditasi] = useState([])
+    const[optionAkreditasi,setoptionakreditasi] = useRefStore((state) => [state.akreditasi,state.setakreditasi])
     const[inputform,setinputform] = useState({
         sekolahid:sekolahid,
         status:"",
@@ -39,6 +40,7 @@ const AkreditasiForm = (props) => {
     const[isClicked,setisclicked] = useState(false)
     const[editedId,setEditedId] = useState()
     const[typeform,settypeform] = useState()
+    const[isload,setisload] = useState(false)
 
     const handleforminput = (e) => {
         setinputform({...inputform,[e.target.name]:e.target.value})
@@ -48,8 +50,11 @@ const AkreditasiForm = (props) => {
     useEffect(() => {
         const getData = async() => {
             try{
-                let response = await axios.get(process.env.REACT_APP_LINK + "akreditasi")
-                setoptionakreditasi(response.data.data)
+                if(Object.keys(optionAkreditasi).length === 0)
+                {
+                 let response = await axios.get(process.env.REACT_APP_LINK + "akreditasi")
+                 setoptionakreditasi(response.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -99,33 +104,46 @@ const AkreditasiForm = (props) => {
         "Action"
     ]
 
+    const PostPutSubmit = async(url,method) => {
+     try
+     {
+      let res;
+      switch(method)
+      {
+        case "post":
+         res = await axios.post(`${process.env.REACT_APP_LINK}${url}`,inputform)
+         break;
+        case "put":
+         res = await axios.put(`${process.env.REACT_APP_LINK}${url}`,inputform)
+         break;
+      }
+      Swal.fire({
+        icon:"success",
+        title:"Data terkirim",
+        text:"Terima kasih sudah mengisi data"
+      })
+      setupdater(uuidv4())
+      setisload(true)
+      setTimeout(() => {
+       setisload(false)
+      },500)
+     }
+     catch(e)
+     {
+
+     }
+    }
+
     const submitfominput = (e) => {
         e.preventDefault();
-
         const sendata = async() => {
             try{
                 if(typeform == "tambah"){
-
-                    let response = await axios.post(process.env.REACT_APP_LINK + "sekolah_akreditasi",inputform)
-                    console.log(response.data)
-                    setupdater(uuidv4())
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data terkirim",
-                        text:"Terima kasih sudah mengisi data"
-                    })
+                 PostPutSubmit(`sekolah_akreditasi`,"post")
                 }
                 else if(typeform == "edit"){
-                    let response = await axios.put(process.env.REACT_APP_LINK + "sekolah_akreditasi/" + editedId,inputform)
-                    console.log(response.data)
-                    setupdater(uuidv4())
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data terkirim",
-                        text:"Terima kasih sudah mengisi data"
-                    })
+                 PostPutSubmit(`sekolah_akreditasi/${editedId}`,"put")
                 }
-
             }
             catch(e){
                 console.log(e)
@@ -168,7 +186,8 @@ const AkreditasiForm = (props) => {
                     data={optionAkreditasi} 
                     updater={updater} 
                     getTypeBtn = {getTypeBtn}
-                    handleopenmodal = {handleisclicked}
+                    handlemodal = {handleisclicked}
+                    isload={isload}
                 />
                 <CButton color="dark" onClick={addbtn} typebtn="tambah">Tambah</CButton>
             </div>
@@ -179,7 +198,7 @@ const AkreditasiForm = (props) => {
                     submit={submitfominput}
                     handleforminput={handleforminput}
                     optionAkreditasi={optionAkreditasi}
-                    title={typeform == "tambah" ? "Tambah Data Akreditas" : "Edit Data Akreditas"}
+                    title={typeform == "tambah" ? "Tambah Data Akreditasi" : "Edit Data Akreditas"}
                     isclicked={isClicked}
                     handleisclicked={handleisclicked}
                     page="akreditasi"

@@ -22,28 +22,31 @@ import DataForm from './dataform/dataform';
 import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
 import useItemStore from 'src/state/item';
+import useFormStore from 'src/state/form/formmain';
+import useRefStore from 'src/state/ref';
 
 const KepemilikanForm = (props) => {
     const sekolahid = useItemStore((state) => state.sekolah_id)
-    const[statuskepemilikan,setstatuskepemilikan] = useState([]);
-    const[forminput,setforminput] = useState({
-        sekolahid:sekolahid,
-        kepemilikan:"",
-        namayayasan:"",
-        namanotaris:"",
-        noaktenotaris:"",
-        tanggalaktenotaris:""
-    })
+    const[statuskepemilikan,setstatuskepemilikan] = useRefStore((state) => [state.status_kepemilikan,state.setstatuskepemiilikan]);
+    const[forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
+    const resetform = useFormStore((state) => state.resetform)
     const[updater,setupdater] = useState();
     const[isClicked,setisclicked] = useState(false)
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
+    const[checked,setchecked] = useState(false)
+    const[isload,setisload] = useState(false)
 
     useEffect(() => {
+        setforminput("sekolah_id",sekolahid)
+        setforminput("keaktifan",0)
         const getData = async() => {
             try{
-                let response = await axios.get(process.env.REACT_APP_LINK + "status_kepemilikan")
-                setstatuskepemilikan(response.data.data)
+                if(Object.keys(statuskepemilikan).length === 0)
+                {
+                 let response = await axios.get(process.env.REACT_APP_LINK + "status_kepemilikan")
+                 setstatuskepemilikan(response.data.data)
+                }
             }
             catch(e){
                 console.log(e)
@@ -60,26 +63,12 @@ const KepemilikanForm = (props) => {
 
                     let response = await axios.get(process.env.REACT_APP_LINK + "sekolah_kepemilikan/" + editedid)
                     let data = response.data.data
-                    setforminput(
-                        {
-                            kepemilikan:data.status_kepemilian,
-                            namayayasan:data.nama_yayasan,
-                            namanotaris:data.nama_notaris,
-                            noaktenotaris:data.nomor_akte_notaris,
-                            tanggalaktenotaris:data.tanggal_akte_notaris
-                        }
-                        )
+                    for(const key in data)
+                    {
+                     setforminput(key,data[key])
+                    }
                 }
-                else{
-                    setforminput({
-                        sekolahid:sekolahid,
-                        kepemilikan:"",
-                        namayayasan:"",
-                        namanotaris:"",
-                        noaktenotaris:"",
-                        tanggalaktenotaris:""
-                    })
-                }
+                
             }
             catch(e){
                 console.log(e)
@@ -89,7 +78,8 @@ const KepemilikanForm = (props) => {
     },[editedid])
 
     const handleFormInput = (e) => {
-        setforminput({...forminput,[e.target.name]:e.target.value})
+        const{name,value} = e.target
+        setforminput(name,value)
     }
 
     const tablehead = [
@@ -99,8 +89,39 @@ const KepemilikanForm = (props) => {
         "Nama Notaris",
         "Nomor Akte Notaris",
         "Tanggal Akte Notaris",
+        "keaktifan",
         "Action"
     ]
+
+    const PostPutSubmit = async(url,method) => {
+        try
+        {
+         let res;
+         switch(method)
+         {
+           case "post":
+            res = await axios.post(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+           case "put":
+            res = await axios.put(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+         }
+         Swal.fire({
+           icon:"success",
+           title:"Data terkirim",
+           text:"Terima kasih sudah mengisi data"
+         })
+         setupdater(uuidv4())
+         setisload(true)
+         setTimeout(() => {
+          setisload(false)
+         },500)
+        }
+        catch(e)
+        {
+   
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -108,29 +129,13 @@ const KepemilikanForm = (props) => {
         const sendData = async() => {
             try{
                 if(typeform == "tambah"){
-                    let response = await axios.post(process.env.REACT_APP_LINK + "sekolah_kepemilikan",forminput)
-                    console.log(response.data)
-                    setupdater(uuidv4())
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data terkirim",
-                        text:"Terima kasih sudah mengisi data"
-                    })
-
+                 PostPutSubmit(`sekolah_kepemilikan`,"post")
                 }
                 else if(typeform == "edit"){
-                    let response = await axios.put(process.env.REACT_APP_LINK + "sekolah_kepemilikan/" + editedid,forminput)
-                    console.log(response.data)
-                    setupdater(uuidv4())
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data Diedit",
-                        text:"Terima kasih sudah mengedit data"
-                    })
-
+                 PostPutSubmit(`sekolah_kepemilikan/${editedid}`,"put")
                 }
                 
-                props.getsekolahid(null)
+                resetform()
             }
             catch(e){
                 console.log(e)
@@ -145,120 +150,44 @@ const KepemilikanForm = (props) => {
     }
 
     useEffect(() => {
-        
+     console.log(forminput)
     })
 
     const handleisclicked = () => {
-        setisclicked(!isClicked)
+     setisclicked(!isClicked)
     }
 
     const handleGetTypeBtn = (typebtn,id) => {
-        settypeform(typebtn)
-        seteditedid(id)
+     settypeform(typebtn)
+     seteditedid(id)
     }
 
     const handleTambahButton = (e) => {
-        let typeBtn = e.target.getAttribute("typebtn")
-        settypeform(typeBtn)
-        handleisclicked()
+     let typeBtn = e.target.getAttribute("typebtn")
+     settypeform(typeBtn)
+     handleisclicked()
+    }
+
+    const handlecheck = () => {
+     setchecked(!checked)
+     let value = checked ? 0 : 1
+     setforminput("keaktifan",value)
+     console.log(checked)
     }
 
 
 
     return(
         <>
-            {/* <form onSubmit={handleSubmit}>
-            <div className='mb-5'>
-
-            
-            <CTable bordered responsive  >
-                <thead>
-                    <tr>
-                        <th>
-                            Kepemilikan
-                        </th>
-                        <th>
-                            Nama Yayasan
-                        </th>
-                        <th>
-                            Nama Notaris
-                        </th>
-                        <th>
-                            Nomor Akte Notaris
-                        </th>
-                        <th>
-                            Tangggal Akte Notaris
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <CFormSelect
-                                name="kepemilikan"
-                                onChange={handleFormInput}
-                                >
-                                {
-                                    statuskepemilikan.map((item,index) =>
-                                        <option key={index} value={item.status_kepemilikan_id}>{item.nama}</option>    
-                                    
-                                    )
-                                }
-                            </CFormSelect>  
-                        </td>
-                        <td>
-                            <CFormInput 
-                             name="namayayasan"
-                             type="text"
-                             onChange={handleFormInput}
-                             required
-                             />
-                            
-                        </td>
-                        <td>
-                            <CFormInput 
-                            type="text"
-                            onChange={handleFormInput}
-                            name="namanotaris"
-                            required
-                            />
-                        </td>
-                        <td>
-                            <CFormInput 
-                            type="number" 
-                            name="noaktenotaris"
-                            onChange={handleFormInput}
-                            required
-                            />
-                        </td>
-                        <td>
-                            <CFormInput
-                             type="datetime-local"
-                             name="tanggalaktenotaris"
-                             onChange={handleFormInput}
-                             required
-                             />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colSpan={5}>
-                            <CButton type="submit">
-                                Kirim
-                            </CButton>
-                        </td>
-                    </tr>
-                </tbody>
-            </CTable>
-            </div>
-            </form> */}
             <div>
                 <DataForm 
                     title="Data Kepemilikan" 
                     page="kepemilikan" 
                     tablehead={tablehead}
-                    handleopenmodal={handleisclicked}
+                    handlemodal={handleisclicked}
                     getTypeBtn={handleGetTypeBtn}
                     updater={updater} 
+                    isload={isload}
                 />
                 <CButton 
                     color="dark" 
@@ -278,7 +207,7 @@ const KepemilikanForm = (props) => {
                     page="kepemilikan"
                     dataform={forminput}
                     statuskepemilikan={statuskepemilikan}
-                    
+                    handlecheck={handlecheck}
                 />
 
 

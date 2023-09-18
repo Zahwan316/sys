@@ -3,14 +3,17 @@ import React, { useState, useEffect } from 'react';
 import Select from "react-select"
 import axios from 'axios';
 import Swal from "sweetalert2"
+import useItemStore from 'src/state/item';
 
 const UploadPesertaDidik = () => {
     const[datasemester,setdatasemester] = useState([])
+    const sekolahid = useItemStore((state) => state.sekolah_id)
+    const kurikulum_id = useItemStore((state) => state.kurikulum_sp_id)
     const[forminput,setforminput] = useState({
         file:"",
         semester_id:"",
-        sekolah_id:localStorage.getItem("sekolah_id"),
-        kurikulum_id:localStorage.getItem('kurikulum_sp_id'),
+        sekolah_id:sekolahid,
+        kurikulum_id:kurikulum_id,
     })
 
     useEffect(() => {

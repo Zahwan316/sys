@@ -7,6 +7,7 @@ import Swal from "sweetalert2"
 import useStore from 'src/state/pesertadidik';
 import useRefStore from 'src/state/ref';
 import useFormPesertaDidikStore from 'src/state/form/pesertadidik';
+import useItemStore from 'src/state/item';
 
 const DataPesertaDidikMain = (props) => {
     const tablehead = [
@@ -36,6 +37,7 @@ const DataPesertaDidikMain = (props) => {
     const[namasiswa,setnamasiswa]= useState()
     const[isload,setisload] = useState(false)
     const[forminput,setforminput] = useFormPesertaDidikStore((state) => [state,state.setform])
+    const[sekolahid,setsekolahid] = useItemStore((state) => [state.sekolah_id,state.setsekolahid])
     const resetform = useFormPesertaDidikStore((state) => state.resetform)
     useEffect(() => {
         const getData = async() => {
@@ -74,6 +76,7 @@ const DataPesertaDidikMain = (props) => {
                     let response_alat_transportasi = await axios.get(`${process.env.REACT_APP_LINK}alat_transportasi`)
                     setdataalattransportasi(response_alat_transportasi.data.data)
                 }
+
             }
             catch(e){
                 console.log(e)
@@ -103,7 +106,7 @@ const DataPesertaDidikMain = (props) => {
                     }
                 }
                 else if(typeform === 'tambah'){
-                   resetform()
+                   resetallform()
                 }
                 
             }
@@ -116,7 +119,11 @@ const DataPesertaDidikMain = (props) => {
 
     const handleforminput = (e) => {
         setforminput({...forminput,[e.target.name]:e.target.value})
-        
+    }
+
+    const resetallform = () => {
+        resetform()
+        setforminput("sekolah_id",sekolahid)
     }
 
     const handlemodal = () => {
@@ -129,6 +136,7 @@ const DataPesertaDidikMain = (props) => {
     const getTypeBtn = (typebtn,id) => {
         seteditedid(id)
         settypeform(typebtn)
+        
     }
 
     const handleKewarganegaraan = (option) => {
@@ -153,7 +161,7 @@ const DataPesertaDidikMain = (props) => {
 
                     //reset value after submit
                     setforminput({ 
-                    sekolah_id:localStorage.getItem("sekolah_id"),
+                    sekolah_id:sekolahid,
                     nama:null,
                     jenis_kelamin:null,
                     tempat_lahir:null,

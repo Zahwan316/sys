@@ -173,7 +173,7 @@ const ModalComponent = (props) => {
                                     name="id_bank"
                                     onChange={props.handleforminput}
                                     required
-                                    value={props.dataform.idbank}
+                                    value={props.dataform.id_bank}
                                 >
                                     <option>Pilih Bank</option>
                                     {
@@ -192,7 +192,7 @@ const ModalComponent = (props) => {
                                 name="cabang_kcp_unit"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.cabangkcp}
+                                value={props.dataform.cabang_kcp_unit}
                                 />
                             </div>
 
@@ -203,7 +203,7 @@ const ModalComponent = (props) => {
                                 name="no_rekening"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.norek}
+                                value={props.dataform.no_rekening}
                             />
                             </div>
 
@@ -214,13 +214,14 @@ const ModalComponent = (props) => {
                                 name="rekening_atas_nama"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.rekeningnama}
+                                value={props.dataform.rekening_atas_nama}
                                 />
                             </div>
                             <div className='mb-3 d-flex'>
                              <CFormCheck 
                               onClick={props.handlecheck}
                               name="keaktifan"
+                              defaultChecked={props.dataform.keaktifan}
                              />
                              <p>Masih Aktif?</p>
                             </div>
@@ -237,9 +238,9 @@ const ModalComponent = (props) => {
                             <div className='mb-3'>
                                 <CFormLabel>Kepemilikan</CFormLabel>
                                 <CFormSelect
-                                    name="kepemilikan"
+                                    name="status_kepemilikan"
                                     onChange={props.handleforminput}
-                                    value={props.dataform.kepemilikan}
+                                    value={props.dataform.status_kepemilikan}
                                     >
                                         <option>Pilih Kepemilikan</option>
                                     {
@@ -254,11 +255,11 @@ const ModalComponent = (props) => {
                             <div className='mb-3'>
                                 <CFormLabel>Nama Yayasan</CFormLabel>
                                 <CFormInput 
-                                name="namayayasan"
+                                name="nama_yayasan"
                                 type="text"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.namayayasan}
+                                value={props.dataform.nama_yayasan}
                                 />
 
                             </div> 
@@ -267,38 +268,39 @@ const ModalComponent = (props) => {
                                 <CFormInput 
                                 type="text"
                                 onChange={props.handleforminput}
-                                name="namanotaris"
+                                name="nama_notaris"
                                 required
-                                value={props.dataform.namanotaris}
+                                value={props.dataform.nama_notaris}
                                 />
                             </div> 
                             <div className='mb-3'>
                                 <CFormLabel>Nomor Akte Notaris</CFormLabel>
                                 <CFormInput 
                                 type="number" 
-                                name="noaktenotaris"
+                                name="nomor_akte_notaris"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.noaktenotaris}
+                                value={props.dataform.nomor_akte_notaris}
                                 />
                             </div> 
                             <div className='mb-3'>
                                 <CFormLabel>Tanggal Akte Notaris</CFormLabel>
                                 <CFormInput
                                 type="date"
-                                name="tanggalaktenotaris"
+                                name="tanggal_akte_notaris"
                                 onChange={props.handleforminput}
                                 required
-                                value={props.dataform.tanggalaktenotaris}
+                                value={props.dataform.tanggal_akte_notaris}
                                 />
                             </div> 
-                           
-                       
-                       
-                       
-                            
-                       
-                        
+                            <div className='mb-3 d-flex'>
+                             <CFormCheck 
+                              onClick={props.handlecheck}
+                              name="keaktifan"
+                              defaultChecked={props.dataform.keaktifan }
+                             />
+                             <p>Masih Aktif?</p>
+                            </div>                                                                                                                                        
                        </div>
                     }
                 </CModalBody>

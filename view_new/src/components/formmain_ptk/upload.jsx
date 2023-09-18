@@ -1,18 +1,21 @@
 import { CButton, CFormInput, CFormLabel, CFormSelect } from '@coreui/react';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import useItemStore from 'src/state/item';
 import useRefStore from 'src/state/ref';
 import Swal from 'sweetalert2';
 
 const PtkUpload = () => {
     const [semester,setsemester] = useRefStore((state) => [state.semester, state.setsemester])
+    const sekolahid = useItemStore((state) => state.sekolah_id)
     const[forminput,setforminput] = useState({
         file:null,
         semester_id:null,
-        sekolah_id:localStorage.getItem('sekolah_id'),
+        
     })
 
     useEffect(() => {
+       
         const fetchData = async() => {
             try{    
                 if(semester === null || semester.length === 0){
@@ -51,7 +54,7 @@ const PtkUpload = () => {
 
         formData.append('file',forminput.file)
         formData.append('semester_id',forminput.semester_id)
-        formData.append('sekolah_id',forminput.sekolah_id)
+        formData.append('sekolah_id',sekolahid)
 
         let sendData = async() => {
             try{

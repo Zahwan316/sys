@@ -25,13 +25,8 @@ router.route("/sekolah_kepemilikan")
     .post(async(req,res) => {
         try{
             const createData = await Sekolah_kepemilikan.create({
+                ...req.body,
                 sekola_kepemilikan_id:uuidv4(),
-                sekolah_id:req.body.sekolahid,
-                status_kepemilikan:req.body.kepemilikan,
-                nama_yayasan:req.body.namayayasan,
-                nama_notaris:req.body.namanotaris,
-                nomor_akte_notaris:req.body.noaktenotaris,
-                tanggal_akte_notaris:req.body.tanggalaktenotaris
             })
             res.status(200).json({
                 message:"Data berhasil Ditambahkan",
@@ -55,12 +50,7 @@ router.route("/sekolah_kepemilikan/:uuid")
             if(editItem){
                 editItem.update(
                     {
-                       
-                        status_kepemilikan:req.body.kepemilikan,
-                        nama_yayasan:req.body.namayayasan,
-                        nama_notaris:req.body.namanotaris,
-                        nomor_akte_notaris:req.body.noaktenotaris,
-                        tanggal_akte_notaris:req.body.tanggalaktenotaris
+                      ...req.body
                     }
                 )
                 res.status(200).json({

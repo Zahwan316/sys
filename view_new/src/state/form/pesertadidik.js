@@ -1,7 +1,7 @@
 import {create} from "zustand";
 
 const useFormPesertaDidikStore = create((set) => ({
-    sekolah_id:localStorage.getItem("sekolah_id"),
+    sekolah_id:null,
     nama:null,
     jenis_kelamin:null,
     tempat_lahir:null,
@@ -44,7 +44,7 @@ const useFormPesertaDidikStore = create((set) => ({
 
     setform:(name,value) => set(() => ({[name]: value})),
     resetform:() => set(() => ({
-        sekolah_id:localStorage.getItem("sekolah_id"),
+        sekolah_id:null,
         nama:null,
         jenis_kelamin:null,
         tempat_lahir:null,

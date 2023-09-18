@@ -40,6 +40,7 @@ const IsoForm = (props) => {
     const[editedId,seteditedid] = useState()
     const[formtype,setformtype] = useState()
     const[dataedited,setdataedited] = useState();
+    const[isload,setisload ] = useState(false)
 
     //untuk memperbarui data setiap tambah data
     const[updater,setupdater] = useState()
@@ -52,25 +53,47 @@ const IsoForm = (props) => {
         "Action"
     ]
 
+    const PostPutSubmit = async(url,method) => {
+        try
+        {
+         let res;
+         switch(method)
+         {
+           case "post":
+            res = await axios.post(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+           case "put":
+            res = await axios.put(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+         }
+         Swal.fire({
+           icon:"success",
+           title:"Data terkirim",
+           text:"Terima kasih sudah mengisi data"
+         })
+         setupdater(uuidv4())
+         setisload(true)
+         setTimeout(() => {
+          setisload(false)
+         },500)
+        }
+        catch(e)
+        {
+   
+        }
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
         const sendData = async() => {
             try{
                 if(formtype === "tambah"){
-                    let response = await axios.post(process.env.REACT_APP_LINK+"sekolah_iso",forminput)
-                    console.log(response)
+                 PostPutSubmit(`sekolah_iso`,"post")
                 }
                 else if(formtype === "edit"){
-                    let response = await axios.put(process.env.REACT_APP_LINK+"sekolah_iso/"+editedId,forminput)
-                    console.log(response)
+                 PostPutSubmit(`sekolah_iso/${editedId}`,'put')
                 }
-                setupdater(uuidv4())
-                Swal.fire({
-                    icon:"success",
-                    title:"Data terkirim",
-                    text:"Terima kasih sudah mengisi data"
-                })
             }
             catch(e){
                 console.log(e)
@@ -84,11 +107,8 @@ const IsoForm = (props) => {
         sendData();
     }
 
-   
-
     const handleisclicked = () => {
         setisclicked(!isClicked)
-
     }
 
     const getAddButton = (e) => {
@@ -96,7 +116,6 @@ const IsoForm = (props) => {
         setformtype(typebtn)
         handleisclicked()
     }
-
 
     const handleGetTypeBtn = (typebtn,id) => {
         setformtype(typebtn)
@@ -106,7 +125,7 @@ const IsoForm = (props) => {
     useEffect(() => {
         console.log(editedId)
     })
-
+   
     useEffect(() => {
         const getDataEdited = async() => {
             try{
@@ -144,8 +163,9 @@ const IsoForm = (props) => {
                     tablehead={tablehead} 
                     page="iso" 
                     updater={updater} 
-                    handleopenmodal={handleisclicked}
+                    handlemodal={handleisclicked}
                     getTypeBtn ={handleGetTypeBtn}
+                    isload={isload}
                 />
                 <CButton color="dark" onClick={getAddButton} typebtn="tambah">Tambah</CButton>
             </div>

@@ -71,8 +71,16 @@ const useRefStore = create((set) => ({
    setstatussekolah:(data) => set(() => ({status_sekolah:data})),
 
    waktu_penyelenggaraan:[],
-   setwaktupenyelenggaraan:(data) => set(() => ({waktu_penyelenggaraan:data}))
+   setwaktupenyelenggaraan:(data) => set(() => ({waktu_penyelenggaraan:data})),
 
+   akreditasi:[],
+   setakreditasi:(data) => set(() => ({akreditasi:data})),
+
+   status_kepemilikan:[],
+   setstatuskepemilikan:(data) => set(() => ({status_kepemilikan:data})),
+
+   sertifikasi_iso:[],
+   setsertifikasiiso:(data) => set(() => ({sertifikasi_iso:data}))
 }))
 
 export default useRefStore

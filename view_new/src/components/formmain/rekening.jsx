@@ -23,12 +23,13 @@ import {v4 as uuidv4} from "uuid"
 import ModalComponent from './modal/modal';
 import useItemStore from 'src/state/item';
 import useFormStore from 'src/state/form/formmain';
+import useRefStore from 'src/state/ref';
 
 const RekeningForm = (props) => {
     const sekolahid = useItemStore((state) => state.sekolah_id)
     const[forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
     const resetform = useFormStore((state) => state.resetform)
-    const[databank,setdatabank] = useState([])
+    const[databank,setdatabank] = useRefStore((state) => [state.bank,state.setbank])
     const[check,setcheck] = useState(false)
     const[updater,setupdater] = useState()
     const tablehead = [
@@ -43,13 +44,17 @@ const RekeningForm = (props) => {
     const[isClicked,setisclicked] = useState(false)
     const[editedid,seteditedid] = useState()
     const[typeform,settypeform] = useState()
+    const[isload,setisload] = useState(false)
 
     useEffect(() => {
         setforminput("sekolah_id",sekolahid)
         setforminput("keaktifan",0)
         const getDataBank = async() => {
-            let response = await axios.get(process.env.REACT_APP_LINK + "bank")
-            setdatabank(response.data.data)
+            if(Object.keys(databank).length === 0)
+            {
+             let response = await axios.get(process.env.REACT_APP_LINK + "bank")
+             setdatabank(response.data.data)
+            }
         } 
         getDataBank()
     },[])
@@ -61,14 +66,10 @@ const RekeningForm = (props) => {
 
                     let response = await axios.get(process.env.REACT_APP_LINK + "sekolah_bank/" + editedid )
                     let data = response.data.data
-                    setforminput(
-                        {
-                            idbank:data.id_bank,
-                            cabangkcp:data.cabang_kcp_unit,
-                            norek:data.no_rekening,
-                            rekeningnama:data.rekening_atas_nama
-                        }
-                        )
+                    for(const key in data)
+                    {
+                        setforminput(key,data[key])
+                    }
                 }
                 else{
                     setforminput({
@@ -92,29 +93,46 @@ const RekeningForm = (props) => {
         setforminput(name,value)
     }
 
+    const PostPutSubmit = async(url,method) => {
+        try
+        {
+         let res;
+         switch(method)
+         {
+           case "post":
+            res = await axios.post(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+           case "put":
+            res = await axios.put(`${process.env.REACT_APP_LINK}${url}`,forminput)
+            break;
+         }
+         Swal.fire({
+           icon:"success",
+           title:"Data terkirim",
+           text:"Terima kasih sudah mengisi data"
+         })
+         setupdater(uuidv4())
+         setisload(true)
+         setTimeout(() => {
+          setisload(false)
+         },500)
+        }
+        catch(e)
+        {
+   
+        }
+    }
+
     const handleSubmitForm = (e) => {
         e.preventDefault();
 
         const sendData = async() => {
             try{
                 if(typeform === "tambah"){
-                    let response = await axios.post(process.env.REACT_APP_LINK + "sekolah_bank",forminput)
-                    console.log(response)
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data terkirim",
-                        text:"Terima kasih sudah mengisi data"
-                    })
+                 PostPutSubmit(`sekolah_bank`,"post")
                 }
                 else if(typeform === "edit"){
-                    let response = await axios.put(process.env.REACT_APP_LINK + "sekolah_bank/" + editedid,forminput)
-                    console.log(response)
-
-                    Swal.fire({
-                        icon:"success",
-                        title:"Data Diedit",
-                        text:"Terima kasih sudah mengedit data"
-                    })
+                 PostPutSubmit(`sekolah_bank/${editedid}`,"put")
                 }
                 setupdater(uuidv4())
                 resetform()
@@ -143,6 +161,10 @@ const RekeningForm = (props) => {
     const getTypeBtn = (typebtn,id) => {
         settypeform(typebtn)
         seteditedid(id)
+        if(typebtn == "tambah")
+        {
+            resetform()
+        }
     }
 
     const handleTambahBtn = (e) => {
@@ -154,11 +176,11 @@ const RekeningForm = (props) => {
     const handlecheck = (e) => {
      setcheck(!check)
      const value = check ? 0 : 1
-     setforminput("keaktifa",value)
+     setforminput("keaktifan",value)
     }
 
     useEffect(() => {
-        console.log(typeform)
+        console.log(forminput)
     })
 
     return(
@@ -171,7 +193,8 @@ const RekeningForm = (props) => {
                 page="rekening" 
                 updater={updater}
                 getTypeBtn = {getTypeBtn}
-                handleopenmodal={handleisclicked}
+                handlemodal={handleisclicked}
+                isload={isload}
                 />
                 <CButton color="dark" onClick={handleTambahBtn} typebtn="tambah">Tambah Data</CButton>
             </div>

@@ -598,7 +598,7 @@ router.route("/ptk/upload")
                         lintang:item.__EMPTY_47 || null,
                         bujur:item.__EMPTY_48 || null,
                         nuks:item.__EMPTY_49 || null,
-
+                        sekolah_id:req.body.sekolah_id || null,
                     }
                     
                     for(const key in raw_ptk){
@@ -614,8 +614,7 @@ router.route("/ptk/upload")
 
             await Ptk.bulkCreate(
                 ptk.map(item => ({
-                     ...item, 
-                    ptk_id,             
+                     ...item,         
                     agama_id:item.agama,                  
                 }))
             ) 
@@ -623,17 +622,7 @@ router.route("/ptk/upload")
             await Ptk_alamat.bulkCreate(
                 ptk.map(item => ({
                     ...item,
-                    ptk_alamat_id:uuidv4(), 
-                   /*  ptk_id:item.ptk_id,
-                    alamat_jalan,
-                    rt,
-                    rw,
-                    nama_dusun,
-                    desa,
-                    kode_pos,
-                    lintang,
-                    bujur, */
-                    
+                    ptk_alamat_id:uuidv4(),                                        
                 }))
             )
 
