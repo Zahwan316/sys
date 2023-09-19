@@ -32,13 +32,14 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import useSekolahStore from 'src/state/sekolah';
 import useRefStore from 'src/state/ref';
+import useKurikulumStore from 'src/state/kurikulum';
 
 const RombelPage = (props) => {
-    const[dataSemester,setdatasemester] = useState()
-    const[dataProgram,setdataprogram] = useState()
-    const[dataJurusan,setdatajurusan] = useState()
-    const[dataTingkat,setdatatingkat] = useState()
-    const[dataJenisRombel,setdatajenisrombel] = useState()
+    const[dataSemester,setdatasemester] = useRefStore((state) => [state.semester,state.setsemester])
+    const[dataProgram,setdataprogram] = useKurikulumStore((state) => [state.kurikulum_program,state.setkurikulumprogram])
+    const[dataJurusan,setdatajurusan] = useRefStore((state) => [state.jurusan,state.setjurusan])
+    const[dataTingkat,setdatatingkat] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
+    const[dataJenisRombel,setdatajenisrombel] = useRefStore((state) => [state.jenis_rombel,state.setjenisrombel])
     const[dataRombel,setdatarombel] = useState()
     const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
     const[tingkatpendidikan,settingkatpendidikan] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
@@ -71,27 +72,45 @@ const RombelPage = (props) => {
         const getData = async() => {
             try{
                 if(Object.keys(dataSekolah).length === 0){
-                    let res = await axios.get(`${process.env.REACT_APP_LINK}sekolah_identitas`)
-                    setdatasekolah(res.data.data)
-
+                 let res = await axios.get(`${process.env.REACT_APP_LINK}sekolah_identitas`)
+                 setdatasekolah(res.data.data)
                 }
                 if(Object.keys(tingkatpendidikan).length === 0){
-
-                    let res_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
-                    settingkatpendidikan(res_tingkat_pendidikan.data.data)
+                 let res_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
+                 settingkatpendidikan(res_tingkat_pendidikan.data.data)
                 }
-                let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
-                let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
-                let response_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
-                let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
-                
-                let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                if(Object.keys(dataJenisRombel).length === 0)
+                {
+                 let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
+                 setdatajenisrombel(response_jenis_rombel.data.data)
+                }
+                if(Object.keys(dataSemester).length === 0)
+                {
+                    let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
+                    setdatasemester(response_semester.data.data)
 
-                setdatajenisrombel(response_jenis_rombel.data.data)
-                setdatasemester(response_semester.data.data)
-                setdatatingkat(response_tingkat_pendidikan.data.data)
-                setdataprogram(response_program.data.data)
-                setdatajurusan(response_jurusan.data.data)
+                }
+                if(Object.keys(dataTingkat).length === 0)
+                {
+                    let response_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
+                    setdatatingkat(response_tingkat_pendidikan.data.data)
+
+                }
+                if(Object.keys(dataProgram).length === 0)
+                {
+                    let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
+                    setdataprogram(response_program.data.data)
+
+                }
+                if(Object.keys(dataJurusan).length === 0)
+                {
+                    let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                    setdatajurusan(response_jurusan.data.data)
+
+                }
+
+                
+
 
                 if(props.page === "rombelindustri"){
                     setforminput({...forminput,is_industri:1})

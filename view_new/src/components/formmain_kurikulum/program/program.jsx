@@ -27,7 +27,7 @@ import useKurikulumStore from 'src/state/kurikulum';
 import useItemStore from 'src/state/item';
 
 const ProgramForm = () => {
-    const[kurikulum_sp_id_code,setkurikulumspid] = useState(localStorage.getItem("kurikulum_sp_id"))
+    const[kurikulum_sp_id_code,setkurikulumspid] = useItemStore((state) => [state.kurikulum_sp_id,state.setkurikulum_sp_id])
     const kurikulumspid = useItemStore((state) => state.kurikulum_sp_id)
     const[forminput,setforminput] = useState(
         {
@@ -53,6 +53,7 @@ const ProgramForm = () => {
     const[bidangjurusan,setbidangjurusan] = useState()
     const[jurusanid,setjurusanid] = useState()
     const[isload,setisload] = useState(false)
+    //const[kode_main,setkode_main] = useState()
 
 
     const tablehead = [
@@ -142,7 +143,6 @@ const ProgramForm = () => {
     const getTypeBtn = (typebtn,id) => {
         setid(id)
         settypeform(typebtn)
-        
     }
 
     const handleModal = () => {
@@ -199,6 +199,8 @@ const ProgramForm = () => {
                 }
                 
                 
+                
+                //setkode_main(kode_main)
             }
             catch(e){
                 console.log(e)
@@ -247,9 +249,9 @@ const ProgramForm = () => {
         }
         getData()
     },[id])
-  
-    let kode_main_raw = dataKurikulumSp.filter(item => item.kurikulum_sp_id === kurikulum_sp_id_code ) 
-    let kode_main = kode_main_raw[0].kurikulum_kode || null
+
+    let kode_main_raw = dataKurikulumSp.find(item => item.kurikulum_sp_id == kurikulum_sp_id_code ) 
+    let kode_main = kode_main_raw.kurikulum_kode || null
        
     return(
         <div>

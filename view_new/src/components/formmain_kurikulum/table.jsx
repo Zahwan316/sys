@@ -31,6 +31,7 @@ import { useParams } from 'react-router-dom';
 import usePtkStore from 'src/state/ptk';
 import useRefStore from 'src/state/ref';
 import useKurikulumStore from 'src/state/kurikulum';
+import useItemStore from 'src/state/item';
 
 const TableMain = (props) => {
     //navigate
@@ -40,7 +41,7 @@ const TableMain = (props) => {
     //main state
     const[itemid,setitemid] = useState()
 
-    const semesterid = localStorage.getItem('semester_id')
+    const semesterid = useItemStore((state) => state.semester_id)
 
     //jenis page
     const[dataJenis,setdatajenis] = useKurikulumStore((state) => [state.kurikulum_sp,state.setkurikulumsp])
@@ -51,10 +52,10 @@ const TableMain = (props) => {
     const[jurusan,setjurusan] = useRefStore((state) => [state.jurusan,state.setjurusan])
 
     //rombel page
-    const[dataRombel,setdatarombel] = useState([])
-    const[dataJenisRombel,setdatajenisrombel] = useState()
-    const[dataSemester,setdatasemester] = useState()
-    const[dataTingkatPendidikan,setdatatingatpendiikan] = useState()
+    const[dataRombel,setdatarombel] = useKurikulumStore((state) => [state.kurikulum_rombongan_belajar,state.setkurikulumrombonganbelajar])
+    const[dataJenisRombel,setdatajenisrombel] = useRefStore((state) => [state.jenis_rombel,state.setjenisrombel])
+    const[dataSemester,setdatasemester] = useRefStore((state) => [state.semester,state.setsemester])
+    const[dataTingkatPendidikan,setdatatingatpendiikan] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
 
     //tugas page
     const[dataTugas,setdatatugas] = usePtkStore((state) => [state.ptk,state.setdataptk])
@@ -126,19 +127,36 @@ const TableMain = (props) => {
                     
                 }
                 else if(props.page === "rombelreguler" || props.page === "rombelindustri"){
-                    response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
-                    let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
-                    let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
-                    let response_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
-                    let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
-                    let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
-
-                    setdatarombel(response.data.data)
-                    setdatajenisrombel(response_jenis_rombel.data.data)
-                    setdatasemester(response_semester.data.data)
-                    setdatatingatpendiikan(response_tingkat_pendidikan.data.data)
-                    setdataprogram(response_program.data.data)
-                    setjurusan(response_jurusan.data.data)
+                    if(Object.keys(dataRombel).length === 0)
+                    {
+                     response = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                     setdatarombel(response.data.data)
+                    }
+                    if(Object.keys(dataJenisRombel).length === 0)
+                    {
+                     let response_jenis_rombel = await axios.get(`${process.env.REACT_APP_LINK}jenis_rombel`)
+                     setdatajenisrombel(response_jenis_rombel.data.data)
+                    }
+                    if(Object.keys(dataSemester).length === 0)
+                    {
+                     let response_semester = await axios.get(`${process.env.REACT_APP_LINK}semester`)
+                     setdatasemester(response_semester.data.data)
+                    }
+                    if(Object.keys(dataTingkatPendidikan).length === 0)
+                    {
+                     let response_tingkat_pendidikan = await axios.get(`${process.env.REACT_APP_LINK}tingkat_pendidikan`)
+                     setdatatingatpendiikan(response_tingkat_pendidikan.data.data) 
+                    }
+                    if(Object.keys(dataProgram).length === 0)
+                    {
+                     let response_program = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_program`)
+                     setdataprogram(response_program.data.data)
+                    }
+                    if(Object.keys(jurusan).length === 0)
+                    {
+                     let response_jurusan = await axios.get(`${process.env.REACT_APP_LINK}jurusan`)
+                     setjurusan(response_jurusan.data.data)   
+                    }
                 }
                 else if(props.page === "tugas"){
                     if(dataTugas.length === 0 || dataTugas === [])
@@ -461,7 +479,7 @@ const TableMain = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        console.log(semesterid)
+        console.log(dataRombel)
     })
 
     //jika jurusan id ditemukan di page mapel industri

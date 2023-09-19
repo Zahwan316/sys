@@ -35,6 +35,7 @@ const JenisPage = () => {
     const[updater,setupdater] = useState()
     const[isload,setisload] = useState(false)
     const[sekolahid,setsekolahid] = useItemStore((state) => [state.sekolah_id,state.setsekolahid])
+    const [kurikulum_sp,setkurikulum_sp] = useItemStore((item) => [item.kurikulum_sp_id,item.setkurikulum_sp_id])
     const[formInput,setforminput] = useState({
         sekolah_id:sekolahid,
         kurikulum_sp_id:uuidv4(),
@@ -81,7 +82,7 @@ const JenisPage = () => {
                 if(typeform === "tambah"){
                     let response = await axios.post(`${process.env.REACT_APP_LINK}kurikulum_sp`,formInput)
                     if(formInput.keaktifan === 1){
-                        localStorage.setItem("kurikulum_sp_id",formInput.kurikulum_sp_id)
+                        setkurikulum_sp(formInput.kurikulum_sp_id)
                     }
                     Swal.fire({
                         title:"Data Tersimpan",
@@ -96,7 +97,7 @@ const JenisPage = () => {
                     setupdater(uuidv4())
                     let response = await axios.put(`${process.env.REACT_APP_LINK}kurikulum_sp/`+ id,formInput)
                     if(formInput.keaktifan === 1){
-                        localStorage.setItem("kurikulum_sp_id",formInput.kurikulum_sp_id)
+                        setkurikulum_sp(formInput.kurikulum_sp_id)
                     }
                     Swal.fire({
                         title:"Data Teredit",
@@ -160,9 +161,9 @@ const JenisPage = () => {
     useEffect(() => {
         const getData = async() => {
             try{
-                let response = await axios.get(process.env.REACT_APP_LINK + "kurikulum_sp/" + id)
-                let data = response.data.data
                 if(typeform === "edit" || typeform === "detail"){
+                    let response = await axios.get(process.env.REACT_APP_LINK + "kurikulum_sp/" + id)
+                    let data = response.data.data
                     setforminput(
                         {
                             sekolah_id:localStorage.getItem("sekolah_id"),
