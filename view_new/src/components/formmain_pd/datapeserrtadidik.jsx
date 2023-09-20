@@ -18,8 +18,6 @@ const DataPesertaDidikMain = (props) => {
         "Tempat Lahir",
         "Tanggal Lahir",
         "Agama",
-        "Kewarganegaraan",
-
     ]
 
     const[modal,setmodal] = useState(false)
@@ -231,7 +229,7 @@ const DataPesertaDidikMain = (props) => {
 
     return(
         <>
-             <h5>Nama Siswa : {props.namasiswa}</h5>
+             <h5>Nama Siswa : {props.namasiswa != null ? props.namasiswa : "Pilih Siswa Telebih Dahulu"}</h5>
             <TablePesertaDidik
                 tablehead={tablehead}
                 page="pesertadidikbiodata"

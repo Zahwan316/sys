@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { CTable,CTableHead,CTableBody,CTableRow } from '@coreui/react';
+import { CTable,CTableHead,CTableBody,CTableRow, CFormInput } from '@coreui/react';
 import usePtkStore from 'src/state/ptk';
 import axios from 'axios';
 import BiodataTableBody from './tabledata/biodata';
@@ -25,6 +25,7 @@ const TablePtk = (props) => {
     const{id} = useParams()
     const [isload,setisload] = useState(false)
     const[ptkalamatn,setptkalamat] = usePtkStore((state) => [state.ptk_alamat,state.setptkalamat])
+    const [searchtext,setsearchtext] = useState("")
 
 
     useEffect(() => {
@@ -185,8 +186,21 @@ const TablePtk = (props) => {
         console.log(id)
     }
 
+    const handlesearchtext = (e) => {
+     setsearchtext(e.target.value)
+    }
+
     return(
         <>
+            {
+                props.page === "ptkbiodata" && 
+                <CFormInput
+                className='mb-3'
+                placeholder='Cari Ptk'
+                value={searchtext}
+                onChange={handlesearchtext}
+                />
+            }
             <CTable style={{verticalAlign:"middle",cursor:"pointer"}} hover>
                 <CTableHead className='table-dark'>
                     <CTableRow style={{verticalAlign:"middle"}}>
@@ -213,7 +227,7 @@ const TablePtk = (props) => {
                     {
                         props.page === "ptkbiodata" &&
                         <BiodataTableBody 
-                            dataptk={ptk}
+                            dataptk={ptk.filter((item) => item.nama.toLowerCase().includes(searchtext.toLowerCase()))}
                             handleclickbutton={handleclickbutton}
                             selectPtk={selectPtk}
                         />

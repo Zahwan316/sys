@@ -47,6 +47,7 @@ import {
   cilUser,
   cilUserFemale,
   cilNotes,
+  cilSchool,
 } from '@coreui/icons'
 import {Chart} from "react-google-charts"
 
@@ -77,6 +78,7 @@ const Dashboard = () => {
   const [dataKurikulumProgram,setdatakurikulumprogram] = useKurikulumStore((state) => [state.kurikulum_program,state.setkurikulumprogram])
   const [datapesertadidik,setdatapesertadidik] = usePesertaDidikStore((state) => [state.pesertadidik,state.setdatapesertadidik])
   const [dataptk,setdataptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
+  const [dataRombel,setdatarombel] = useKurikulumStore((state) => [state.kurikulum_rombongan_belajar,state.setkurikulumrombonganbelajar])
 
   useEffect(() => {
     const fetchdata = async() => {
@@ -105,6 +107,11 @@ const Dashboard = () => {
         {
           let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
           setdataptk(res.data.data)
+        }
+        if(Object.keys(dataRombel).length === 0)
+        {
+          let res = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+          setdatarombel(res.data.data)
         }
       }
       catch(e){
@@ -153,8 +160,26 @@ const Dashboard = () => {
     return jk === "L" ? jumlah_lakilaki : jumlah_perempuan
   }
 
+  const gettotalrombel = (option) => {
+    let mainrombelreguler = [];
+    let mainrombelindustri = [];
+
+    dataRombel.map(item => {
+      if(item.is_industri == 0)
+      {
+        mainrombelreguler.push(item)
+      }
+      else if(item.is_industri == 1)
+      {
+        mainrombelindustri.push(item)
+      }
+    })
+
+    return option == "reguler" ? mainrombelreguler.length : mainrombelindustri.length
+  }
+
   const options = {
-    pieHole:0.3
+    pieHole:0.4
   }
 
   const data_pesertadidik = [
@@ -167,6 +192,12 @@ const Dashboard = () => {
     ["Jenis Kelamin","total"],
     ["Laki Laki",jeniskelamin_peserta_didik("L","guru")],
     ["Perempuan",jeniskelamin_peserta_didik("P","guru")]
+  ]
+
+  const data_rombel = [
+    ["Nama","Jumlah",{role:"style"}],
+    ["Reguler",gettotalrombel("reguler"),"blue"],
+    ["Industri",gettotalrombel("industri"),"Red"],
   ]
 
   return (
@@ -194,23 +225,23 @@ const Dashboard = () => {
             </CCol>
           </CCardBody>
         </CCard> 
-        <CCard className="mb-4 " style={{width:"20rem"}}>
+        {/* <CCard className="mb-4 " style={{width:"20rem"}} color="dark">
           <CCardBody>
-            <CRow>
-              <h3>Jenis Kurikulum</h3>
-              <p>
-                {
-                  dataKurikulumSp.map(item =>
-                    refKurikulum.map(items => 
-                      items.kurikulum_kode == item.kurikulum_kode && item.keaktifan == 1 &&
-                      <p>{items.deskripsi}</p>
-                      )
-                  )
-                }
-              </p>
-            </CRow>
+            <CCol className='d-flex'>
+              <div style={{height:"100%",width:"20%"}}>
+                <CIcon icon={cilSchool} className='text-white' style={{width:"100%",height:"100%"}} />
+              </div>
+              <div className='mx-3'>
+                <h3 className='text-white'>Total Rombel</h3>
+                <p className='text-white'>
+                  {
+                    dataRombel.length
+                  }
+                </p>
+              </div>
+            </CCol>
           </CCardBody>
-        </CCard> 
+        </CCard>  */}
       </div>
       <div className='d-flex' style={{gap:"1rem"}}>
         <CCard className="mb-4" style={{width:"50%"}}>
@@ -244,7 +275,7 @@ const Dashboard = () => {
           </CCardBody>
         </CCard> 
       </div>
-      <div className='d-flex'>
+      <div className='d-flex' style={{gap:"1rem"}}>
        <CCard className="mb-4" style={{width:"50%"}}>
         <CCardBody>
           <h4 className='mb-3'>Program</h4>
@@ -260,6 +291,18 @@ const Dashboard = () => {
               <KonsentrasiItemComponent />
             </TabPanel>
           </Tabs>
+        </CCardBody>
+       </CCard>
+       <CCard classname="mb-4" style={{width:"50%"}}>
+        <CCardBody>
+          <h4>Rombel</h4>
+          <h5>Total : {dataRombel.length}</h5>
+          <Chart 
+            chartType='ColumnChart'
+            width="100%"
+            height="13rem"
+            data={data_rombel}
+          />
         </CCardBody>
        </CCard>
       </div>

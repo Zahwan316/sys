@@ -32,29 +32,32 @@ const IdentitasForm = () => {
                     value={forminput.nama}
                 />
             </div>
-            <div className='mb-3'>
-                <CFormLabel>
-                    NIK
-                </CFormLabel>
-                <CFormInput 
-                    type="number"
-                    required 
-                    name="nik"
-                    onChange={handleforminput}
-                    value={parseInt(forminput.nik)}
-                />
-            </div>
-            <div className='mb-3'>
-                <CFormLabel>
-                    No KK
-                </CFormLabel>
-                <CFormInput 
-                    type="number"
-                    required 
-                    name="no_kk"
-                    onChange={handleforminput}
-                    value={parseInt(forminput.no_kk)}
-                />
+            <div className='mb-3 d-flex'>
+                <div className='mb-3'>
+                    <CFormLabel>
+                        NIK
+                    </CFormLabel>
+                    <CFormInput 
+                        type="number"
+                        required 
+                        name="nik"
+                        onChange={handleforminput}
+                        value={parseInt(forminput.nik)}
+                    />
+                </div>
+                <div className='mx-3'>
+                    <CFormLabel>
+                        No KK
+                    </CFormLabel>
+                    <CFormInput 
+                        type="number"
+                        required 
+                        name="no_kk"
+                        onChange={handleforminput}
+                        value={parseInt(forminput.no_kk)}
+                    />
+                </div>
+
             </div>
             <div className='mb-3'>
                 <CFormLabel>
@@ -125,61 +128,64 @@ const IdentitasForm = () => {
                 </div>
 
             </div>
-            <div className='mb-3'>
-                <CFormLabel>Agama</CFormLabel>
-                <CFormSelect
-                    required
-                    name="agama_id"
-                    onChange={handleforminput}
-                    value={forminput.agama_id}
-                >
-                    <option>Pilih</option>
-                    {
-                        agama.map(item =>
-                            <option value={item.agama_id}>
-                                {
-                                    item.nama
-                                }
-                            </option>    
-                        )
-                    }     
-                </CFormSelect>
-            </div>
-            <div className='mb-3'>
-                <CFormLabel>Kewarganegaraan</CFormLabel>
-                <CFormSelect
-                    required
-                    name="kewarganegaraan"
-                    onChange={handleforminput}
-                    value={forminput.kewarganegaraan}
-                >
-                    <option>Pilih</option>
-                    {
-                        kewarganegaraan.map(item =>
-                            <option value={item.alpha_2}>
-                                {
-                                    item.nama
-                                }
-                            </option>    
-                        )
-                    }     
-                </CFormSelect>
-            </div>
-            <div className='mb-3'>
-                <CFormLabel>
-                    Status Perkawinan
-                </CFormLabel>
-                <CFormSelect
-                    required
-                    name="status_perkawinan"
-                    onChange={handleforminput}
-                    value={forminput.status_perkawinan}>
+            <div className='d-flex mb-4'>
+                <div className='mb-3'>
+                    <CFormLabel>Agama</CFormLabel>
+                    <CFormSelect
+                        required
+                        name="agama_id"
+                        onChange={handleforminput}
+                        value={forminput.agama_id}
+                    >
                         <option>Pilih</option>
-                        <option value={0}>Belum Kawin</option>
-                        <option value={1}>Kawin</option>
-                        <option value={98}>Janda</option>
-                        <option value={99}>Duda</option>
-                </CFormSelect>
+                        {
+                            agama.map(item =>
+                                <option value={item.agama_id}>
+                                    {
+                                        item.nama
+                                    }
+                                </option>    
+                            )
+                        }     
+                    </CFormSelect>
+                </div>
+                <div className='mx-3'>
+                    <CFormLabel>Kewarganegaraan</CFormLabel>
+                    <CFormSelect
+                        required
+                        name="kewarganegaraan"
+                        onChange={handleforminput}
+                        value={forminput.kewarganegaraan}
+                    >
+                        <option>Pilih</option>
+                        {
+                            kewarganegaraan.map(item =>
+                                <option value={item.alpha_2}>
+                                    {
+                                        item.nama
+                                    }
+                                </option>    
+                            )
+                        }     
+                    </CFormSelect>
+                </div>
+                <div className='mb-3'>
+                    <CFormLabel>
+                        Status Perkawinan
+                    </CFormLabel>
+                    <CFormSelect
+                        required
+                        name="status_perkawinan"
+                        onChange={handleforminput}
+                        value={forminput.status_perkawinan}>
+                            <option>Pilih</option>
+                            <option value={0}>Belum Kawin</option>
+                            <option value={1}>Kawin</option>
+                            <option value={98}>Janda</option>
+                            <option value={99}>Duda</option>
+                    </CFormSelect>
+                </div>
+
             </div>
         </>
     )

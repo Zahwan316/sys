@@ -32,6 +32,7 @@ import usePtkStore from 'src/state/ptk';
 import useRefStore from 'src/state/ref';
 import useKurikulumStore from 'src/state/kurikulum';
 import useItemStore from 'src/state/item';
+import useJadwalStore from 'src/state/jadwal';
 
 const TableMain = (props) => {
     //navigate
@@ -64,9 +65,9 @@ const TableMain = (props) => {
     const[gurumapel,setgurumapel] = usePtkStore((state) => [state.ptk,state.setdataptk])
 
     //jadwal page
-    const[dataJadwal,setdatajadwal] = useState([])
-    const[waktukbm,setwaktukbm] = useState([])
-    const[hari,sethari] = useState([])
+    const[dataJadwal,setdatajadwal] = useJadwalStore((state) => [state.jadwal_kbm,state.setjadwalkbm])
+    const[waktukbm,setwaktukbm] = useJadwalStore((state) => [state.waktu_kbm,state.setwaktukbm])
+    const[hari,sethari] = useRefStore((state) => [state.hari,state.sethari])
     const[dataspesifik,setdataspesifik] = useState([])
 
     //mapel page
@@ -81,9 +82,8 @@ const TableMain = (props) => {
 
     //loading
     const[loading,setloading] = useState(true)
-
-
     const[updaterdelete,setupdaterdelete] = useState()
+    const [searchtext,setsearchtext] = useState("")
 
     //saat page di reload
     useEffect(() => {
@@ -182,39 +182,38 @@ const TableMain = (props) => {
 
                 }
                 else if(props.page === "jadwalreguler" || props.page ==="jadwalindustri" ){
-                    let responseguru;
-                    let dataguru = []
-                    if(gurumapel.length == 0 || gurumapel === []){
-                        responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                    
+                    if(Object.keys(gurumapel).length === 0){
+                        let responseguru = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
                         setgurumapel(responseguru.data.data)
-                        dataguru.push(responseguru.data.data)
-
                     }
-                    response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
-                    let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
-                    let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
-                    let response_rombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
-                    let responsewaktukbm = await axios.get(`${process.env.REACT_APP_LINK}waktu_kbm`)
-                    let responsehari = await axios.get(`${process.env.REACT_APP_LINK}hari`)
+                    if(Object.keys(dataJadwal).length === 0)
+                    {
+                        response = await axios.get(`${process.env.REACT_APP_LINK}jadwal_kbm`)
+                        setdatajadwal(response.data.data)
+                    }
+                    if(Object.keys(dataTugasMengajar).length === 0){
+                        let responsetugasmengajar = await axios.get(`${process.env.REACT_APP_LINK}ptk_tugas_mengajar`)
+                        setdatatugasmengajar(responsetugasmengajar.data.data)
+                    }
+                    if(Object.keys(dataMapel).length === 0){
+                        let responsemapel = await axios.get(`${process.env.REACT_APP_LINK}kbm_mapel_sp`)
+                        setdatamapel(responsemapel.data.data)
+                    }
+                    if(Object.keys(dataRombel).length === 0){
+                        let response_rombel = await axios.get(`${process.env.REACT_APP_LINK}kurikulum_rombongan_belajar`)
+                        setdatarombel(response_rombel.data.data)
+                    }
+                    if(Object.keys(waktukbm).length === 0){
+                        let responsewaktukbm = await axios.get(`${process.env.REACT_APP_LINK}waktu_kbm`)
+                        setwaktukbm(responsewaktukbm.data.data)
+                    }
+                    if(Object.keys(hari).length === 0){
+                        let responsehari = await axios.get(`${process.env.REACT_APP_LINK}hari`)
+                        sethari(responsehari.data.data)
+                
+                    }
     
-
-                    setdatajadwal(response.data.data)
-                    setdatatugasmengajar(responsetugasmengajar.data.data)
-                    setdatamapel(responsemapel.data.data)
-                    setdatarombel(response_rombel.data.data)
-                    setwaktukbm(responsewaktukbm.data.data)
-                    sethari(responsehari.data.data)
-
-                    props.getdatamain(
-                        response.data.data,
-                        responsemapel.data.data,
-                        response_rombel.data.data,
-                        responsehari.data.data,
-                        responsewaktukbm.data.data,
-                        responsetugasmengajar.data.data,
-                        dataguru,
-                        )
-
                     if(id){
                         getDataJadwal()
                     }
@@ -328,16 +327,6 @@ const TableMain = (props) => {
                     setdatarombel(response_rombel.data.data)
                     setwaktukbm(responsewaktukbm.data.data)
                     sethari(responsehari.data.data)
-
-                    props.getdatamain(
-                        response.data.data,
-                        responsemapel.data.data,
-                        response_rombel.data.data,
-                        responsehari.data.data,
-                        responsewaktukbm.data.data,
-                        responsetugasmengajar.data.data,
-                        responseguru.data.data
-                        )
 
                     if(id){
                         getDataJadwal()
@@ -574,7 +563,6 @@ const TableMain = (props) => {
         }
     }
    
-
     const handleClickBtn = (e) => {
         let typebtn = e.target.getAttribute("typebtn")
         let id = e.target.getAttribute("id")
@@ -635,11 +623,28 @@ const TableMain = (props) => {
         }
     }
 
+    const handleSearchText = (e) => {
+     setsearchtext(e.target.value)
+    }
+
     
 
     return(
         <div>
-            <h2 className='mb-3'></h2>
+            {
+                props.page === "rombelreguler" || props.page === "rombelindustri" ?
+                <CFormInput 
+                 type="text"
+                 className='mb-3'
+                 value={searchtext}
+                 onChange={handleSearchText}
+                 placeholder={props.page === "rombelreguler" || props.page === "rombelindustri" ? "Cari Rombel ..." : ""}
+                />
+                :
+                <div className='mb-4'>
+
+                </div>
+            }
             <div>
                 <CTable >
                     <CTableHead className='table-dark'>
@@ -734,7 +739,7 @@ const TableMain = (props) => {
                                     <td>
                                         {
                                             jurusan.map((items,index) => 
-                                                items.jurusan_id === item.jurusan_id.trim() &&
+                                                items.jurusan_id == item.jurusan_id.trim() &&
                                                 items.nama_jurusan
                                             )
                                         }
@@ -775,63 +780,72 @@ const TableMain = (props) => {
 
                        {
                             props.page === "rombelreguler" ?
-                            dataRombel.map((item,index) => 
-                                item.is_industri === 0 &&
-                                <tr key={index} style={{verticalAlign:"middle"}}>
-                                    <td>
-                                        {
-                                            dataSemester.map((items,index) => 
-                                                items.semester_id == item.semester_id &&
-                                                items.nama
-                                            )
-                                        }
-                                    </td>
-
-                                    <td>
-                                        {
-                                            dataProgram.map((items,index) => 
-                                                items.kurikulum_program_id == item.kurikulum_program_id &&
-                                                    jurusan.map((data,index) => 
-                                                        data.jurusan_id === items.jurusan_id.trim() &&
-                                                        data.nama_jurusan
+                            dataRombel.map((item,index) => {
+                                if(item.nama.toLowerCase().includes(searchtext.toLowerCase()))
+                                {
+                                    return(
+                                        item.is_industri === 0 &&
+                                        <tr key={index} style={{verticalAlign:"middle"}}>
+                                            <td>
+                                                {
+                                                    dataSemester.map((items,index) => 
+                                                        items.semester_id == item.semester_id &&
+                                                        items.nama
                                                     )
-                                            )
-                                        }
-                                    </td>
+                                                }
+                                            </td>
+        
+                                            <td>
+                                                {
+                                                    dataProgram.map((items,index) => 
+                                                        items.kurikulum_program_id == item.kurikulum_program_id &&
+                                                            jurusan.map((data,index) => 
+                                                                data.jurusan_id == items.jurusan_id.trim() &&
+                                                                data.nama_jurusan
+                                                            )
+                                                    )
+                                                }
+                                            </td>
+        
+                                            <td>
+                                                {
+                                                    item.nama
+                                                }
+                                            </td>
+        
+                                            <td>
+                                                {
+                                                    item.tingkat_pendidikan_id
+                                                }
+                                            </td>
+        
+                                            <td>
+                                                {
+                                                    dataJenisRombel.map((items,index) => 
+                                                        items.jenis_rombel == item.jenis_rombel &&
+                                                        items.nm_jenis_rombel
+                                                    )
+                                                }
+                                            </td>
+        
+                                            <td>
+                                                <CButton color="link" typebtn="detail" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                                    <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="edit" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                                    <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                                </CButton>
+                                                <CButton color="link" typebtn="delete" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
+                                                    <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
+                                                </CButton>
+                                            </td>
+                                        </tr>
 
-                                    <td>
-                                        {
-                                             item.nama
-                                        }
-                                    </td>
+                                    )
 
-                                    <td>
-                                        {
-                                            item.tingkat_pendidikan_id
-                                        }
-                                    </td>
+                                }
 
-                                    <td>
-                                        {
-                                            dataJenisRombel.map((items,index) => 
-                                                items.jenis_rombel == item.jenis_rombel &&
-                                                items.nm_jenis_rombel
-                                            )
-                                        }
-                                    </td>
-
-                                    <td>
-                                         <CButton color="link" typebtn="detail" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
-                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
-                                        </CButton>
-                                        <CButton color="link" typebtn="edit" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
-                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
-                                        </CButton>
-                                        <CButton color="link" typebtn="delete" id={item.rombongan_belajar_id} onClick={handleClickBtn} >
-                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleClickBtn} id={item.rombongan_belajar_id} ></img>
-                                        </CButton>
-                                    </td>
-                                </tr>
+                            }
                             )
                             :
                             (

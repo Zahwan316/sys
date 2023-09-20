@@ -35,7 +35,6 @@ const JurusanItemComponent = () => {
     <CTable style={{height:"100%"}}>
      <CTableHead>
         <CTableRow>
-            
             <th>Nama</th>
         </CTableRow>
      </CTableHead>

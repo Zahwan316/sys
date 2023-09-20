@@ -43,6 +43,7 @@ const RombelPage = (props) => {
     const[dataRombel,setdatarombel] = useState()
     const[dataSekolah,setdatasekolah] = useSekolahStore((state) => [state.sekolah_identitas,state.setsekolahidentitas])
     const[tingkatpendidikan,settingkatpendidikan] = useRefStore((state) => [state.tingkat_pendidikan,state.settingkat_pendidikan])
+    const[isload,setisload] = useState(false)
 
     const[typeform,settypeform] = useState()
     const[idedited,setidedited] = useState()
@@ -198,6 +199,10 @@ const RombelPage = (props) => {
                     })
                 }
                 setupdater(uuidv4())
+                setisload(true)
+                setTimeout(() => {
+                    setisload(false)
+                },500)
             }
             catch(e){
                 Swal.fire({
@@ -225,6 +230,7 @@ const RombelPage = (props) => {
                 handleModal={handleModal}
                 getTypeBtn = {getTypeBtn}
                 updater={updater}
+                isload={isload}
             /> 
 
             {

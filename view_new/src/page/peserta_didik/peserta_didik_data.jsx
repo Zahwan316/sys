@@ -39,7 +39,7 @@ const Peserta_didik_data_page = () => {
     //const namasiswa = useStore((state) => state.namasiswa)
     const datasiswa  = useStore((state) => state.pesertadidik)
     const namasiswaraw = datasiswa.filter(item => item.peserta_didik_id == id)
-    let namasiswa = namasiswaraw.length > 0 ? namasiswaraw[0].nama : ""
+    const namasiswa = namasiswaraw.length > 0 ? namasiswaraw[0].nama : "Pilih Siswa Terlebih Dahulu"
     
 
     return(

@@ -83,7 +83,11 @@ const useRefStore = create((set) => ({
    setsertifikasiiso:(data) => set(() => ({sertifikasi_iso:data})),
 
    jenis_rombel:[],
-   setjenisrombel:(data) => set(() => ({jenis_rombel:data}))
+   setjenisrombel:(data) => set(() => ({jenis_rombel:data})),
+
+   hari:[],
+   sethari:(data) => set(() => ({hari:data})),
+
 }))
 
 export default useRefStore

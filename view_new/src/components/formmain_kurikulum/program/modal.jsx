@@ -52,7 +52,7 @@ const ModalProgramPage = (props) => {
         } 
       
     })
-
+    const semesterid = useItemStore((state) => state.semester_id)
 
     useEffect(() => {      
         if( props.page === "rombelreguler" || props.page === 'rombelindustri')
@@ -393,7 +393,7 @@ const ModalProgramPage = (props) => {
                                 <option >Pilih Guru</option>
                                 {
                                     props.dataTugasMengajar.map((item,index) => 
-                                        item.semester_id == localStorage.getItem('semester_id') &&
+                                        item.semester_id == semesterid &&
                                         props.dataGuru.map((items,index) => 
                                             item.mapel_sp_id === props.mapelid &&
                                             items.ptk_id === item.ptk_id &&

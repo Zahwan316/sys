@@ -1,4 +1,4 @@
-import { CTable, CTableBody, CTableHead, CTableHeaderCell, CTableRow,CButton,CSpinner } from '@coreui/react';
+import { CTable, CTableBody, CTableHead, CTableHeaderCell, CTableRow,CButton,CSpinner, CFormInput } from '@coreui/react';
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Swal from "sweetalert2"
@@ -27,6 +27,7 @@ const TablePesertaDidik = (props) => {
     let setpesertadidikid = useStore((state) => state.setpesertadidikid)
     const {id}= useParams()
     const[isload,setisload] = useState(false)
+    const [searchtext,setsearchtext] = useState("")
 
     useEffect(() => {
         let getData = async() => {
@@ -266,8 +267,7 @@ const TablePesertaDidik = (props) => {
     },[updaterdelete])
     
     useEffect(() => {
-        
-        
+              
     })
 
     const deleteData = async(url) => {
@@ -294,7 +294,6 @@ const TablePesertaDidik = (props) => {
                         .catch(e => 
                             console.log(e)
                         )
-
                 }
             })
 
@@ -330,10 +329,8 @@ const TablePesertaDidik = (props) => {
             }
             if(props.page === "pesertadidikrekening"){
                 deleteData(`peserta_didik_rekening/${id}`)
-            }
-            
+            }       
         }
-
     }
 
     const navigate = useNavigate()
@@ -344,9 +341,23 @@ const TablePesertaDidik = (props) => {
        setpesertadidikid(id)
     }
 
+    const handleSearchText = (e) => {
+     setsearchtext(e.target.value)
+    }
+
 
     return(
         <>
+            {
+                props.page === "pesertadidikbiodata" &&
+                <CFormInput 
+                 type="text"
+                 placeholder="Cari Siswa ..."
+                 className='mb-3'
+                 onChange={handleSearchText}
+                 value={searchtext}
+                />
+            }
             <CTable hover >
                 <CTableHead>
                     <CTableRow className='table-dark'>
@@ -376,44 +387,52 @@ const TablePesertaDidik = (props) => {
                         props.page === "pesertadidikbiodata" &&
                         (!loading?
                         datapesertadidik.length > 0 ?
-                        datapesertadidik.map((item,index) =>               
-                            <tr key={index} style={{verticalAlign:"middle"}}>
-                                <td onClick={handleNama} id={item.peserta_didik_id}>
-                                    {item.nama}
-                                </td>
-                                <td>
-                                    {item.nipd}
-                                </td>
-                                <td>
-                                    {item.nisn}
-                                </td>
-                                <td>
-                                    {item.jenis_kelamin}
-                                </td>
-                                <td>
-                                    {item.tempat_lahir}
-                                </td>
-                                <td>
-                                    {item.tanggal_lahir}
-                                </td>
-                                <td>
-                                    {item.agama && item.agama.nama}
-                                </td>
-                                <td>
-                                    {item.kewarganegaraan}
-                                </td>
-                                <td>
-                                         <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
-                                            <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
-                                        </CButton>
-                                        <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
-                                            <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
-                                        </CButton>
-                                        <CButton color="link" typebtn="delete" id={item.peserta_didik_id} onClick={handleclickbutton}  >
-                                            <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
-                                        </CButton>
-                                    </td>
-                            </tr>
+                        datapesertadidik.map((item,index) =>     
+                        {
+                            if(item.nama.toLowerCase().includes(searchtext.toLowerCase()))
+                            {
+                                return (
+                                    <>
+                                        <tr key={index} style={{verticalAlign:"middle"}}>
+                                            <td onClick={handleNama} id={item.peserta_didik_id}>
+                                                {item.nama}
+                                            </td>
+                                            <td>
+                                                {item.nipd}
+                                            </td>
+                                            <td>
+                                                {item.nisn}
+                                            </td>
+                                            <td>
+                                                {item.jenis_kelamin}
+                                            </td>
+                                            <td>
+                                                {item.tempat_lahir}
+                                            </td>
+                                            <td>
+                                                {item.tanggal_lahir}
+                                            </td>
+                                            <td>
+                                                {item.agama && item.agama.nama}
+                                            </td>
+                                            
+                                            <td>
+                                                    <CButton color="link" typebtn="detail" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                                        <img src="./img/icon/view.png" width="20" height="20" typebtn="detail" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                                    </CButton>
+                                                    <CButton color="link" typebtn="edit" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                                        <img src="./img/icon/write bw.png" width="20" height="20" typebtn="edit" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                                    </CButton>
+                                                    <CButton color="link" typebtn="delete" id={item.peserta_didik_id} onClick={handleclickbutton}  >
+                                                        <img src="./img/icon/delete bw.jpg" width="20" height="20" typebtn="delete" onClick={handleclickbutton}  id={item.peserta_didik_id} ></img>
+                                                    </CButton>
+                                                </td>
+                                        </tr>
+                                    </>
+                                )  
+                            }
+                        }          
+                            
                         ) :
                         <div>
                             <h2>Data Masih Kosong</h2>
