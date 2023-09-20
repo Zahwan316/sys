@@ -238,14 +238,15 @@ const JadwalPage = (props) => {
 
     const guruOnblur = (e) => {
         let ptk_penugasan;
-        if(e.target.value != null || e.target.value != ''){
+        if(e.target.value != null && e.target.value != ''){
             let ptk_penugasan_raw =  dataTugasMengajar.filter((item,index) => forminput.ptk_id === item.ptk_id && mapelid === item.mapel_sp_id ?
                 item.ptk_penugasan_id
                 :
                 null
             )
-            if(ptk_penugasan_raw != null)
+            if(ptk_penugasan_raw[0] != undefined)
             {
+                console.log(ptk_penugasan_raw)
                 ptk_penugasan = ptk_penugasan_raw[0].ptk_penugasan_id
             }
             else{
