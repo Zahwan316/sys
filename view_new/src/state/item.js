@@ -16,6 +16,9 @@ const useItemStore = create((set) => ({
     bentuk_pendidikan_id:null,
     setbentukpendidikanid:(data) => set(() => ({bentuk_pendidikan_id:data})),
 
+   /*  userlevel:0,
+    setuserlevel:(data) => set(() => ({userlevel:data})), */
+
 }))
 
 export default useItemStore

@@ -1,11 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
 import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
 
+
+
 export const AppSidebarNav = ({ items }) => {
+  const [currentlevel,setcurrentlevel] = useState()
   const location = useLocation()
+  const[filteredItems,setfilteredItems] = useState([])
+
+  useEffect(() => {
+    setcurrentlevel(parseInt(localStorage.getItem("level_user")) || null)
+  },[])
+
+  useEffect(() => {
+    const filtered = filtermenu(items,currentlevel)
+    setfilteredItems(filtered)
+    console.log(filtered)
+  },[currentlevel])
+
+  useEffect(() => {
+    console.log(currentlevel)
+  })
+
   const navLink = (name, icon, badge) => {
     return (
       <>
@@ -54,10 +73,31 @@ export const AppSidebarNav = ({ items }) => {
     )
   }
 
+  const filtermenu = (items,currlevel) => {
+   return items.filter((item) => {
+    if(item.level && item.level.includes(currlevel)){
+      if(item.items){
+        item.items = filtermenu(item.items,currlevel)
+      }
+      return true
+    }
+    return false
+
+    //return item.level.includes(currlevel)
+   })
+  }
+
+  //const filteredItems = filtermenu(items,currentlevel)
+
   return (
     <React.Fragment>
-      {items &&
-        items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))}
+      {
+        filteredItems &&
+        filteredItems.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))
+      }
+     {/*  {items &&
+        items.map((item, index) => (item.items ? navGroup(item, index) : navItem(item, index)))
+      } */}
     </React.Fragment>
   )
 }

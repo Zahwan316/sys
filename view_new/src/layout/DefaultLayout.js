@@ -78,10 +78,10 @@ const DefaultLayout = (props) => {
    })
 
   useEffect(() => {
-    if (!token && props.name == "Home") {
+   /*  if (!token && props.name == "Home") {
       window.location.href = '.#/login'
       setmessagelogin("Login Terlebih Dahulu !!")
-    }
+    } */
 
   },[])
   return (

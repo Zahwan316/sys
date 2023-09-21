@@ -48,6 +48,7 @@ const Login = () => {
           console.log(data)
           localStorage.setItem("token",data.token)
           localStorage.setItem("user",data.user.ptk_id)
+          localStorage.setItem("level_user",data.user.level_id)
           
           Swal.fire({
               icon:'success',

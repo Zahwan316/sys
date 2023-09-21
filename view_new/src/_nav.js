@@ -33,73 +33,61 @@ const _nav = [
     name: 'Dashboard',
     to: '/dashboard',
     icon: <CIcon icon={cilSpeedometer} customClassName="nav-icon" />,
+    level:[1,2,3,null],
   },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Theme',
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Colors',
-  //   to: '/theme/colors',
-  //   icon: <CIcon icon={cilDrop} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavItem,
-  //   name: 'Typography',
-  //   to: '/theme/typography',
-  //   icon: <CIcon icon={cilPencil} customClassName="nav-icon" />,
-  // },
-  // {
-  //   component: CNavTitle,
-  //   name: 'Components',
-  // },
   {
     component: CNavGroup,
     name: 'Pengelolaan',
     icon: <CIcon icon={cilNotes} customClassName="nav-icon" />,
+    level:[1,2,3],
     items:[
       {
         component: CNavItem,
              name: 'Kelembagaan',
              to: '/tambahsekolah',
-             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />
-       
+             icon:<CIcon icon={cilInstitution} customClassName="nav-icon" />,
+             level:[2,3],
       },
       {
         component: CNavGroup,
           name: 'Kurikulum',
           icon:<CIcon icon={cilNewspaper} customClassName="nav-icon" />,
+          level:[3],
           items:[
             {
               component:CNavItem,
                 name:"Program",
                 to:"/program",
                 icon:<CIcon icon={cilMemory} customClassName="nav-icon" />,
+                level:[3]
             },
             {
               component:CNavItem,
                 name:"Mata Pelajaran",
                 to:"/mapel",
                 icon:<CIcon icon={cilBook} customClassName="nav-icon" />,
+                level:[3]
             },
             {
               component:CNavItem,
                 name:"Rombel",
                 icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
-                to:"/rombel"
+                to:"/rombel",
+                level:[3]
             },
             {
               component:CNavItem,
                 name:"Tugas Mengajar",
                 icon:<CIcon icon={cilListNumbered} customClassName="nav-icon" />,
-                to:"/tugasmengajar"
+                to:"/tugasmengajar",
+                level:[3]
             },
             {
               component:CNavItem,
                 name:"Jadwal",
                 icon:<CIcon icon={cilClock} customClassName="nav-icon" />,
-                to:"/jadwal"
+                to:"/jadwal",
+                level:[3]
             },
            
           ]
@@ -108,24 +96,28 @@ const _nav = [
         component:CNavGroup,
         name:"Mutasi",
         icon:<CIcon icon={cilTransfer} customClassName="nav-icon" />,
+        level:[3],
         items:[
           {
             component:CNavItem,
             name:"Semester",
             icon:<CIcon icon={cilDescription} customClassName="nav-icon" />,
-            to:"/mutasisemester"
+            to:"/mutasisemester",
+            level:[3]
           },
           {
             component:CNavItem,
             name:"Rombel",
             icon:<CIcon icon={cilClock} customClassName="nav-icon" />,
-            to:"/mutasirombel"
+            to:"/mutasirombel",
+            level:[3]
           },
           {
             component:CNavItem,
             name:"Siswa",
             icon:<CIcon icon={cilPeople} customClassName="nav-icon" />,
-            to:"/mutasisiswa"
+            to:"/mutasisiswa",
+            level:[3]
           }
         ]
       },
@@ -133,18 +125,21 @@ const _nav = [
         component:CNavGroup,
         name:"Peserta Didik",
         icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
+        level:[1,2,3],
         items:[
           {
             component:CNavItem,
             name:"Upload",
             icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
-            to:"/pesertadidik"
+            to:"/pesertadidik",
+            level:[1,2,3],
           },
           {
             component:CNavItem,
             name:"Biodata",
             icon:<CIcon icon={cilListRich} customClassName="nav-icon" />,
-            to:"/datapesertadidik"
+            to:"/datapesertadidik",
+            level:[1,2,3],
           },
         ]
       },
@@ -152,18 +147,21 @@ const _nav = [
         component:CNavGroup,
         name:"PTK",
         icon:<CIcon icon={cilUser} customClassName="nav-icon" />,
+        level:[1,2,3],
         items:[
           {
             component:CNavItem,
             name:"Upload",
             icon:<CIcon icon={cilCloudUpload} customClassName="nav-icon" />,
-            to:"/uploadptk"
+            to:"/uploadptk",
+            level:[1,2,3],
           },
           {
             component:CNavItem,
             name:"Biodata",
             icon:<CIcon icon={cilListRich} customClassName="nav-icon" />,
-            to:"/dataptk"
+            to:"/dataptk",
+            level:[1,2,3],
           },
         ]
       },

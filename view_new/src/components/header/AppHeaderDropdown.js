@@ -33,10 +33,11 @@ const AppHeaderDropdown = () => {
   const handleLogout = () => {
       localStorage.removeItem("token")
       localStorage.removeItem("user")
+      localStorage.removeItem("level_user")
 
       setTimeout(() => {
         window.location.href = ".#/login"
-      },700)
+      })
   }
 
   return (

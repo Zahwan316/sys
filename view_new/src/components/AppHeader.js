@@ -1,5 +1,5 @@
 import React, { useEffect,useState } from 'react'
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import {
   CContainer,
@@ -10,6 +10,7 @@ import {
   CHeaderToggler,
   CNavLink,
   CNavItem,
+  CButton,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilBell, cilEnvelopeOpen, cilList, cilMenu } from '@coreui/icons'
@@ -25,10 +26,11 @@ const AppHeader = () => {
   const sidebarShow = useSelector((state) => state.sidebarShow)
   const ptk_id = localStorage.getItem("user")
   const [ptk,setptk] = useState()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const getdata = async() => {
-      try{
+      try{  
         let res = await axios.get(`${process.env.REACT_APP_LINK}ptk/${ptk_id}`)
         setptk(res.data.data)
       }
@@ -40,8 +42,13 @@ const AppHeader = () => {
   },[])
   
   useEffect(() => {
-    console.log(ptk)
+    //console.log(ptk)
   })
+
+  const redirectToLogin = () => {
+    //navigate(".#/login")
+    window.location.href = ".#/login"
+  }
 
   return (
     <CHeader position="sticky" className="mb-4">
@@ -85,13 +92,19 @@ const AppHeader = () => {
             </CNavLink>
           </CNavItem>  */}
           {
-            ptk != null &&
+            ptk_id != null && ptk != null &&
             <h5>{ptk.nama}</h5>
 
           }
         </CHeaderNav> 
         <CHeaderNav className="ms-3">
-          <AppHeaderDropdown />
+          {
+            ptk_id != null ?
+            <AppHeaderDropdown />
+            :
+            <CButton variant='outline' onClick={redirectToLogin}>Login</CButton>
+
+          }
         </CHeaderNav>
       </CContainer>
       <CHeaderDivider />
