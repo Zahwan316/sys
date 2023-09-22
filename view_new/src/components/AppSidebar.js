@@ -19,6 +19,7 @@ const AppSidebar = () => {
   const dispatch = useDispatch()
   const unfoldable = useSelector((state) => state.sidebarUnfoldable)
   const sidebarShow = useSelector((state) => state.sidebarShow)
+  const userlevel = parseInt( localStorage.getItem('level_user'))
 
   return (
     <CSidebar
@@ -41,7 +42,7 @@ const AppSidebar = () => {
       </CSidebarBrand>
       <CSidebarNav>
         <SimpleBar>
-          <AppSidebarNav items={navigation} />
+          <AppSidebarNav items={navigation} userlevel={userlevel} />
         </SimpleBar>
       </CSidebarNav>
       <CSidebarToggler

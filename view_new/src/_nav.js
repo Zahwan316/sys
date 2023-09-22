@@ -158,7 +158,7 @@ const _nav = [
           },
           {
             component:CNavItem,
-            name:"Biodata",
+            name:"Data",
             icon:<CIcon icon={cilListRich} customClassName="nav-icon" />,
             to:"/dataptk",
             level:[1,2,3],

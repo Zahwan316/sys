@@ -67,7 +67,7 @@ const Login = () => {
           Swal.fire({
             icon:'error',
             title: 'Gagal',
-            text: e.message
+            text: e.response.data.message
         })
       }
     }

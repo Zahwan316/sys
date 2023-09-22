@@ -12,6 +12,9 @@ const usePtkStore = create((set) => ({
 
     ptk_alamat:[],
     setptkalamat:(data) => set(() => ({ptk_alamat:data})),
+
+    ptk_program_studi:[],
+    setptkprogramstudi:(data) => set(() => ({ptk_program_studi:data})),
 }))
 
 export default usePtkStore

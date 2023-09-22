@@ -7,20 +7,15 @@ import { CBadge } from '@coreui/react'
 
 
 export const AppSidebarNav = ({ items }) => {
-  const [currentlevel,setcurrentlevel] = useState()
+  const [currentlevel,setcurrentlevel] = useState(parseInt(localStorage.getItem("level_user")) || null)
   const location = useLocation()
-  const[filteredItems,setfilteredItems] = useState([])
+  //const[filteredItems,setfilteredItems] = useState([])
 
   useEffect(() => {
-    setcurrentlevel(parseInt(localStorage.getItem("level_user")) || null)
+    //setcurrentlevel(parseInt(localStorage.getItem("level_user")) || null)
   },[])
 
-  useEffect(() => {
-    const filtered = filtermenu(items,currentlevel)
-    setfilteredItems(filtered)
-    console.log(filtered)
-  },[currentlevel])
-
+ 
   useEffect(() => {
     console.log(currentlevel)
   })
@@ -83,11 +78,18 @@ export const AppSidebarNav = ({ items }) => {
     }
     return false
 
-    //return item.level.includes(currlevel)
-   })
+  })
+  //return item.level.includes(currlevel)
   }
 
-  //const filteredItems = filtermenu(items,currentlevel)
+ /*  useEffect(() => {
+    const filtered = filtermenu(items,currentlevel)
+    setfilteredItems(filtered)
+    console.log(filtered)
+  },[]) */
+
+
+  const filteredItems = filtermenu(items,currentlevel)
 
   return (
     <React.Fragment>

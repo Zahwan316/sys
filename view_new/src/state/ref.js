@@ -88,6 +88,12 @@ const useRefStore = create((set) => ({
    hari:[],
    sethari:(data) => set(() => ({hari:data})),
 
+   gelar_akademik:[],
+   setgelarakademik:(data) => set(() => ({gelar_akademik:data})),
+
+   program_studi:[],
+   setprogramstudi:(data) => set(() => ({program_studi:data})),
+
 }))
 
 export default useRefStore

@@ -1,6 +1,7 @@
-const Sequelize = require('sequelize');
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('gelar_akademik', {
+const Sequelize = require('../config');
+const {DataTypes} = require("sequelize");
+
+const Gelar_akademik = Sequelize.define('gelar_akademik', {
     gelar_akademik_id: {
       type: DataTypes.INTEGER,
       allowNull: false
@@ -34,9 +35,10 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: false
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'gelar_akademik',
     schema: 'ref',
     timestamps: false
   });
-};
+
+module.exports = Gelar_akademik

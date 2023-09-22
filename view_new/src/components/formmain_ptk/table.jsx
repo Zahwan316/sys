@@ -12,6 +12,8 @@ import {v4 as uuidv4} from "uuid";
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import PtkAlamatTableData from './tabledata/alamat';
+import PtkProgramStudi from './program_studi';
+import ProgramStudiTableBody from './tabledata/programstudi';
 
 const TablePtk = (props) => {
     const[ptk,setptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
@@ -260,6 +262,13 @@ const TablePtk = (props) => {
                     {
                         props.page === "ptkalamat" &&
                         <PtkAlamatTableData 
+                            handleclickbutton={handleclickbutton}
+                        />
+                    }
+
+                    {
+                        props.page === "ptkprogramstudi" && 
+                        <ProgramStudiTableBody
                             handleclickbutton={handleclickbutton}
                         />
                     }
