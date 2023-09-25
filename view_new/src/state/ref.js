@@ -94,6 +94,9 @@ const useRefStore = create((set) => ({
    program_studi:[],
    setprogramstudi:(data) => set(() => ({program_studi:data})),
 
+   hubungan_keluarga:[],
+   sethubungankeluarga:(data) => set(() => ({hubungan_keluarga:data})),
+
 }))
 
 export default useRefStore

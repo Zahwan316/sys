@@ -9,6 +9,7 @@ import { useParams } from 'react-router-dom';
 import usePtkStore from 'src/state/ptk';
 import PtkAlamatPage from 'src/components/formmain_ptk/alamat';
 import PtkProgramStudi from 'src/components/formmain_ptk/program_studi';
+import PtkAnggotaKeluarga from 'src/components/formmain_ptk/anggota_keluarga';
 
 const PtkMainPage = () => {
     const[pageform,setpageform] = useState("identitas")
@@ -96,9 +97,20 @@ const PtkMainPage = () => {
                                 name="btnradio"
                                 id="btnradio6   "
                                 autoComplete="off"
-                                label="Program Studi"
+                                label="Pendidikan"
                                 code="programstudi"
                                 defaultChecked={pageform == "programstudi"}
+                                onClick={handlePageForm}
+                            />
+                            <CFormCheck
+                                type="radio"
+                                button={{ color: 'dark', variant: 'outline' }}
+                                name="btnradio"
+                                id="btnradio7   "
+                                autoComplete="off"
+                                label="Anggota Keluarga"
+                                code="anggotakeluarga"
+                                defaultChecked={pageform == "anggotakeluarga"}
                                 onClick={handlePageForm}
                             />
                                
@@ -137,6 +149,12 @@ const PtkMainPage = () => {
                         {
                             pageform === "programstudi" &&
                             <PtkProgramStudi 
+                             namaptk={ptkName}
+                            />
+                        }
+                        {
+                            pageform === "anggotakeluarga" &&
+                            <PtkAnggotaKeluarga 
                              namaptk={ptkName}
                             />
                         }

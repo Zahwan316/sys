@@ -28,6 +28,7 @@ const TablePtk = (props) => {
     const [isload,setisload] = useState(false)
     const[ptkalamatn,setptkalamat] = usePtkStore((state) => [state.ptk_alamat,state.setptkalamat])
     const [searchtext,setsearchtext] = useState("")
+    const setptkprogramstudi = usePtkStore((state) => state.setptkprogramstudi)
 
 
     useEffect(() => {
@@ -80,7 +81,10 @@ const TablePtk = (props) => {
                     setptk(res.data.data)  
 
                     let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
-                    setptkalamat(res_alamat.data.data)       
+                    setptkalamat(res_alamat.data.data)  
+
+                    let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
+                    setptkprogramstudi(res_program_studi.data.data)       
                 }
             }
             catch(e){
@@ -99,6 +103,9 @@ const TablePtk = (props) => {
 
                     let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
                     setptkalamat(res_alamat.data.data)  
+
+                    let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
+                    setptkprogramstudi(res_program_studi.data.data)       
                 }
             }
             catch(e){
@@ -174,10 +181,13 @@ const TablePtk = (props) => {
 
         if(typebtn == "delete"){
             if(props.page === "ptkbiodata"){
-                handledelete(`ptk/${id}`)
+             handledelete(`ptk/${id}`)
             }
             if(props.page === "ptkalamat"){
-                handledelete(`ptk_alamat/${id}`)
+             handledelete(`ptk_alamat/${id}`)
+            }
+            if(props.page === "ptkprogramstudi"){
+             handledelete(`ptk_pend_formal/${id}`)
             }
         }
     }

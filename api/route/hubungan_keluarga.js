@@ -1,16 +1,15 @@
 const express = require("express");
 const router = express.Router();
-const Program_studi = require("../models/program_studi")
+const Hubungan_keluarga = require("../models/hubungan_keluarga")
 
-router.route("/program_studi")
+router.route("/hubungan_keluarga")
     .get(async(req,res) => {
         try{
-            const allData = await Program_studi.findAll({
+            const allData = await Hubungan_keluarga.findAll({
                 attributes:{
-                    exclude:"id"
-                },
-                order:[["nama","asc"]]
-            })
+                    exclude: "id"
+                }
+            });
             res.status(200).json({
                 message:"Data berhasil diambil",
                 data:allData,

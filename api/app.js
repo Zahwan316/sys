@@ -71,6 +71,8 @@ const Ptk_alamat_route = require("./route/ptk_alamat")
 const Ptk_pend_formal_route = require("./route/ptk_pend_formal")
 const Program_studi_route = require("./route/program_studi")
 const Gelar_akademik_route = require("./route/gelar_akademik")
+const Hubungan_keluarga_route = require("./route/hubungan_keluarga")
+const Ptk_anggota_keluarga_route = require("./route/ptk_anggota_keluarga")
 
 //mobile route
 const Pos_route = require("./route/pos");
@@ -163,6 +165,8 @@ app.use(Ptk_alamat_route)
 app.use(Ptk_pend_formal_route)
 app.use(Program_studi_route)
 app.use(Gelar_akademik_route)
+app.use(Hubungan_keluarga_route)
+app.use(Ptk_anggota_keluarga_route)
 
 app.use(Pos_route)
 app.use(Kebijakan_pos_route)

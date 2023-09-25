@@ -5,6 +5,8 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {v4 as uuidv4} from "uuid"
 import ModalPtk from './modal';
+import usePtkStore from 'src/state/ptk';
+import { useParams } from 'react-router-dom';
 
 const PtkProgramStudi = (props) => {
  const tablehead = [
@@ -25,9 +27,17 @@ const PtkProgramStudi = (props) => {
  const [updater,setupdater] = useState()
  const [forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
  const resetform = useFormStore((state) => state.resetform)
+ const [dataptkprogramstudi,setptkdataprogramstudi] = usePtkStore((state) => [state.ptk_program_studi,state.setptkprogramstudi])
+ const {id} = useParams()
 
  const handlemodal = () => {
   setmodal(!modal)
+  !modal && resetallform()
+ }
+
+ const resetallform = () => {
+   resetform()
+   setforminput("ptk_id",id)
  }
 
  const getTypeBtn = (typebtn,id) => {
@@ -49,8 +59,9 @@ const PtkProgramStudi = (props) => {
    Swal.fire({
     icon:'success',
     title: 'Berhasil',
-    text: 'Data berhasil ditambah'
+    text: `Data berhasil ${typeform === "tambah" ? "ditambah" : "diedit"}`
     })
+   resetallform()
    setupdater(uuidv4())
    setisload(true)
    setTimeout(() =>{
@@ -77,6 +88,25 @@ const PtkProgramStudi = (props) => {
  useEffect(() => {
   console.log(forminput)
  })
+
+ useEffect(() => {
+   const refetchdata = async() => {
+      try{
+         let res = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal/${editedid}`)
+         const data = res.data.data
+         for(const key in data){
+            setforminput(key,data[key])
+         }
+      }
+      catch(e){
+
+      }
+   }
+   if(editedid)
+   {
+    refetchdata()
+   }
+ },[editedid])
 
  return(
     <>

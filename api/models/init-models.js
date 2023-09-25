@@ -1,12 +1,12 @@
 var DataTypes = require("sequelize").DataTypes;
-var _ptk_alamat = require("./ptk_alamat");
+var _hubungan_keluarga = require("./hubungan_keluarga");
 
 function initModels(sequelize) {
-  var ptk_alamat = _ptk_alamat(sequelize, DataTypes);
+  var hubungan_keluarga = _hubungan_keluarga(sequelize, DataTypes);
 
 
   return {
-    ptk_alamat,
+    hubungan_keluarga,
   };
 }
 module.exports = initModels;
