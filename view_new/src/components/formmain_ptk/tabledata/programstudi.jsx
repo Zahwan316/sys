@@ -91,7 +91,7 @@ const ProgramStudiTableBody = (props) => {
                         {item.nim}
                      </td>
                      <td>
-                        {item.status_kuliah}
+                        {item.status_kuliah === 1 ? "Lulus Kuliah" : "Masih Kuliah"}
                      </td>
                      <td>
                         {item.ipk}

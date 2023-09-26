@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import TablePtk from './table';
 import useFormStore from 'src/state/form/formmain';
 import ModalPtk from './modal';
+import { useParams } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import axios from 'axios';
+import {v4 as uuidv4} from "uuid"
 
 const PtkAnggotaKeluarga = (props) => {
  const tablehead = [
@@ -16,21 +20,82 @@ const PtkAnggotaKeluarga = (props) => {
  const[typeform,settypeform] = useState()
  const[editedid,seteditedid] = useState()
  const[forminput,setforminput] = useFormStore((state) => [state.form,state.setform])
+ const resetform = useFormStore((state) => state.resetform)
  const[updater,setupdater] = useState()
  const[isload,setisload] = useState(false)
+ const {id} = useParams()
 
  const handlemodal = () => {
   setmodal(!modal)
+  !modal && resetallform()
+ }
+
+ const resetallform = () => {
+   resetform()
+   setforminput("ptk_id",id)
  }
 
  const getTypeBtn = (typebtn,id) => {
   settypeform(typebtn)
   seteditedid(id)
  }
+ 
+ const PostPutSubmit = async(url,method) => {
+   let res;
+   try{
+    switch(method){
+       case "post":
+          res = await axios.post(`${process.env.REACT_APP_LINK}${url}`,forminput)
+          break;
+       case "put":
+          res = await axios.put(`${process.env.REACT_APP_LINK}${url}`,forminput)
+          break;
+    }
+    Swal.fire({
+       icon:'success',
+       title: 'Berhasil',
+       text: `Data berhasil ${typeform === "tambah" ? "ditambah" : "diedit"}`
+   })
+    resetallform()
+    setupdater(uuidv4());
+    setisload(true)
+    setTimeout(() => {
+      setisload(false)
+    }, 500);
+   }
+   catch(e){
+
+   }
+ }
 
  const handlesubmit = (e) => {
   e.preventDefault() 
+
+  if(typeform === "tambah"){
+   PostPutSubmit(`ptk_anggota_keluarga`,"post")
+  }
+  else if(typeform === "edit"){
+   PostPutSubmit(`ptk_anggota_keluarga/${editedid}`,"put")
+  }
  }
+
+ useEffect(() => {
+   const refecthdata = async() => {
+    try{ 
+      let res = await axios.get(`${process.env.REACT_APP_LINK}ptk_anggota_keluarga/${editedid}`)
+      const data = res.data.data
+      for(const key in data){
+         setforminput(key,data[key])
+      }
+    }
+    catch(e){    
+    }
+   } 
+
+   if(editedid){
+    refecthdata()
+   }
+ },[editedid])
 
  return(
     <>
@@ -40,6 +105,8 @@ const PtkAnggotaKeluarga = (props) => {
         page="ptkanggotakeluarga"
         handlemodal={handlemodal}
         getTypeBtn={getTypeBtn}
+        isload={isload}
+        updater={updater}
      />
 
      {
@@ -48,6 +115,8 @@ const PtkAnggotaKeluarga = (props) => {
         page="ptkanggotakeluarga"
         handlemodal={handlemodal}
         handlesubmit={handlesubmit}
+        title={typeform === "tambah" ? "Tambah Data" : (typeform === "edit" ? "Edit Data" : "Detail Data")}
+        typeform={typeform}
       />
      }
     </>

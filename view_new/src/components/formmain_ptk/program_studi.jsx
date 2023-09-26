@@ -127,6 +127,7 @@ const PtkProgramStudi = (props) => {
          title={typeform === "tambah" ? "Tambah Data" : (typeform === "edit" ? "Edit Data" : "Detail Data")}
          handlemodal={handlemodal}
          handlesubmit={handlesubmit}
+         typeform={typeform}
         />
      }
     </>

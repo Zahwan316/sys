@@ -21,6 +21,7 @@ const Status_kepegawaian = require("../models/status_kepegawaian");
 const ref_bank = require("../models/bank");
 const ref_status_perkawinan = require("../models/status_perkawinan");
 const Ptk_alamat = require("../models/ptk_alamat");
+const Ptk_anggota_keluarga = require("../models/ptk_anggota_keluarga")
 
 
 //multer config
@@ -623,6 +624,13 @@ router.route("/ptk/upload")
                 ptk.map(item => ({
                     ...item,
                     ptk_alamat_id:uuidv4(),                                        
+                }))
+            )
+
+            await Ptk_anggota_keluarga.bulkCreate(
+                ptk.map(item => ({
+                   ptk_id:item.ptk_id,
+                   nama:item.nama_suami_istri
                 }))
             )
 

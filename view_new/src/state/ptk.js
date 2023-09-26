@@ -17,7 +17,7 @@ const usePtkStore = create((set) => ({
     setptkprogramstudi:(data) => set(() => ({ptk_program_studi:data})),
 
     ptk_anggota_keluarga:[],
-    setanggotakeluarga:(data) => set(() => ({ptk_anggota_keluarga:data})),
+    setptkanggotakeluarga:(data) => set(() => ({ptk_anggota_keluarga:data})),
 }))
 
 export default usePtkStore

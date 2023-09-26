@@ -8,6 +8,7 @@ import AlamatForm from '../formmain/alamat';
 import PtkAlamatForm from './form/biodata_form/alamat';
 import PtkProgramStudi from './program_studi';
 import ProgramStudiForm from './form/biodata_form/programstudi';
+import AnggotaKeluargaForm from './form/biodata_form/anggotakeluarga';
 
 const ModalPtk = (props) => {
     return(
@@ -55,6 +56,12 @@ const ModalPtk = (props) => {
                         {
                             props.page === "ptkprogramstudi" &&
                             <ProgramStudiForm />
+                        }
+
+                        {
+                            props.page === "ptkanggotakeluarga" &&
+                            <AnggotaKeluargaForm
+                             />
                         }
                     </CModalBody>
                     <CModalFooter>

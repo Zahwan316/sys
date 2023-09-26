@@ -14,6 +14,7 @@ import { useParams } from 'react-router-dom';
 import PtkAlamatTableData from './tabledata/alamat';
 import PtkProgramStudi from './program_studi';
 import ProgramStudiTableBody from './tabledata/programstudi';
+import AnggotaKeluargaTableBody from './tabledata/anggotakeluarga';
 
 const TablePtk = (props) => {
     const[ptk,setptk] = usePtkStore((state) => [state.ptk,state.setdataptk])
@@ -29,6 +30,7 @@ const TablePtk = (props) => {
     const[ptkalamatn,setptkalamat] = usePtkStore((state) => [state.ptk_alamat,state.setptkalamat])
     const [searchtext,setsearchtext] = useState("")
     const setptkprogramstudi = usePtkStore((state) => state.setptkprogramstudi)
+    const setptkanggotakeluarga = usePtkStore((state) => state.setptkanggotakeluarga)
 
 
     useEffect(() => {
@@ -77,14 +79,26 @@ const TablePtk = (props) => {
         const refetch_data = async() => {
             try{ 
                 if(props.isload){
-                    let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                    setptk(res.data.data)  
-
-                    let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
-                    setptkalamat(res_alamat.data.data)  
-
-                    let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
-                    setptkprogramstudi(res_program_studi.data.data)       
+                    if(props.page === "ptkbiodata" || props.page === "ptkkepegawaian" || props.page === "ptkkontak" || props.page === "ptkkompetensi")
+                    {
+                     let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                     setptk(res.data.data)  
+                    }
+                    if(props.page === "ptkalamat")
+                    {
+                     let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
+                     setptkalamat(res_alamat.data.data)  
+                    }
+                    if(props.page === "ptkprogramstudi")
+                    {
+                     let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
+                     setptkprogramstudi(res_program_studi.data.data)  
+                    }
+                    if(props.page === "ptkanggotakeluarga")
+                    {
+                     let res_anggota_keluarga = await axios.get(`${process.env.REACT_APP_LINK}ptk_anggota_keluarga`)
+                     setptkanggotakeluarga(res_anggota_keluarga.data.data)       
+                    }
                 }
             }
             catch(e){
@@ -98,14 +112,26 @@ const TablePtk = (props) => {
         const refetch_data = async() => {
             try{
                 if(isload){
-                    let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
-                    setptk(res.data.data)
-
-                    let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
-                    setptkalamat(res_alamat.data.data)  
-
-                    let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
-                    setptkprogramstudi(res_program_studi.data.data)       
+                    if(props.page === "ptkbiodata" || props.page === "ptkkepegawaian" || props.page === "ptkkontak" || props.page === "ptkkompetensi")
+                    {
+                     let res = await axios.get(`${process.env.REACT_APP_LINK}ptk`)
+                     setptk(res.data.data)  
+                    }
+                    if(props.page === "ptkalamat")
+                    {
+                     let res_alamat = await axios.get(`${process.env.REACT_APP_LINK}ptk_alamat`)
+                     setptkalamat(res_alamat.data.data)  
+                    }
+                    if(props.page === "ptkprogramstudi")
+                    {
+                     let res_program_studi = await axios.get(`${process.env.REACT_APP_LINK}ptk_pend_formal`)
+                     setptkprogramstudi(res_program_studi.data.data)  
+                    }
+                    if(props.page === "ptkanggotakeluarga")
+                    {
+                     let res_anggota_keluarga = await axios.get(`${process.env.REACT_APP_LINK}ptk_anggota_keluarga`)
+                     setptkanggotakeluarga(res_anggota_keluarga.data.data)       
+                    }
                 }
             }
             catch(e){
@@ -188,6 +214,9 @@ const TablePtk = (props) => {
             }
             if(props.page === "ptkprogramstudi"){
              handledelete(`ptk_pend_formal/${id}`)
+            }
+            if(props.page === "ptkanggotakeluarga"){
+             handledelete(`ptk_anggota_keluarga/${id}`)
             }
         }
     }
@@ -280,6 +309,13 @@ const TablePtk = (props) => {
                         props.page === "ptkprogramstudi" && 
                         <ProgramStudiTableBody
                             handleclickbutton={handleclickbutton}
+                        />
+                    }
+
+                    {
+                        props.page === "ptkanggotakeluarga" &&
+                        <AnggotaKeluargaTableBody 
+                         handleclickbutton={handleclickbutton}
                         />
                     }
                 </CTableBody>
